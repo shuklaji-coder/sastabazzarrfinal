@@ -94,7 +94,7 @@ public class SellerController {
 
         String subject = "Sastaa Baaazaarr Email Verification Code";
         String text = "Welcome to sastaaa bazzaaar , verify your account using this link ";
-        String frontend_url = "http://localhost:3000/verify-seller/";
+        String frontend_url = "https://subtle-gumdrop-648ce7.netlify.app/verify-seller/";
 
         emailService.sendVerificationOtpEmail(
                 seller.getEmail(), verificationCode.getOtp(),
