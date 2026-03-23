@@ -14,7 +14,7 @@ import com.rohan.Config.Jwt_Constant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.mail.MessagingException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,7 +81,7 @@ public class SellerController {
 
     @PostMapping
     public ResponseEntity<Seller> createSeller(
-            @RequestBody Seller seller) throws Exception, MessagingException {
+            @RequestBody Seller seller) throws Exception {
 
         Seller savedSeller = sellerService.createSeller(seller);
 
