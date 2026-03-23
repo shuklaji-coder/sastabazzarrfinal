@@ -1,7 +1,7 @@
 // This acts as a drop-in replacement for axios to bypass node package dependencies
 // since npm / bun builds were failing in environment.
 
-const BASE_URL = 'http://localhost:5454';
+const BASE_URL = 'https://sastabazzarr-production.up.railway.app';
 
 type AxiosRequestConfig = {
   method?: string;

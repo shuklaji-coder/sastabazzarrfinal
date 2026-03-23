@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5454";
+const API_BASE_URL = "https://sastabazzarr-production.up.railway.app";
 
 export const getApiUrl = (endpoint: string) => {
   return `${API_BASE_URL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
