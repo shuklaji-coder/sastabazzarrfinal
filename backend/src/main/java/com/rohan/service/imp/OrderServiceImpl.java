@@ -36,7 +36,9 @@ public class OrderServiceImpl implements OrderService {
                 cart.getCartItems()
                         .stream()
                         .collect(Collectors.groupingBy(
-                                item -> item.getProduct().getSeller().getId()
+                                item -> item.getProduct() != null && item.getProduct().getSeller() != null
+                                        ? item.getProduct().getSeller().getId()
+                                        : 0L // default or fallback ID to avoid NPE
                         ));
 
         Set<Order> orders = new HashSet<>();
@@ -91,7 +93,12 @@ public class OrderServiceImpl implements OrderService {
             orders.add(savedOrder);
         }
 
-        cartItemRepository.deleteAll(cart.getCartItems());
+        // Clear cart items properly for JPA orphanRemoval and reset totals
+        cart.getCartItems().clear();
+        cart.setTotalItem(0);
+        cart.setTotalSellingPrice(0);
+        cart.setTotalMrpPrice(0);
+        cart.setDiscount(0);
 
         // Send order confirmation email
         try {
