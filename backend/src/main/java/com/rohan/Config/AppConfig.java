@@ -42,6 +42,7 @@ public class AppConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/otp/**").permitAll()
                         .requestMatchers("/api/admin/**").permitAll()
+                        .requestMatchers("/debug/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
