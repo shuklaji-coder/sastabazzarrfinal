@@ -291,9 +291,9 @@ const Index = () => {
               </div>
 
               {/* Countdown for Urgency */}
-              <div className="bg-foreground/5 backdrop-blur-xl border border-foreground/10 p-6 md:p-8 rounded-[2rem] shadow-2xl flex flex-col items-center md:items-start gap-4 transform lg:translate-y-4">
-                <div className="flex items-center gap-2 text-foreground font-bold text-sm uppercase tracking-wider">
-                  <div className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+              <div className="bg-[#0A0A0A] backdrop-blur-2xl border border-red-500/10 p-6 md:p-8 rounded-[3rem] shadow-[0_30px_100px_rgba(0,0,0,0.8)] flex flex-col items-center md:items-start gap-4 transform lg:translate-y-4">
+                <div className="flex items-center gap-3 text-red-500 font-black text-xs uppercase tracking-[0.2em] drop-shadow-lg">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse border-2 border-red-400/30 shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
                   Flash Sale Ends In
                 </div>
                 <FlashSaleTimer />

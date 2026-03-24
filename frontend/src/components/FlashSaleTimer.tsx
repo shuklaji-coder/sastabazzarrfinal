@@ -43,47 +43,47 @@ export const FlashSaleTimer = () => {
     
     return (
       <div className="flex flex-col items-center group">
-        <div className="relative overflow-hidden bg-white/[0.05] backdrop-blur-2xl px-2 py-1 rounded-[1.25rem] border border-white/[0.1] shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_0_10px_rgba(255,255,255,0.05)] flex items-center gap-1 group-hover:border-primary/40 transition-all duration-500">
+        <div className="relative overflow-hidden bg-[#121212]/80 backdrop-blur-2xl px-3 py-2 rounded-[1.5rem] border border-red-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6),inset_0_0_15px_rgba(255,255,255,0.02)] flex items-center gap-1.5 group-hover:border-red-500/50 transition-all duration-500">
           
-          <div className="flex gap-1">
+          <div className="flex gap-1.5">
             {formattedValue.split('').map((digit, i) => (
-              <div key={i} className="relative w-8 h-10 md:w-12 md:h-16 flex items-center justify-center bg-black/40 rounded-xl overflow-hidden border border-white/5">
+              <div key={i} className="relative w-9 h-12 md:w-14 md:h-20 flex items-center justify-center bg-gradient-to-b from-[#1A1A1A] to-[#0A0A0A] rounded-2xl overflow-hidden border border-white/5 shadow-xl">
                  <AnimatePresence mode="popLayout">
                     <motion.span
                       key={digit}
-                      initial={{ y: 20, opacity: 0, filter: 'blur(5px)' }}
+                      initial={{ y: 25, opacity: 0, filter: 'blur(8px)' }}
                       animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-                      exit={{ y: -20, opacity: 0, filter: 'blur(5px)' }}
-                      transition={{ type: 'spring', damping: 15, stiffness: 200 }}
-                      className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/30"
+                      exit={{ y: -25, opacity: 0, filter: 'blur(8px)' }}
+                      transition={{ type: 'spring', damping: 12, stiffness: 150 }}
+                      className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-red-100 to-red-400 drop-shadow-[0_2px_10px_rgba(239,68,68,0.3)]"
                     >
                       {digit}
                     </motion.span>
                  </AnimatePresence>
                  
-                 {/* Internal gradient for depth */}
-                 <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
-                 <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                 {/* Internal premium accents */}
+                 <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                 <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-white/5 to-transparent" />
               </div>
             ))}
           </div>
 
-          {/* Premium Shine Layer */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[1.25rem]">
+          {/* Aggressive Red Shine Layer */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[1.5rem]">
             <motion.div 
               animate={{ x: ['-200%', '200%'] }}
-              transition={{ repeat: Infinity, duration: 4, ease: 'linear', delay: Math.random() }}
-              className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent skew-x-12"
+              transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut', delay: Math.random() }}
+              className="absolute inset-0 bg-gradient-to-tr from-transparent via-red-500/10 to-transparent skew-x-12"
             />
           </div>
         </div>
         
-        <div className="overflow-hidden mt-2">
+        <div className="mt-3">
            <motion.span 
-             initial={{ opacity: 0.5 }}
-             animate={{ opacity: [0.5, 1, 0.5] }}
-             transition={{ repeat: Infinity, duration: 2 }}
-             className="text-[10px] md:text-xs font-black text-primary uppercase tracking-[0.3em] block"
+             initial={{ opacity: 0.6 }}
+             animate={{ opacity: [0.6, 1, 0.6] }}
+             transition={{ repeat: Infinity, duration: 1.5 }}
+             className="text-[10px] md:text-[11px] font-black text-red-500 uppercase tracking-[0.4em] block drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]"
            >
              {label}
            </motion.span>
@@ -93,16 +93,16 @@ export const FlashSaleTimer = () => {
   };
 
   return (
-    <div className="flex items-center gap-4 md:gap-6 bg-black/20 backdrop-blur-3xl p-4 md:p-6 rounded-[2.5rem] border border-white/[0.05] shadow-2xl">
+    <div className="flex items-center gap-5 md:gap-8 bg-[#080808]/90 backdrop-blur-3xl p-6 md:p-8 rounded-[3rem] border border-red-500/10 shadow-[0_0_80px_rgba(239,68,68,0.1)]">
       <TimeUnit value={timeLeft.hours} label="Hours" />
-      <div className="flex flex-col gap-2 mt-[-20px]">
-        <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
-        <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0.5 }} className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary/40 shadow-[0_0_5px_rgba(var(--primary),0.2)]" />
+      <div className="flex flex-col gap-3 mt-[-28px]">
+        <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-600 shadow-[0_0_15px_rgba(220,38,38,0.8)]" />
+        <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 0.8, delay: 0.4 }} className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-800 shadow-[0_0_10px_rgba(185,28,28,0.4)]" />
       </div>
       <TimeUnit value={timeLeft.minutes} label="Minutes" />
-      <div className="flex flex-col gap-2 mt-[-20px]">
-        <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
-        <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0.5 }} className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary/40 shadow-[0_0_5px_rgba(var(--primary),0.2)]" />
+      <div className="flex flex-col gap-3 mt-[-28px]">
+        <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-600 shadow-[0_0_15px_rgba(220,38,38,0.8)]" />
+        <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 0.8, delay: 0.4 }} className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-800 shadow-[0_0_10px_rgba(185,28,28,0.4)]" />
       </div>
       <TimeUnit value={timeLeft.seconds} label="Seconds" />
     </div>
