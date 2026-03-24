@@ -127,8 +127,36 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse signing(Loginrequest request) throws Exception {
 
+        // First check if user exists, if not it's a signup flow
+        User existingUser = userRepository.findByEmail(request.getEmail());
+        
+        if (existingUser == null) {
+            // New user - signup flow
+            throw new BadCredentialsException("User not found. Please signup first.");
+        }
+
+        // Existing user - login flow
+        VerificationCode verificationCode =
+                verificationCodeRepository.findByEmail(request.getEmail());
+
+        if (verificationCode == null ||
+                !verificationCode.getOtp().equals(request.getOtp())) {
+            throw new BadCredentialsException("Wrong OTP");
+        }
+
+        // OTP delete after successful login
+        verificationCodeRepository.delete(verificationCode);
+
+        // Create authentication for existing user
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(existingUser.getRole().name()));
+
         Authentication authentication =
-                authenticate(request.getEmail(), request.getOtp());
+                new UsernamePasswordAuthenticationToken(
+                        existingUser.getEmail(),
+                        null,
+                        authorities
+                );
 
         SecurityContextHolder.getContext()
                 .setAuthentication(authentication);
@@ -138,15 +166,7 @@ public class AuthServiceImpl implements AuthService {
         AuthResponse response = new AuthResponse();
         response.setJwt(token);
         response.setMessage("Login successful");
-
-        Collection<? extends GrantedAuthority> authorities =
-                authentication.getAuthorities();
-
-        String roleName =
-                authorities.isEmpty() ? null :
-                        authorities.iterator().next().getAuthority();
-
-        response.setRole(USER_ROLE.valueOf(roleName));
+        response.setRole(existingUser.getRole());
 
         return response;
     }
