@@ -506,6 +506,120 @@ const Index = () => {
           </>
         )}
 
+        {/* ✨ Meet the Creator: Founder's Vision Section */}
+        <section className="relative py-24 overflow-hidden bg-white dark:bg-[#050618]">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full animate-pulse" />
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                {/* Left: Premium Founders Card */}
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                  className="relative group"
+                >
+                  <div className="aspect-[4/5] md:aspect-square relative rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white/50 dark:border-white/5">
+                    <img 
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop" 
+                      alt="Mr. Rohan Shukla" 
+                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60" />
+                    
+                    {/* Floating Name Badge */}
+                    <div className="absolute bottom-8 left-8 right-8 p-6 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                      <h3 className="text-2xl font-black text-white tracking-tighter">Mr. Rohan Shukla</h3>
+                      <p className="text-cyan-400 text-xs font-black uppercase tracking-[0.2em] mt-1">Founder & Lead Architect</p>
+                    </div>
+                  </div>
+                  
+                  {/* Decorative Elements */}
+                  <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl animate-pulse" />
+                  <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-secondary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+                </motion.div>
+
+                {/* Right: The Vision */}
+                <div className="space-y-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="space-y-4"
+                  >
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-bold uppercase tracking-widest">
+                       <Sparkles className="w-3.5 h-3.5" /> THE VISIONARY
+                    </div>
+                    <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tighter leading-[1.1]">
+                      Driven by <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary italic">Passion</span>, Built for You.
+                    </h2>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="space-y-6"
+                  >
+                    <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
+                      "Sastaa Bazaar isn't just an e-commerce platform; it's a commitment to making a premium lifestyle accessible to everyone. We combine cutting-edge AI technology with a human-centric approach to deliver value that goes beyond the price tag."
+                    </p>
+                    
+                    <div className="flex flex-col gap-4">
+                       <div className="flex items-center gap-4 group cursor-pointer">
+                          <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                             <Shield className="w-6 h-6" />
+                          </div>
+                          <div>
+                             <h4 className="font-black text-sm dark:text-white">Uncompromising Quality</h4>
+                             <p className="text-xs text-gray-400">Hand-picked selections only.</p>
+                          </div>
+                       </div>
+                       <div className="flex items-center gap-4 group cursor-pointer">
+                          <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all duration-300">
+                             <TrendingUp className="w-6 h-6" />
+                          </div>
+                          <div>
+                             <h4 className="font-black text-sm dark:text-white">Fair Pricing Model</h4>
+                             <p className="text-xs text-gray-400">Value that speaks for itself.</p>
+                          </div>
+                       </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 }}
+                    className="pt-8 flex items-center gap-6"
+                   >
+                    <a 
+                      href="https://www.linkedin.com/in/rohan-shukla-0b8889321" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:shadow-2xl active:scale-95 transition-all group"
+                    >
+                      Connect on LinkedIn <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                    
+                    <div className="hidden md:flex flex-col">
+                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Email Directly</span>
+                       <span className="text-sm font-bold dark:text-white">rohan@sastaabazaar.in</span>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Global Features / Trust Badges - Bottom */}
         <section className="bg-sidebar border-t border-border py-12">
           <div className="container mx-auto px-4">
