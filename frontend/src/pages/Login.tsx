@@ -285,10 +285,33 @@ const Login = () => {
           </div>
 
           <div className="w-full h-[300px] sm:h-[400px] lg:h-full relative z-0 flex items-center justify-center overflow-visible">
+
             <Spline
+
               scene="https://prod.spline.design/Ecrb62UIo3eOK8ju/scene.splinecode"
+
               className="w-full h-full object-contain"
+
+              onLoad={() => {
+
+                // Prevent Spline canvas from stealing focus and scrolling the page down
+
+                setTimeout(() => {
+
+                  if (document.activeElement instanceof HTMLElement) {
+
+                    document.activeElement.blur();
+
+                  }
+
+                  window.scrollTo({ top: 0, behavior: 'instant' });
+
+                }, 50);
+
+              }}
+
             />
+
           </div>
         </div>
 

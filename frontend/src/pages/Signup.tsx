@@ -108,7 +108,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center text-white bg-[#050618] overflow-hidden relative">
+    <div className="min-h-screen flex items-center justify-center text-white bg-[#050618] overflow-x-hidden relative">
       {/* Unified Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {/* Background Petals Animation */}
@@ -321,6 +321,15 @@ const Signup = () => {
             <Spline
               scene="https://prod.spline.design/Ecrb62UIo3eOK8ju/scene.splinecode"
               className="w-full h-full object-contain"
+              onLoad={() => {
+                // Prevent Spline canvas from stealing focus and scrolling the page down
+                setTimeout(() => {
+                  if (document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur();
+                  }
+                  window.scrollTo({ top: 0, behavior: 'instant' });
+                }, 50);
+              }}
             />
           </div>
         </div>
