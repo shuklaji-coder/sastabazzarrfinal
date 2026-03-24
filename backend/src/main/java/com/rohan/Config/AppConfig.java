@@ -73,8 +73,8 @@ public class AppConfig {
 
                 CorsConfiguration corsConfiguration = new CorsConfiguration();
                 corsConfiguration.setAllowedOrigins(Arrays.asList(
-                        "https://sastaabazaar.shop",
                         "https://subtle-gumdrop-648ce7.netlify.app",
+                        "https://sastaabazaar.shop",
                         "http://localhost:3000", 
                         "http://localhost:5173", 
                         "http://localhost:8080", 
