@@ -62,7 +62,7 @@ export const ProductCard = ({ product, index = 0 }: { product: Product; index?: 
     >
       {/* ─── Image Header ─── */}
       <div className="relative aspect-[1/1] overflow-hidden bg-[#F8F8F8] dark:bg-black/20 group-hover:bg-[#F0F0F0] dark:group-hover:bg-black/40 transition-colors duration-700">
-        <Link to={`/product/${product.id}`} className="block w-full h-full p-6 md:p-8">
+        <Link to={`/product/${product.id}`} className="block w-full h-full p-2 md:p-3">
           <motion.img 
             src={product.images?.[0] || 'https://via.placeholder.com/300?text=SastaaBazaar'} 
             alt={product.name} 
