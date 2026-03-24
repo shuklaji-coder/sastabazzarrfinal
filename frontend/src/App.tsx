@@ -35,7 +35,6 @@ import Signup from "./pages/Signup";
 import Wishlist from "./pages/Wishlist";
 import { MobileNav } from "./components/MobileNav";
 import ChatBot from "./components/ChatBot";
-import WelcomeGreeting from "./components/WelcomeGreeting";
 
 const queryClient = new QueryClient();
 
@@ -174,7 +173,6 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
             <ChatBot />
-            <WelcomeGreeting />
             <MobileNav />
           </BrowserRouter>
           </WishlistProvider>

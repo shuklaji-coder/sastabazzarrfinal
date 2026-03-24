@@ -175,25 +175,25 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Premium Category Section */}
-        <section className="container mx-auto px-4 py-16 -mt-16 relative z-40">
-          <div className="flex flex-col space-y-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-              <div className="space-y-2">
+        {/* ✨ Premium Category Discovery Section */}
+        <section className="container mx-auto px-4 py-24 -mt-20 relative z-40">
+          <div className="flex flex-col space-y-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="space-y-3">
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  className="flex items-center gap-2 text-primary font-bold tracking-wider uppercase text-sm"
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-bold uppercase tracking-widest"
                 >
-                  <Sparkles className="w-4 h-4" /> Discover More
+                  <Sparkles className="w-3.5 h-3.5" /> Curated Collections
                 </motion.div>
-                <h2 className="font-display text-3xl md:text-4xl font-black text-foreground tracking-tight">
-                  Shop by <span className="text-primary italic">Category</span>
+                <h2 className="font-display text-4xl md:text-5xl font-black text-foreground tracking-tight">
+                  Shop by <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary bg-300% animate-gradient italic">Category</span>
                 </h2>
               </div>
-              <Button variant="ghost" asChild className="group text-muted-foreground hover:text-primary w-fit">
-                <Link to="/products" className="flex items-center gap-1 font-semibold">
+              <Button variant="ghost" asChild className="group text-muted-foreground hover:text-primary w-fit px-6 h-12 rounded-full border border-transparent hover:border-primary/10 transition-all">
+                <Link to="/products" className="flex items-center gap-2 font-bold tracking-tight">
                   View All Collections <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
@@ -203,53 +203,58 @@ const Index = () => {
               {categories.slice(0, 6).map((cat, i) => (
                 <motion.div
                   key={cat.id || i}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  whileHover={{ y: -10 }}
                 >
                   <Link
                     to={`/products?category=${cat.name.toLowerCase()}`}
-                    className="group relative block aspect-[4/5] overflow-hidden rounded-2xl bg-muted shadow-lg hover:shadow-2xl transition-all duration-500"
+                    className="group relative block aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-muted shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition-all duration-500"
                   >
-                    {/* Background Image with Parallax-like effect */}
+                    {/* Background Image with 3D-like hover */}
                     <motion.img
                       src={cat.image}
                       alt={cat.name}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
 
-                    {/* Dynamic Gradient Overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-                    <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {/* Multi-layered Overlays */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-70 group-hover:opacity-80 transition-opacity" />
+                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                     {/* Content Component */}
                     <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                      <div className="space-y-3 transform group-hover:-translate-y-2 transition-transform duration-500">
-                        {/* Icon Badge */}
-                        <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-2xl shadow-inner group-hover:rotate-12 transition-transform">
+                      <div className="space-y-4 transform group-hover:-translate-y-2 transition-transform duration-500">
+                        {/* Floating Icon Badge */}
+                        <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] transform group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-500">
                           {cat.icon}
                         </div>
 
                         <div className="space-y-1">
-                          <h3 className="text-xl font-bold text-white tracking-tight">{cat.name}</h3>
-                          <p className="text-sm text-white/70 font-medium">
-                            {cat.productCount}+ Products
+                          {/* Dynamic Status Badge (Simulated) */}
+                          {i === 0 && (
+                            <span className="inline-block px-2 py-0.5 rounded-full bg-red-500 text-[8px] font-black text-white uppercase tracking-tighter mb-1">
+                              Trending
+                            </span>
+                          )}
+                          {i === 2 && (
+                            <span className="inline-block px-2 py-0.5 rounded-full bg-cyan-500 text-[8px] font-black text-white uppercase tracking-tighter mb-1">
+                              New
+                            </span>
+                          )}
+                          <h3 className="text-2xl font-black text-white tracking-tighter leading-none">{cat.name}</h3>
+                          <p className="text-[10px] text-white/50 font-bold uppercase tracking-widest group-hover:text-primary transition-colors">
+                            {cat.productCount}+ Selected Items
                           </p>
-                        </div>
-
-                        {/* CTA button hidden by default */}
-                        <div className="h-0 overflow-hidden group-hover:h-8 transition-all duration-500">
-                          <span className="inline-flex items-center gap-1 text-xs font-bold text-primary-foreground bg-primary px-3 py-1 rounded-full">
-                            Explore <ArrowRight className="w-3 h-3" />
-                          </span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Glassmorphism Shine Effect on Hover */}
-                    <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                      <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 -rotate-45 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                    {/* Advanced Shine Effect */}
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
                     </div>
                   </Link>
                 </motion.div>
