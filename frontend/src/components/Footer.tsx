@@ -134,10 +134,9 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-primary-foreground/10 bg-primary/95 text-center py-6">
-        <p className="text-sm text-primary-foreground/60">
-          &copy; {new Date().getFullYear()} SastaaBazaar. All rights reserved. | Developed by Mr. Rohan Shukla (Software Developer)
+        <p className="text-sm text-primary-foreground/60 leading-relaxed">
+          &copy; {new Date().getFullYear()} SastaaBazaar. All rights reserved. | Developed with 💖 by <a href="https://www.linkedin.com/in/rohan-shukla-0b8889321" target="_blank" rel="noopener noreferrer" className="font-black text-secondary hover:underline">Mr. Rohan Shukla</a>
         </p>
       </div>
     </footer>
