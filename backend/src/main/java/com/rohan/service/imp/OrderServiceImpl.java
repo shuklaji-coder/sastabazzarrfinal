@@ -67,6 +67,7 @@ public class OrderServiceImpl implements OrderService {
             createdOrder.setTotalMrpPrice(totalMrpPrice);
             createdOrder.setTotalItem(totalItem);
             createdOrder.setOrderStatus(OrderStatus.PENDING);
+            createdOrder.setPaymentStatus(PaymentStatus.PENDING);
 
             // 🔥 Create OrderItems
             List<OrderItem> orderItems = new ArrayList<>();
@@ -85,8 +86,6 @@ public class OrderServiceImpl implements OrderService {
             }
 
             createdOrder.setOrderItems(orderItems);
-
-            createdOrder.getPaymentDetails().setStatus(PaymentStatus.PENDING);
 
             Order savedOrder = orderRepository.save(createdOrder);
             orders.add(savedOrder);
