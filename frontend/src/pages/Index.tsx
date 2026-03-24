@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { productService } from '@/services/productService';
 import { Button } from '@/components/ui/button';
+import { FlashSaleTimer } from '@/components/FlashSaleTimer';
 
 const Index = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -257,167 +258,162 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ✨ Premium Promo Banners Section */}
-        <section className="container mx-auto px-4 py-12">
-          <div className="flex items-center gap-3 mb-8">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-2 text-primary font-bold tracking-wider uppercase text-sm"
-            >
-              <Sparkles className="w-4 h-4" /> Exclusive Deals
-            </motion.div>
+        {/* ✨ Ultra-Premium Exclusive Deals Section */}
+        <section className="relative py-24 overflow-hidden">
+          {/* Animated Background Elements */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-30">
+            <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full animate-pulse" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-secondary/20 blur-[120px] rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
           </div>
 
-          {/* Top Row — 2 Large Banners */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {[
-              {
-                img: "https://images.unsplash.com/photo-1739132268693-8ba353f0959c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzB8fHNwb3J0JTIwc2hvZXN8ZW58MHx8MHx8fDA%3D",
-                title: "Sports Shoes",
-                subtitle: "Premium Comfort & Style",
-                badge: "MIN. 40% OFF",
-
-                gradient: "from-emerald-900/90 via-emerald-800/60 to-transparent",
-                link: "/products?category=shoes"
-              },
-              {
-                img: "data:image/jpeg;base64,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",
-                title: "Smart Watches",
-                subtitle: "Latest Tech Collection",
-                badge: "NEW ARRIVALS",
-
-                gradient: "from-slate-900/90 via-slate-800/60 to-transparent",
-                link: "/products?category=watches",
-                alignRight: true
-              }
-            ].map((promo, i) => (
-              <motion.div
-                key={promo.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
-              >
-                <Link
-                  to={promo.link}
-                  className="relative block rounded-2xl overflow-hidden h-56 md:h-72 group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500"
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
+              <div className="space-y-4">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-bold uppercase tracking-widest"
                 >
-                  {/* Background Image */}
-                  <img
-                    src={promo.img}
-                    alt={promo.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+                  <Sparkles className="w-3.5 h-3.5" /> Limited Time Offers
+                </motion.div>
+                <h2 className="font-display text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.1]">
+                  Exclusive <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary bg-300% animate-gradient">Deals</span>
+                </h2>
+                <p className="text-muted-foreground text-lg max-w-xl font-medium">
+                  Hand-picked premium selections with unbeatable value. Grab them before they're gone!
+                </p>
+              </div>
 
-                  {/* Gradient Overlay */}
-                  <div className={`absolute inset-0 bg-gradient-to-r ${promo.gradient}`} />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-500" />
+              {/* Countdown for Urgency */}
+              <div className="bg-foreground/5 backdrop-blur-xl border border-foreground/10 p-6 md:p-8 rounded-[2rem] shadow-2xl flex flex-col items-center md:items-start gap-4 transform lg:translate-y-4">
+                <div className="flex items-center gap-2 text-foreground font-bold text-sm uppercase tracking-wider">
+                  <div className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+                  Flash Sale Ends In
+                </div>
+                <FlashSaleTimer />
+              </div>
+            </div>
 
-                  {/* Shine Effect on Hover */}
-                  <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                  </div>
-
-                  {/* Discount Badge */}
-                  <div className={`absolute top-4 ${promo.alignRight ? 'right-4' : 'left-4'}`}>
-                    <motion.span
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ type: 'spring', delay: 0.4 + i * 0.15 }}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-500/90 backdrop-blur-sm text-white text-xs font-bold shadow-lg"
-                    >
-                      🔥 {promo.badge}
-                    </motion.span>
-                  </div>
-
-                  {/* Content */}
-                  <div className={`absolute inset-0 p-6 md:p-8 flex flex-col justify-end ${promo.alignRight ? 'items-end text-right' : 'items-start'}`}>
-                    <div className="space-y-2 transform group-hover:-translate-y-2 transition-transform duration-500">
-                      <span className="text-4xl drop-shadow-lg">{promo.icon}</span>
-                      <h3 className="text-white text-2xl md:text-3xl font-black tracking-tight drop-shadow-lg">{promo.title}</h3>
-                      <p className="text-white/80 text-sm md:text-base font-medium">{promo.subtitle}</p>
-
-                      {/* CTA Button */}
-                      <div className="pt-2">
-                        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-sm font-semibold group-hover:bg-white/25 group-hover:border-white/40 transition-all duration-300 shadow-lg">
-                          Shop Now <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </span>
+            {/* Featured Spotlight Deal */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8 mt-12">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="lg:col-span-8 group relative rounded-[2.5rem] overflow-hidden bg-foreground aspect-[16/9] md:aspect-auto md:h-[500px] shadow-2xl cursor-pointer"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop"
+                  alt="Spotlight Deal"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                
+                {/* Spotlight Content */}
+                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
+                  <div className="max-w-md space-y-4 transform group-hover:-translate-y-2 transition-transform duration-500">
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-white text-black text-sm font-black uppercase tracking-tighter">
+                      Deal of the Day
+                    </span>
+                    <h3 className="text-white text-4xl md:text-6xl font-black leading-none drop-shadow-2xl">
+                      Ultra Boost <span className="text-primary italic">Edition</span>
+                    </h3>
+                    <p className="text-white/80 text-lg font-medium drop-shadow-md">
+                      Experience ultimate comfort with our most exclusive footwear drop of the season.
+                    </p>
+                    <div className="flex items-center gap-6 pt-4">
+                      <Button size="lg" className="rounded-full h-14 px-8 text-lg font-bold bg-white text-black hover:bg-primary hover:text-white transition-all group/btn shadow-xl hover:shadow-primary/20">
+                        Claim Offer <ArrowRight className="ml-2 w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                      </Button>
+                      <div className="flex flex-col">
+                        <span className="text-white/50 text-sm line-through font-bold">₹12,999</span>
+                        <span className="text-primary text-3xl font-black italic">₹5,499</span>
                       </div>
                     </div>
                   </div>
-                </Link>
+                </div>
+
+                {/* Interactive Glass Shine */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               </motion.div>
-            ))}
-          </div>
 
-          {/* Bottom Row — 3 Smaller Banners */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop",
-                title: "Premium Gadgets",
-                subtitle: "Up to 50% Off",
-                icon: "🎧",
-                gradient: "from-purple-900/90 to-purple-900/20",
-                link: "/products?category=electronics"
-              },
-              {
-                img: "https://images.unsplash.com/photo-1558171813-01ed3d751c18?q=80&w=800&auto=format&fit=crop",
-                title: "Fashion Store",
-                subtitle: "Trending Styles",
-                icon: "👗",
-                gradient: "from-pink-900/90 to-pink-900/20",
-                link: "/products?category=fashion"
-              },
-              {
-                img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800&auto=format&fit=crop",
-                title: "Bags & Accessories",
-                subtitle: "Flat 30% Off",
-                icon: "🎒",
-                gradient: "from-amber-900/90 to-amber-900/20",
-                link: "/products?category=bags"
-              }
-            ].map((promo, i) => (
-              <motion.div
-                key={promo.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <Link
-                  to={promo.link}
-                  className="relative block rounded-2xl overflow-hidden h-44 md:h-52 group cursor-pointer shadow-md hover:shadow-xl transition-all duration-500"
+              {/* Side Banners */}
+              <div className="lg:col-span-4 flex flex-col gap-6">
+                {[
+                  {
+                    title: "Audio Pro Max",
+                    discount: "UP TO 45% OFF",
+                    img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600&auto=format&fit=crop",
+                    color: "from-purple-900/40",
+                    link: "/products?category=electronics"
+                  },
+                  {
+                    title: "Urban Style",
+                    discount: "FLAT 30% OFF",
+                    img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop",
+                    color: "from-pink-900/40",
+                    link: "/products?category=fashion"
+                  }
+                ].map((deal, i) => (
+                  <motion.div
+                    key={deal.title}
+                    initial={{ opacity: 0, x: 30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
+                  >
+                    <Link
+                      to={deal.link}
+                      className="group relative flex-1 h-[238px] block rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500"
+                    >
+                      <img src={deal.img} alt={deal.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <div className={`absolute inset-0 bg-gradient-to-t ${deal.color} via-transparent to-transparent`} />
+                      <div className="absolute inset-0 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity" />
+                      
+                      <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                        <span className="text-primary text-xs font-black tracking-widest mb-1">{deal.discount}</span>
+                        <h4 className="text-white text-2xl font-black">{deal.title}</h4>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom Category Grid - Smaller Interactive Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {[
+                { label: "Watches", tag: "Premium", icon: "⌚", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400&fit=crop" },
+                { label: "Sneakers", tag: "Trending", icon: "👟", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=400&fit=crop" },
+                { label: "Bags", tag: "Minimal", icon: "🎒", img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=400&fit=crop" },
+                { label: "Beauty", tag: "Organic", icon: "✨", img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=400&fit=crop" }
+              ].map((cat, i) => (
+                <motion.div
+                  key={cat.label}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
                 >
-                  <img
-                    src={promo.img}
-                    alt={promo.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className={`absolute inset-0 bg-gradient-to-t ${promo.gradient}`} />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors duration-500" />
-
-                  {/* Shine */}
-                  <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                  </div>
-
-                  <div className="absolute inset-0 p-5 flex flex-col justify-end">
-                    <div className="transform group-hover:-translate-y-1 transition-transform duration-500">
-                      <span className="text-3xl mb-1 block drop-shadow-lg">{promo.icon}</span>
-                      <h3 className="text-white text-lg md:text-xl font-bold tracking-tight">{promo.title}</h3>
-                      <p className="text-white/70 text-xs md:text-sm font-medium mb-2">{promo.subtitle}</p>
-                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white/90 group-hover:text-white transition-colors">
-                        Explore <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  <div className="group relative aspect-square rounded-[2rem] overflow-hidden cursor-pointer bg-muted shadow-lg hover:shadow-2xl transition-all duration-500">
+                    <img src={cat.img} alt={cat.label} className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" />
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-primary/20 transition-colors" />
+                    
+                    <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                      <span className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-xl shadow-lg transform group-hover:rotate-12 transition-transform">
+                        {cat.icon}
                       </span>
+                      <div>
+                        <span className="text-[10px] font-black uppercase tracking-tighter text-primary">{cat.tag}</span>
+                        <h5 className="text-white text-xl font-bold">{cat.label}</h5>
+                      </div>
                     </div>
                   </div>
-                </Link>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
