@@ -127,15 +127,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse signing(Loginrequest request) throws Exception {
 
-        // First check if user exists, if not it's a signup flow
-        User existingUser = userRepository.findByEmail(request.getEmail());
-        
-        if (existingUser == null) {
-            // New user - signup flow
-            throw new BadCredentialsException("User not found. Please signup first.");
-        }
-
-        // Existing user - login flow
         VerificationCode verificationCode =
                 verificationCodeRepository.findByEmail(request.getEmail());
 
@@ -144,6 +135,15 @@ public class AuthServiceImpl implements AuthService {
             throw new BadCredentialsException("Wrong OTP");
         }
 
+        // Check if user exists or needs to be created
+        User existingUser = userRepository.findByEmail(request.getEmail());
+        
+        if (existingUser == null) {
+            // New user - create user first, then login
+            throw new BadCredentialsException("Please complete signup first. Use /auth/signup endpoint.");
+        }
+
+        // Existing user - login flow
         // OTP delete after successful login
         verificationCodeRepository.delete(verificationCode);
 
