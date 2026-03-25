@@ -35,6 +35,7 @@ import Signup from "./pages/Signup";
 import Wishlist from "./pages/Wishlist";
 import { MobileNav } from "./components/MobileNav";
 import ChatBot from "./components/ChatBot";
+import { LiveBuyAlerts } from "./components/LiveBuyAlerts";
 
 const queryClient = new QueryClient();
 
@@ -173,6 +174,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
             <ChatBot />
+            <LiveBuyAlerts />
             <MobileNav />
           </BrowserRouter>
           </WishlistProvider>
