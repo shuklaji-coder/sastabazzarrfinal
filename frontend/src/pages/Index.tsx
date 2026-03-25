@@ -211,59 +211,54 @@ const Index = () => {
                 >
                   <Link
                     to={`/products?category=${cat.name.toLowerCase()}`}
-                    className="group relative block aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-black shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 border border-white/5"
+                    className="group relative block aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-[#0A0A0A] shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/10"
                   >
-                    {/* Background Image with Cinematic Reveal */}
+                    {/* Background Image */}
                     <motion.img
                       src={cat.image}
                       alt={cat.name}
-                      className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 group-hover:scale-110 grayscale-[50%] group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-90"
                     />
 
-                    {/* Multi-layered Premium Overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#050618] via-[#050618]/60 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/0 via-cyan-500/0 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 mix-blend-overlay" />
+                    {/* Simple Gradients for Readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90" />
+                    <div className="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                     {/* Content Component */}
                     <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-end">
-                      <div className="space-y-4 transform translate-y-4 group-hover:-translate-y-2 transition-transform duration-500 ease-out">
-                        {/* Floating Icon Badge */}
-                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-2xl sm:text-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] transform -translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-hover:rotate-[15deg] transition-all duration-500 delay-100">
+                      <div className="space-y-3 transform translate-y-2 group-hover:-translate-y-1 transition-transform duration-500">
+                        {/* Static Premium Icon Badge */}
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-2xl sm:text-3xl shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
                           {cat.icon}
                         </div>
 
                         <div className="space-y-1">
-                          {/* Dynamic Status Badge (Simulated) */}
+                          {/* Status Badge */}
                           <div className="flex gap-2">
                             {i === 0 && (
-                              <span className="inline-block px-2 py-0.5 rounded-full bg-gradient-to-r from-red-600 to-orange-500 text-[9px] font-black text-white uppercase tracking-widest mb-2 shadow-lg">
+                              <span className="inline-block px-2 py-0.5 rounded-full bg-red-500 text-[10px] font-bold text-white uppercase tracking-widest shadow-md">
                                 Trending
                               </span>
                             )}
                             {i === 1 && (
-                              <span className="inline-block px-2 py-0.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-[9px] font-black text-white uppercase tracking-widest mb-2 shadow-lg">
+                              <span className="inline-block px-2 py-0.5 rounded-full bg-purple-500 text-[10px] font-bold text-white uppercase tracking-widest shadow-md">
                                 Exclusive
                               </span>
                             )}
                           </div>
                           
-                          <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tighter leading-none drop-shadow-2xl">
+                          <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-none drop-shadow-lg">
                             {cat.name}
                           </h3>
                           
-                          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
-                             <div className="h-[1px] w-6 bg-cyan-400"></div>
-                             <p className="text-[10px] sm:text-xs text-cyan-400 font-bold uppercase tracking-[0.2em]">
+                          <div className="flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                             <div className="h-[2px] w-4 bg-cyan-400"></div>
+                             <p className="text-[10px] sm:text-xs text-cyan-300 font-bold uppercase tracking-wider">
                                Explore {cat.productCount}+
                              </p>
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Advanced Shine Effect */}
-                    <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[2.5rem]">
-                      <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
                     </div>
                   </Link>
                 </motion.div>
