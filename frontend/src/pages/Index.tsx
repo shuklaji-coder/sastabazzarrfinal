@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 import { productService } from '@/services/productService';
 import { Button } from '@/components/ui/button';
 import { FlashSaleTimer } from '@/components/FlashSaleTimer';
+import { PremiumCategories } from '@/components/PremiumCategories';
 
 const Index = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -175,97 +176,8 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ✨ Premium Category Discovery Section */}
-        <section className="container mx-auto px-4 py-24 -mt-20 relative z-40">
-          <div className="flex flex-col space-y-12">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="space-y-3">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-bold uppercase tracking-widest"
-                >
-                  <Sparkles className="w-3.5 h-3.5" /> Curated Collections
-                </motion.div>
-                <h2 className="font-display text-4xl md:text-5xl font-black text-foreground tracking-tight">
-                  Shop by <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary bg-300% animate-gradient italic">Category</span>
-                </h2>
-              </div>
-              <Button variant="ghost" asChild className="group text-muted-foreground hover:text-primary w-fit px-6 h-12 rounded-full border border-transparent hover:border-primary/10 transition-all">
-                <Link to="/products" className="flex items-center gap-2 font-bold tracking-tight">
-                  View All Collections <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
-              {categories.slice(0, 6).map((cat, i) => (
-                <motion.div
-                  key={cat.id || i}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.1 }}
-                  whileHover={{ y: -10 }}
-                >
-                  <Link
-                    to={`/products?category=${cat.name.toLowerCase()}`}
-                    className="group relative block aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-[#0A0A0A] shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/10"
-                  >
-                    {/* Background Image */}
-                    <motion.img
-                      src={cat.image}
-                      alt={cat.name}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-90"
-                    />
-
-                    {/* Simple Gradients for Readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90" />
-                    <div className="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                    {/* Content Component */}
-                    <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-end">
-                      <div className="space-y-3 transform translate-y-2 group-hover:-translate-y-1 transition-transform duration-500">
-                        {/* Static Premium Icon Badge */}
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-2xl sm:text-3xl shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
-                          {cat.icon}
-                        </div>
-
-                        <div className="space-y-1">
-                          {/* Status Badge */}
-                          <div className="flex gap-2">
-                            {i === 0 && (
-                              <span className="inline-block px-2 py-0.5 rounded-full bg-red-500 text-[10px] font-bold text-white uppercase tracking-widest shadow-md">
-                                Trending
-                              </span>
-                            )}
-                            {i === 1 && (
-                              <span className="inline-block px-2 py-0.5 rounded-full bg-purple-500 text-[10px] font-bold text-white uppercase tracking-widest shadow-md">
-                                Exclusive
-                              </span>
-                            )}
-                          </div>
-                          
-                          <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-none drop-shadow-lg">
-                            {cat.name}
-                          </h3>
-                          
-                          <div className="flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-                             <div className="h-[2px] w-4 bg-cyan-400"></div>
-                             <p className="text-[10px] sm:text-xs text-cyan-300 font-bold uppercase tracking-wider">
-                               Explore {cat.productCount}+
-                             </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* ✨ Premium Category Discovery Section - Extracted Component */}
+        <PremiumCategories />
 
         {/* ✨ Ultra-Premium Exclusive Deals Section */}
         <section className="relative py-24 overflow-hidden">
