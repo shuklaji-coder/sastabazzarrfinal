@@ -201,8 +201,9 @@ const Index = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-8 max-w-6xl mx-auto">
               {categories.slice(0, 6).map((cat, i) => (
-                <motion.div
+                  <motion.div
                   key={cat.id || i}
+                  className="w-full"
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -211,7 +212,7 @@ const Index = () => {
                 >
                   <Link
                     to={`/products?category=${cat.name.toLowerCase()}`}
-                    className="group relative block aspect-[4/5] overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-black shadow-2xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.4)] transition-all duration-700 border border-white/5"
+                    className="group relative block w-full h-[320px] sm:h-[400px] lg:h-[480px] overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-black shadow-2xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.4)] transition-all duration-700 border border-white/5"
                   >
                     {/* Background Image with Cinematic Reveal */}
                     <motion.img
