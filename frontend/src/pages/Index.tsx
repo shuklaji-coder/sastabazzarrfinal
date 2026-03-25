@@ -272,7 +272,7 @@ const Index = () => {
           </div>
 
           <div className="container mx-auto px-4 relative z-10">
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
               <div className="space-y-4">
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
@@ -282,21 +282,23 @@ const Index = () => {
                 >
                   <Sparkles className="w-3.5 h-3.5" /> Limited Time Offers
                 </motion.div>
-                <h2 className="font-display text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.1]">
+                <h2 className="font-display text-3xl sm:text-4xl md:text-6xl font-black text-foreground tracking-tight leading-[1.1]">
                   Exclusive <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary bg-300% animate-gradient">Deals</span>
                 </h2>
-                <p className="text-muted-foreground text-lg max-w-xl font-medium">
+                <p className="text-muted-foreground text-base sm:text-lg max-w-xl font-medium">
                   Hand-picked premium selections with unbeatable value. Grab them before they're gone!
                 </p>
               </div>
 
               {/* Countdown for Urgency */}
-              <div className="bg-[#0A0A0A] backdrop-blur-2xl border border-red-500/10 p-6 md:p-8 rounded-[3rem] shadow-[0_30px_100px_rgba(0,0,0,0.8)] flex flex-col items-center md:items-start gap-4 transform lg:translate-y-4">
+              <div className="w-full lg:w-auto bg-[#0A0A0A] backdrop-blur-2xl border border-red-500/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[2.5rem] md:rounded-[3rem] shadow-[0_30px_100px_rgba(0,0,0,0.8)] flex flex-col items-center gap-3 sm:gap-4 lg:transform lg:translate-y-4 overflow-hidden">
                 <div className="flex items-center gap-3 text-red-500 font-black text-xs uppercase tracking-[0.2em] drop-shadow-lg">
                   <div className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse border-2 border-red-400/30 shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
                   Flash Sale Ends In
                 </div>
-                <FlashSaleTimer />
+                <div className="w-full overflow-x-auto">
+                  <FlashSaleTimer />
+                </div>
               </div>
             </div>
 

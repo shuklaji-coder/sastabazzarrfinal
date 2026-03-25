@@ -62,7 +62,7 @@ export const ProductCard = ({ product, index = 0 }: { product: Product; index?: 
     >
       {/* ─── Image Header ─── */}
       <div className="relative aspect-[1/1] overflow-hidden bg-[#F8F8F8] dark:bg-black/20 group-hover:bg-[#F0F0F0] dark:group-hover:bg-black/40 transition-colors duration-700">
-        <Link to={`/product/${product.id}`} className="block w-full h-full p-2 md:p-3">
+        <Link to={`/product/${product.id}`} className="block w-full h-full p-1.5 sm:p-2 md:p-3">
           <motion.img 
             src={product.images?.[0] || 'https://via.placeholder.com/300?text=SastaaBazaar'} 
             alt={product.name} 
@@ -71,13 +71,13 @@ export const ProductCard = ({ product, index = 0 }: { product: Product; index?: 
         </Link>
         
         {/* Floating Badges */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
+        <div className="absolute top-2 left-2 sm:top-3 sm:left-3 md:top-4 md:left-4 flex flex-col gap-1 sm:gap-2 z-20">
           <AnimatePresence>
             {discount && discount > 0 && (
               <motion.span 
                 initial={{ scale: 0 }} 
                 animate={{ scale: 1 }}
-                className="bg-red-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg flex items-center gap-1 uppercase tracking-tighter"
+                className="bg-red-500 text-white text-[9px] sm:text-[10px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1 uppercase tracking-tighter"
               >
                 <Zap className="w-3 h-3 fill-current" /> {discount}% OFF
               </motion.span>
@@ -86,7 +86,7 @@ export const ProductCard = ({ product, index = 0 }: { product: Product; index?: 
               <motion.span 
                  initial={{ scale: 0 }} 
                  animate={{ scale: 1 }}
-                 className="bg-cyan-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg flex items-center gap-1 uppercase tracking-tighter"
+                 className="bg-cyan-500 text-white text-[9px] sm:text-[10px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1 uppercase tracking-tighter"
               >
                 NEW ARRIVAL
               </motion.span>
@@ -97,11 +97,11 @@ export const ProductCard = ({ product, index = 0 }: { product: Product; index?: 
         {/* Wishlist Button */}
         <button 
           onClick={handleWishlistToggle}
-          className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-md border border-white/20 shadow-lg z-20 transition-all duration-300 ${
+          className={`absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 p-1.5 sm:p-2 md:p-2.5 rounded-full backdrop-blur-md border border-white/20 shadow-lg z-20 transition-all duration-300 ${
             isWishlisted ? 'bg-red-500 text-white scale-110' : 'bg-white/10 text-white/40 hover:text-red-500 hover:bg-white'
           }`}
         >
-          <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
+          <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isWishlisted ? 'fill-current' : ''}`} />
         </button>
 
         {/* Cinematic Underlay Shine */}
@@ -109,7 +109,7 @@ export const ProductCard = ({ product, index = 0 }: { product: Product; index?: 
       </div>
 
       {/* ─── Content Area ─── */}
-      <div className="p-5 flex flex-col flex-grow relative bg-white dark:bg-transparent">
+      <div className="p-3 sm:p-4 md:p-5 flex flex-col flex-grow relative bg-white dark:bg-transparent">
         <div className="flex justify-between items-start mb-2">
           <div className="flex items-center gap-1.5 bg-gray-50 dark:bg-white/5 px-2 py-0.5 rounded-full border border-gray-100 dark:border-white/10">
             <span className="text-[9px] text-gray-400 dark:text-white/40 font-black uppercase tracking-[0.1em]">
@@ -127,51 +127,52 @@ export const ProductCard = ({ product, index = 0 }: { product: Product; index?: 
         </div>
         
         <Link to={`/product/${product.id}`} className="flex-grow group/title">
-          <h3 className="font-bold text-[13px] md:text-sm text-gray-800 dark:text-white/90 line-clamp-2 leading-tight group-hover/title:text-cyan-500 transition-colors">
+          <h3 className="font-bold text-[11px] sm:text-[13px] md:text-sm text-gray-800 dark:text-white/90 line-clamp-2 leading-tight group-hover/title:text-cyan-500 transition-colors">
             {product.title || product.name}
           </h3>
         </Link>
         
         {/* Pricing Segment */}
-        <div className="mt-4 mb-4">
-          <div className="flex items-baseline gap-2">
-            <span className="text-xl font-black text-gray-900 dark:text-white tracking-tighter italic">
+        <div className="mt-2 sm:mt-3 md:mt-4 mb-2 sm:mb-3 md:mb-4">
+          <div className="flex items-baseline gap-1 sm:gap-2">
+            <span className="text-base sm:text-lg md:text-xl font-black text-gray-900 dark:text-white tracking-tighter italic">
               ₹{finalPrice.toLocaleString('en-IN')}
             </span>
             {originalPrice > finalPrice && (
-              <span className="text-[11px] text-gray-400 dark:text-white/20 line-through font-bold">
+              <span className="text-[10px] sm:text-[11px] text-gray-400 dark:text-white/20 line-through font-bold">
                 ₹{originalPrice.toLocaleString('en-IN')}
               </span>
             )}
           </div>
-          <div className="flex items-center gap-1 text-[9px] text-green-500 dark:text-green-400 font-black uppercase tracking-widest mt-0.5">
+          <div className="hidden sm:flex items-center gap-1 text-[9px] text-green-500 dark:text-green-400 font-black uppercase tracking-widest mt-0.5">
             <Truck className="w-3 h-3" />
             <span>Fast Express Shipping</span>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-5 gap-2 mt-auto">
+        <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-auto">
           <button
             onClick={handleAddToCart}
             disabled={isAdding}
-            className="col-span-4 h-11 flex items-center justify-center gap-2 rounded-2xl bg-black dark:bg-white text-white dark:text-black font-black text-[11px] uppercase tracking-widest transition-all shadow-xl active:scale-[0.95] disabled:opacity-50 group/buy"
+            className="col-span-4 h-9 sm:h-10 md:h-11 flex items-center justify-center gap-1 sm:gap-2 rounded-xl sm:rounded-2xl bg-black dark:bg-white text-white dark:text-black font-black text-[10px] sm:text-[11px] uppercase tracking-widest transition-all shadow-xl active:scale-[0.95] disabled:opacity-50 group/buy"
           >
             {isAdding ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" />
             ) : (
               <>
-                <ShoppingCart className="w-3.5 h-3.5 transition-transform group-hover/buy:-translate-y-0.5" /> 
-                <span>Add To Cart</span>
+                <ShoppingCart className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform group-hover/buy:-translate-y-0.5" /> 
+                <span className="hidden sm:inline">Add To Cart</span>
+                <span className="sm:hidden">Add</span>
               </>
             )}
           </button>
           
           <Link 
             to={`/product/${product.id}`}
-            className="col-span-1 h-11 flex items-center justify-center rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 dark:text-white/30 hover:bg-cyan-500 hover:text-white hover:border-cyan-500 transition-all active:scale-90"
+            className="col-span-1 h-9 sm:h-10 md:h-11 flex items-center justify-center rounded-xl sm:rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 dark:text-white/30 hover:bg-cyan-500 hover:text-white hover:border-cyan-500 transition-all active:scale-90"
           >
-            <Eye className="w-4 h-4" />
+            <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </Link>
         </div>
       </div>
