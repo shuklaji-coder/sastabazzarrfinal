@@ -8,7 +8,7 @@ const sellers: Seller[] = [
 ];
 
 export const categories: Category[] = [
-  { id: 'c1', name: 'Electronics', icon: '💻', productCount: 1240, image: 'https://images.unsplash.com/photo-1550009158-9fffc5f1df40?w=600&h=750&fit=crop&q=80' },
+  { id: 'c1', name: 'Electronics', icon: '💻', productCount: 1240, image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=600&h=750&fit=crop&q=80' },
   { id: 'c2', name: 'Fashion', icon: '✨', productCount: 3450, image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=750&fit=crop&q=80' },
   { id: 'c3', name: 'Living', icon: '🛋️', productCount: 890, image: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=750&fit=crop&q=80' },
   { id: 'c4', name: 'Sports', icon: '⚡', productCount: 670, image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=750&fit=crop&q=80' },

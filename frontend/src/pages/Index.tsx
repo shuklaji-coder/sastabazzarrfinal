@@ -199,7 +199,7 @@ const Index = () => {
               </Button>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-8 max-w-6xl mx-auto">
               {categories.slice(0, 6).map((cat, i) => (
                 <motion.div
                   key={cat.id || i}
@@ -211,7 +211,7 @@ const Index = () => {
                 >
                   <Link
                     to={`/products?category=${cat.name.toLowerCase()}`}
-                    className="group relative block aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-black shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 border border-white/5"
+                    className="group relative block aspect-[4/5] overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-black shadow-2xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.4)] transition-all duration-700 border border-white/5"
                   >
                     {/* Background Image with Cinematic Reveal */}
                     <motion.img
