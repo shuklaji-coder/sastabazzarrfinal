@@ -211,50 +211,59 @@ const Index = () => {
                 >
                   <Link
                     to={`/products?category=${cat.name.toLowerCase()}`}
-                    className="group relative block aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-muted shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition-all duration-500"
+                    className="group relative block aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-black shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 border border-white/5"
                   >
-                    {/* Background Image with 3D-like hover */}
+                    {/* Background Image with Cinematic Reveal */}
                     <motion.img
                       src={cat.image}
                       alt={cat.name}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                      className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 group-hover:scale-110 grayscale-[50%] group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
                     />
 
-                    {/* Multi-layered Overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-70 group-hover:opacity-80 transition-opacity" />
-                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {/* Multi-layered Premium Overlays */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050618] via-[#050618]/60 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/0 via-cyan-500/0 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 mix-blend-overlay" />
 
                     {/* Content Component */}
-                    <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                      <div className="space-y-4 transform group-hover:-translate-y-2 transition-transform duration-500">
+                    <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-end">
+                      <div className="space-y-4 transform translate-y-4 group-hover:-translate-y-2 transition-transform duration-500 ease-out">
                         {/* Floating Icon Badge */}
-                        <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] transform group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-500">
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-2xl sm:text-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] transform -translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-hover:rotate-[15deg] transition-all duration-500 delay-100">
                           {cat.icon}
                         </div>
 
                         <div className="space-y-1">
                           {/* Dynamic Status Badge (Simulated) */}
-                          {i === 0 && (
-                            <span className="inline-block px-2 py-0.5 rounded-full bg-red-500 text-[8px] font-black text-white uppercase tracking-tighter mb-1">
-                              Trending
-                            </span>
-                          )}
-                          {i === 2 && (
-                            <span className="inline-block px-2 py-0.5 rounded-full bg-cyan-500 text-[8px] font-black text-white uppercase tracking-tighter mb-1">
-                              New
-                            </span>
-                          )}
-                          <h3 className="text-2xl font-black text-white tracking-tighter leading-none">{cat.name}</h3>
-                          <p className="text-[10px] text-white/50 font-bold uppercase tracking-widest group-hover:text-primary transition-colors">
-                            {cat.productCount}+ Selected Items
-                          </p>
+                          <div className="flex gap-2">
+                            {i === 0 && (
+                              <span className="inline-block px-2 py-0.5 rounded-full bg-gradient-to-r from-red-600 to-orange-500 text-[9px] font-black text-white uppercase tracking-widest mb-2 shadow-lg">
+                                Trending
+                              </span>
+                            )}
+                            {i === 1 && (
+                              <span className="inline-block px-2 py-0.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-[9px] font-black text-white uppercase tracking-widest mb-2 shadow-lg">
+                                Exclusive
+                              </span>
+                            )}
+                          </div>
+                          
+                          <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tighter leading-none drop-shadow-2xl">
+                            {cat.name}
+                          </h3>
+                          
+                          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
+                             <div className="h-[1px] w-6 bg-cyan-400"></div>
+                             <p className="text-[10px] sm:text-xs text-cyan-400 font-bold uppercase tracking-[0.2em]">
+                               Explore {cat.productCount}+
+                             </p>
+                          </div>
                         </div>
                       </div>
                     </div>
 
                     {/* Advanced Shine Effect */}
-                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[2.5rem]">
+                      <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
                     </div>
                   </Link>
                 </motion.div>

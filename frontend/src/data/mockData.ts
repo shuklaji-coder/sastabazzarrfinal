@@ -8,12 +8,12 @@ const sellers: Seller[] = [
 ];
 
 export const categories: Category[] = [
-  { id: 'c1', name: 'Electronics', icon: '📱', productCount: 1240, image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=750&fit=crop&q=80' },
-  { id: 'c2', name: 'Fashion', icon: '👔', productCount: 3450, image: 'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=600&h=750&fit=crop&q=80' },
-  { id: 'c3', name: 'Home & Living', icon: '🛋️', productCount: 890, image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&h=750&fit=crop&q=80' },
-  { id: 'c4', name: 'Sports', icon: '⚽', productCount: 670, image: 'https://images.unsplash.com/photo-1461896836934-bd45ba8fcb52?w=600&h=750&fit=crop&q=80' },
-  { id: 'c5', name: 'Books', icon: '📚', productCount: 2100, image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&h=750&fit=crop&q=80' },
-  { id: 'c6', name: 'Beauty', icon: '💄', productCount: 1560, image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=750&fit=crop&q=80' },
+  { id: 'c1', name: 'Electronics', icon: '💻', productCount: 1240, image: 'https://images.unsplash.com/photo-1550009158-9fffc5f1df40?w=600&h=750&fit=crop&q=80' },
+  { id: 'c2', name: 'Fashion', icon: '✨', productCount: 3450, image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=750&fit=crop&q=80' },
+  { id: 'c3', name: 'Living', icon: '🛋️', productCount: 890, image: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=750&fit=crop&q=80' },
+  { id: 'c4', name: 'Sports', icon: '⚡', productCount: 670, image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=750&fit=crop&q=80' },
+  { id: 'c5', name: 'Books', icon: '📚', productCount: 2100, image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600&h=750&fit=crop&q=80' },
+  { id: 'c6', name: 'Beauty', icon: '💄', productCount: 1560, image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&h=750&fit=crop&q=80' },
 ];
 
 export const products: Product[] = [
