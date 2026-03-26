@@ -10,10 +10,21 @@ export const PremiumCategories = () => {
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
 
+  const [isHovered, setIsHovered] = useState(false);
+
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      const scrollTo = direction === 'left' ? scrollLeft - clientWidth / 1.5 : scrollLeft + clientWidth / 1.5;
+      const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current;
+      let scrollTo;
+      
+      if (direction === 'left') {
+        scrollTo = scrollLeft - clientWidth / 1.5;
+        if (scrollTo < 0) scrollTo = scrollWidth; // Loop to end
+      } else {
+        scrollTo = scrollLeft + clientWidth / 1.5;
+        if (scrollLeft + clientWidth >= scrollWidth - 10) scrollTo = 0; // Loop to start
+      }
+      
       scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
     }
   };
@@ -30,14 +41,28 @@ export const PremiumCategories = () => {
     const el = scrollRef.current;
     if (el) {
       el.addEventListener('scroll', handleScroll);
-      // Initial check
       handleScroll();
       return () => el.removeEventListener('scroll', handleScroll);
     }
   }, []);
 
+  // Auto-scroll logic
+  useEffect(() => {
+    if (isHovered) return;
+
+    const interval = setInterval(() => {
+      scroll('right');
+    }, 3000); // Scroll every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [isHovered]);
+
   return (
-    <section className="container mx-auto px-4 py-24 -mt-20 relative z-40 overflow-hidden">
+    <section 
+      className="container mx-auto px-4 py-24 -mt-20 relative z-40 overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="flex flex-col space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3">
