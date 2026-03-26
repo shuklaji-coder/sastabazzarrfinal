@@ -33,6 +33,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Wishlist from "./pages/Wishlist";
+import AiBhaavTaav from "./pages/AiBhaavTaav";
 import { MobileNav } from "./components/MobileNav";
 import ChatBot from "./components/ChatBot";
 import { LiveBuyAlerts } from "./components/LiveBuyAlerts";
@@ -52,6 +53,7 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/product/:id/bargain" element={<AiBhaavTaav />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/wishlist" element={<Wishlist />} />

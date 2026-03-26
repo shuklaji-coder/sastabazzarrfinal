@@ -345,21 +345,30 @@ const ProductDetail = () => {
                   {/* Buttons */}
                   <div className="flex flex-col w-full gap-3">
                     <Button 
-                      disabled={isAdding}
-                      onClick={handleAddToCart}
-                      className="w-full h-12 text-lg font-bold bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-sm"
+                      onClick={() => navigate(`/product/${product?.id || id}/bargain`)}
+                      className="w-full h-14 text-lg font-bold bg-gradient-to-r from-orange-400 via-orange-500 to-amber-500 text-white hover:from-orange-500 hover:to-amber-600 shadow-[0_0_20px_rgba(249,115,22,0.4)] transition-all transform hover:scale-[1.02] border-none group relative overflow-hidden"
                     >
-                      {isAdding ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <ShoppingCart className="w-5 h-5 mr-2" />}
-                      Add to Cart
+                      <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+                      <span className="text-2xl mr-2 group-hover:scale-110 transition-transform">🤝</span> Bhaav Lagao / Get AI Deal
                     </Button>
-                    <Button 
-                      variant="outline"
-                      disabled={isAdding}
-                      onClick={handleBuyNow}
-                      className="w-full h-12 text-lg font-bold border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground shadow-sm"
-                    >
-                      Buy Now
-                    </Button>
+                    <div className="flex gap-3">
+                      <Button 
+                        disabled={isAdding}
+                        onClick={handleAddToCart}
+                        className="flex-1 h-12 text-sm md:text-base font-bold bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-sm"
+                      >
+                        {isAdding ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <ShoppingCart className="w-5 h-5 mr-2" />}
+                        Add to Cart
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        disabled={isAdding}
+                        onClick={handleBuyNow}
+                        className="flex-1 h-12 text-sm md:text-base font-bold border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground shadow-sm"
+                      >
+                        Buy Now
+                      </Button>
+                    </div>
                   </div>
                 </div>
 
