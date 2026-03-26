@@ -108,7 +108,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center text-white bg-[#050618] overflow-x-hidden relative">
+    <div className="min-h-screen flex flex-col text-white bg-[#050618] overflow-x-hidden relative">
       {/* Unified Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {/* Background Petals Animation */}
@@ -136,7 +136,7 @@ const Signup = () => {
       </Link>
 
       {/* Main Content Container: Single parent for both sections */}
-      <div className="container mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-stretch justify-center min-h-screen py-12 lg:py-0 overflow-visible">
+      <div className="flex-grow container mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-stretch justify-center py-12 lg:py-0 overflow-visible">
 
         {/* Left Section: Signup UI */}
         <div className="w-full lg:w-[40%] flex items-center justify-center p-4 lg:p-8 relative overflow-y-auto lg:overflow-visible hide-scrollbar">
