@@ -139,12 +139,12 @@ const Signup = () => {
       <div className="flex-grow container mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-stretch justify-center py-12 lg:py-0 overflow-visible">
 
         {/* Left Section: Signup UI */}
-        <div className="w-full lg:w-[40%] flex items-center justify-center p-4 lg:p-8 relative overflow-y-auto lg:overflow-visible hide-scrollbar">
+        <div className="w-full lg:w-[40%] flex flex-col items-center justify-start p-4 lg:p-8 relative overflow-y-auto lg:overflow-visible hide-scrollbar pt-20">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full max-w-lg glass-premium p-8 sm:p-12 rounded-[2.5rem] relative my-12"
+            className="w-full max-w-lg glass-premium p-8 sm:p-12 rounded-[2.5rem] relative"
           >
             {/* Subtle Inner Glow */}
             <div className="absolute -top-24 -left-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl"></div>
