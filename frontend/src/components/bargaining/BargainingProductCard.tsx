@@ -53,7 +53,7 @@ export function BargainingProductCard({ product, currentPrice, dealState }: Barg
           
           <img 
             src={images[0]} 
-            alt={product?.name || "Premium Item"} 
+            alt={product?.title || product?.name || "Premium Item"} 
             className="w-full h-full object-contain filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)] group-hover:scale-105 transition-transform duration-700 ease-out z-10"
           />
         </div>
@@ -61,7 +61,7 @@ export function BargainingProductCard({ product, currentPrice, dealState }: Barg
         {/* Content Area */}
         <div className="relative flex-none p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent border-t border-white/5">
           <h2 className="text-2xl md:text-4xl font-display font-bold text-white mb-2 leading-tight">
-            {product?.name || "Product"}
+            {product?.title || product?.name || "Product"}
           </h2>
           
           <div className="flex items-center gap-3 mb-6">

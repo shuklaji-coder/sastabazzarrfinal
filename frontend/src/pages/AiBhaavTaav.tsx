@@ -42,6 +42,10 @@ export default function AiBhaavTaav() {
     window.scrollTo(0, 0);
   }, [id, navigate]);
 
+  const handleGoToCart = () => {
+    navigate('/cart');
+  };
+
   const handleSendOffer = (offer: number) => {
     if (!session) return;
     
@@ -156,6 +160,7 @@ export default function AiBhaavTaav() {
                session={session}
                onSendOffer={handleSendOffer}
                isAiTyping={isAiTyping}
+               onGoToCart={handleGoToCart}
              />
           </div>
 

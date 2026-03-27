@@ -9,9 +9,10 @@ interface BargainingChatProps {
   session: BargainingSession;
   onSendOffer: (offer: number) => void;
   isAiTyping: boolean;
+  onGoToCart?: () => void;
 }
 
-export function BargainingChat({ session, onSendOffer, isAiTyping }: BargainingChatProps) {
+export function BargainingChat({ session, onSendOffer, isAiTyping, onGoToCart }: BargainingChatProps) {
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -112,7 +113,10 @@ export function BargainingChat({ session, onSendOffer, isAiTyping }: BargainingC
                 <h4 className="font-bold text-success text-xl">Deal Locked!</h4>
                 <p className="text-sm text-success/80 mt-1 font-medium">Extra coupon code applied in cart.</p>
               </div>
-              <Button className="w-full mt-2 bg-success text-white hover:bg-success/90 font-bold shadow-lg h-12">
+              <Button 
+                onClick={onGoToCart}
+                className="w-full mt-2 bg-success text-white hover:bg-success/90 font-bold shadow-lg h-12"
+              >
                 Go to Cart <Handshake className="w-4 h-4 ml-2" />
               </Button>
             </div>
