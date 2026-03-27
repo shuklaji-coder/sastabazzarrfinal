@@ -515,11 +515,11 @@ const Index = () => {
                   transition={{ duration: 0.8 }}
                   className="relative group"
                 >
-                  <div className="aspect-[4/5] md:aspect-square relative rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white/50 dark:border-white/5">
+                  <div className="h-[500px] md:h-[600px] lg:h-[750px] w-full max-w-[550px] mx-auto relative rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white/50 dark:border-white/5">
                     <img
                       src="/4dc70184-809a-4e38-9b32-9eb71c0073ad.jpg"
                       alt="Mr. Rohan Shukla"
-                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                      className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60" />
 
