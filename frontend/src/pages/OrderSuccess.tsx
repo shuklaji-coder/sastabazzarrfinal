@@ -4,6 +4,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { CheckCircle2, Package, ArrowRight, Home, ShoppingBag, Truck, Clock, MapPin, CreditCard, Sparkles, PartyPopper, Gift } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import InvoiceDownloadCard from '@/components/InvoiceDownloadCard';
 
 // Confetti particle component
 const ConfettiParticle = ({ delay, x }: { delay: number; x: number }) => (
@@ -25,7 +26,7 @@ const ConfettiParticle = ({ delay, x }: { delay: number; x: number }) => (
 
 const OrderSuccess = () => {
   const location = useLocation();
-  const { address, orderId, paymentMethod: passedPaymentMethod } = location.state || {};
+  const { address, orderId, paymentMethod: passedPaymentMethod, cartItems, subtotal, grandTotal, discount } = location.state || {};
   const [showConfetti, setShowConfetti] = useState(true);
 
   const orderNumber = orderId ? `#${orderId}` : `ORD-${Date.now()}`;
@@ -241,6 +242,26 @@ const OrderSuccess = () => {
               </div>
             </div>
           </motion.div>
+
+          {/* Invoice Download Section */}
+          <InvoiceDownloadCard
+            invoiceData={{
+              orderId: orderId || 'N/A',
+              orderDate: new Date().toISOString(),
+              paymentMethod: paymentMethod,
+              items: (cartItems || []).map((item: any) => ({
+                name: item.product?.name || item.name || 'Product',
+                quantity: item.quantity,
+                price: item.product?.sellingPrice || item.product?.price || item.price || 0,
+                total: (item.product?.sellingPrice || item.product?.price || item.price || 0) * item.quantity,
+              })),
+              subtotal: subtotal || grandTotal || 0,
+              discount: discount || 0,
+              deliveryCharge: 0,
+              grandTotal: grandTotal || subtotal || 0,
+              address: displayAddress,
+            }}
+          />
 
           {/* Action Buttons */}
           <motion.div

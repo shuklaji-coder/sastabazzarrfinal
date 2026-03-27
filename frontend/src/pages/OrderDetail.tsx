@@ -12,6 +12,7 @@ import { orderService } from '@/services/orderService';
 import { reviewService } from '@/services/reviewService';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import InvoiceDownloadCard from '@/components/InvoiceDownloadCard';
 
 const OrderDetail = () => {
   const { id } = useParams();
@@ -329,6 +330,27 @@ const OrderDetail = () => {
                 </div>
               </div>
             </div>
+
+            {/* Invoice Download */}
+            <InvoiceDownloadCard
+              compact
+              invoiceData={{
+                orderId: order.id,
+                orderDate: order.orderDate,
+                paymentMethod: order.paymentDetails?.paymentMethod || 'PREPAID',
+                items: (order.orderItems || []).map((item: any) => ({
+                  name: item.product?.name || 'Product',
+                  quantity: item.quantity,
+                  price: item.sellingPrice || 0,
+                  total: (item.sellingPrice || 0) * item.quantity,
+                })),
+                subtotal: order.totalSellingPrice || 0,
+                discount: order.discount || 0,
+                deliveryCharge: 0,
+                grandTotal: order.totalSellingPrice || 0,
+                address: order.shippingAddress || {},
+              }}
+            />
 
             <p className="text-[10px] text-muted-foreground text-center px-4">
               By placing this order you agree to Sastaa Bazaar's Terms of Use and Sale Conditions. Need help with this order? <Link to="/contact" className="text-primary hover:underline">Contact Support</Link>

@@ -218,7 +218,11 @@ const Checkout = () => {
           state: { 
             address: addressPayload, 
             orderId: createdOrderId,
-            paymentMethod: 'Cash on Delivery'
+            paymentMethod: 'Cash on Delivery',
+            cartItems: items,
+            subtotal: total,
+            grandTotal: Math.round(total * 1.18 - couponDiscount),
+            discount: couponDiscount,
           } 
         });
       } else {
@@ -247,7 +251,11 @@ const Checkout = () => {
       state: { 
         address: addressPayload, 
         orderId: orderId,
-        paymentMethod: 'Online Payment'
+        paymentMethod: 'Online Payment',
+        cartItems: items,
+        subtotal: total,
+        grandTotal: Math.round(total * 1.18 - couponDiscount),
+        discount: couponDiscount,
       } 
     });
   };
