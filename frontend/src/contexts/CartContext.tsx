@@ -43,13 +43,32 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       let cartItems = [];
       if (cartData && cartData.cartItems) {
         cartItems = cartData.cartItems;
-        console.log("Using cartData.cartItems:", cartItems);
       } else if (cartData && Array.isArray(cartData)) {
         cartItems = cartData;
-        console.log("Using cartData as array:", cartItems);
       }
       
-      console.log("Final cartItems to set:", cartItems);
+      // Apply bargained deals from localStorage
+      const existingDealsStr = localStorage.getItem('sastaa_bazaar_bargain_deals');
+      if (existingDealsStr) {
+        const deals = JSON.parse(existingDealsStr);
+        cartItems = cartItems.map((item: any) => {
+          const dealPrice = deals[item.product.id];
+          if (dealPrice) {
+            return {
+              ...item,
+              product: {
+                ...item.product,
+                sellingPrice: dealPrice,
+                discountedPrice: dealPrice,
+                price: dealPrice,
+                isBargained: true
+              }
+            };
+          }
+          return item;
+        });
+      }
+
       setItems(cartItems);
       console.log("Cart items set:", cartItems);
     } catch (err: any) {
@@ -72,7 +91,31 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const stored = localStorage.getItem('cart_items');
       if (stored) {
         try {
-          setItems(JSON.parse(stored));
+          let parsedItems = JSON.parse(stored);
+          
+          // Apply bargained deals to local guest cart too
+          const existingDealsStr = localStorage.getItem('sastaa_bazaar_bargain_deals');
+          if (existingDealsStr) {
+            const deals = JSON.parse(existingDealsStr);
+            parsedItems = parsedItems.map((item: any) => {
+              const dealPrice = deals[item.product.id];
+              if (dealPrice) {
+                return {
+                  ...item,
+                  product: {
+                    ...item.product,
+                    sellingPrice: dealPrice,
+                    discountedPrice: dealPrice,
+                    price: dealPrice,
+                    isBargained: true
+                  }
+                };
+              }
+              return item;
+            });
+          }
+          
+          setItems(parsedItems);
         } catch (e) {
           setItems([]);
         }

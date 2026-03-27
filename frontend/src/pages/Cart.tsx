@@ -19,6 +19,7 @@ interface CartItem {
     seller?: {
       name: string;
     };
+    isBargained?: boolean;
   };
   quantity: number;
 }
@@ -91,9 +92,16 @@ const Cart = () => {
                           />
                         </Link>
                         <div className="flex flex-col justify-center min-w-0 flex-1">
-                          <Link to={`/product/${item.product?.id}`} className="font-body font-semibold text-foreground hover:text-primary transition-colors line-clamp-2 text-sm leading-snug">
-                            {item.product?.name}
-                          </Link>
+                          <div className="flex flex-wrap items-center gap-2 mb-1">
+                            <Link to={`/product/${item.product?.id}`} className="font-body font-semibold text-foreground hover:text-primary transition-colors line-clamp-2 text-sm leading-snug">
+                              {item.product?.name}
+                            </Link>
+                            {item.product?.isBargained && (
+                              <span className="shrink-0 inline-flex items-center gap-1 bg-orange-500/10 text-orange-600 border border-orange-500/20 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider">
+                                🤝 Bargained Deal
+                              </span>
+                            )}
+                          </div>
                           <p className="text-xs text-muted-foreground mt-1 mb-2">Sold by: {item.product?.seller?.name || 'SastaBazaar'}</p>
                           
                           <div className="flex items-center gap-2 md:hidden">

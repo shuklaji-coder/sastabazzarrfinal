@@ -50,7 +50,13 @@ export default function AiBhaavTaav() {
       return;
     }
     try {
-      // Add product to cart at the negotiated/deal price
+      // 1. Save deal price to localStorage so CartContext can pick it up across reloads
+      const existingDealsStr = localStorage.getItem('sastaa_bazaar_bargain_deals');
+      const deals = existingDealsStr ? JSON.parse(existingDealsStr) : {};
+      deals[product.id] = session.lastAiOffer;
+      localStorage.setItem('sastaa_bazaar_bargain_deals', JSON.stringify(deals));
+
+      // 2. Add product to cart
       const productWithDealPrice = {
         ...product,
         sellingPrice: session.lastAiOffer,

@@ -20,6 +20,9 @@ export interface Product {
   tags: string[];
   isFeatured?: boolean;
   isNew?: boolean;
+  // Bargaining fields
+  maxBargainingDiscount?: number;
+  isBargained?: boolean;
 }
 
 export interface Seller {
