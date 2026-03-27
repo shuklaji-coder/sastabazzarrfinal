@@ -15,7 +15,7 @@ import confetti from "canvas-confetti";
 export default function AiBhaavTaav() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addItem } = useCart();
+  const { items, addItem, updateQuantity } = useCart();
   const [product, setProduct] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [session, setSession] = useState<BargainingSession | null>(null);
@@ -56,14 +56,23 @@ export default function AiBhaavTaav() {
       deals[product.id] = session.lastAiOffer;
       localStorage.setItem('sastaa_bazaar_bargain_deals', JSON.stringify(deals));
 
-      // 2. Add product to cart
-      const productWithDealPrice = {
-        ...product,
-        sellingPrice: session.lastAiOffer,
-        discountedPrice: session.lastAiOffer,
-        price: session.lastAiOffer,
-      };
-      await addItem(productWithDealPrice, 1);
+      // 2. Add product to cart or update if already there to avoid quantity doubling
+      const existingCartItem = items.find((i) => String(i.product.id) === String(product.id));
+      
+      if (existingCartItem) {
+        // Just update quantity to 1 (or keep current if > 1) and let CartContext re-fetch to apply deal price
+        const newQty = Math.max(1, existingCartItem.quantity);
+        await updateQuantity(String(product.id), newQty);
+      } else {
+        const productWithDealPrice = {
+          ...product,
+          sellingPrice: session.lastAiOffer,
+          discountedPrice: session.lastAiOffer,
+          price: session.lastAiOffer,
+        };
+        await addItem(productWithDealPrice, 1);
+      }
+      
       toast.success(`🎉 "${product.name}" cart mein add ho gaya at ₹${session.lastAiOffer}!`);
     } catch (err) {
       console.error('Failed to add bargained item to cart:', err);
