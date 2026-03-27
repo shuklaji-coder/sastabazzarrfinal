@@ -103,7 +103,7 @@ const Index = () => {
   // Group products for different sections
   const featured = products.filter(p => p.isFeatured || p.rating >= 4.5).slice(0, 4);
   const trending = products.length > 4 ? products.slice(4, 9) : products.slice(0, 4);
-  const newArrivals = [...products].reverse().slice(0, 4);
+  const newArrivals = [...products].reverse().slice(0, 10);
 
   return (
     <div className="min-h-screen bg-secondary/30 flex flex-col pt-16 md:pt-20">
@@ -402,17 +402,17 @@ const Index = () => {
                     </motion.div>
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+                  <div className="flex overflow-x-auto pb-8 pt-4 gap-6 hide-scrollbar snap-x">
                     {newArrivals.map((product, i) => (
                       <motion.div
                         key={product.id || i}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: i * 0.1 }}
-                        className="group"
+                        transition={{ duration: 0.5, delay: i * 0.05 }}
+                        className="group min-w-[260px] w-[260px] md:min-w-[300px] snap-center shrink-0"
                       >
-                        <div className="transform transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl rounded-2xl">
+                        <div className="transform transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl rounded-2xl h-full">
                           <ProductCard product={product} index={i} />
                         </div>
                       </motion.div>
@@ -517,7 +517,7 @@ const Index = () => {
                 >
                   <div className="aspect-[4/5] md:aspect-square relative rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white/50 dark:border-white/5">
                     <img
-                      src="/founder.jpg"
+                      src="/4dc70184-809a-4e38-9b32-9eb71c0073ad.jpg"
                       alt="Mr. Rohan Shukla"
                       className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                     />
