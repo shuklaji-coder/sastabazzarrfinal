@@ -244,9 +244,12 @@ const Index = () => {
                 transition={{ duration: 0.8 }}
                 className="lg:col-span-8 group relative rounded-[2.5rem] overflow-hidden bg-foreground aspect-[16/9] md:aspect-auto md:h-[500px] shadow-2xl cursor-pointer"
               >
-                <img
-                  src="D:\sastaaa bazzaar\frontend\public\From Main Klickpin CF- Pinterest Video - 2UA0FftZI.mp4"
-                  alt="Spotlight Deal"
+                <video
+                  src="/From Main Klickpin CF- Pinterest Video - 2UA0FftZI.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
@@ -292,7 +295,7 @@ const Index = () => {
                   {
                     title: "Urban Style",
                     discount: "FLAT 30% OFF",
-                    img: "D:\sastaaa bazzaar\frontend\public\From Main Klickpin CF- Inst __smariii__ идея видео для брендов - 5IOzmqW5W.mp4",
+                    img: "/From Main Klickpin CF- Inst __smariii__ идея видео для брендов - 5IOzmqW5W.mp4",
                     color: "from-pink-900/40",
                     link: "/products?category=fashion"
                   }
@@ -308,7 +311,11 @@ const Index = () => {
                       to={deal.link}
                       className="group relative flex-1 h-[238px] block rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500"
                     >
-                      <img src={deal.img} alt={deal.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      {deal.img.endsWith('.mp4') ? (
+                        <video src={deal.img} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      ) : (
+                        <img src={deal.img} alt={deal.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      )}
                       <div className={`absolute inset-0 bg-gradient-to-t ${deal.color} via-transparent to-transparent`} />
                       <div className="absolute inset-0 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity" />
 
