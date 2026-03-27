@@ -61,7 +61,7 @@ export function BargainingProductCard({ product, currentPrice, dealState }: Barg
         {/* Content Area */}
         <div className="relative flex-none p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent border-t border-white/5">
           <h2 className="text-2xl md:text-4xl font-display font-bold text-white mb-2 leading-tight">
-            {product?.name || "Premium Wireless Earbuds Pro"}
+            {product?.name || "Product"}
           </h2>
           
           <div className="flex items-center gap-3 mb-6">

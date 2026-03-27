@@ -21,7 +21,8 @@ const AddProduct = () => {
     category2: '',
     category3: '',
     brand: '',
-    sizes: ''
+    sizes: '',
+    maxBargainingDiscount: '10'
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -43,6 +44,7 @@ const AddProduct = () => {
         images: formData.images.split(',').map(url => url.trim()),
         brand: formData.brand,
         sizes: formData.sizes || '',
+        maxBargainingDiscount: parseInt(formData.maxBargainingDiscount) || 10,
         // Converting simple string to Category object structure expected by backend
         category: { name: formData.category, categoryId: formData.category.toLowerCase().replace(/\s+/g, '_') },
         category2: { name: formData.category2, categoryId: formData.category2.toLowerCase().replace(/\s+/g, '_') },
@@ -221,6 +223,24 @@ const AddProduct = () => {
                     />
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">Shown struck-out to indicate a discount.</p>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-foreground">Max Bargaining Discount (%)</label>
+                  <div className="relative">
+                    <input 
+                      type="number" 
+                      name="maxBargainingDiscount" 
+                      value={formData.maxBargainingDiscount} 
+                      onChange={handleChange} 
+                      min="0"
+                      max="10"
+                      className="w-full pr-8 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-foreground font-display" 
+                      placeholder="10"
+                    />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 font-medium text-muted-foreground">%</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Maximum discount allowed in AI bargaining (max 10%).</p>
                 </div>
               </div>
             </div>

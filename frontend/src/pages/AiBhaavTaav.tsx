@@ -28,7 +28,9 @@ export default function AiBhaavTaav() {
         
         // Initialize AI session
         const mrp = fetchedProduct.sellingPrice || fetchedProduct.price || 1499;
-        setSession(initBargainingSession(mrp));
+        const maxDiscount = fetchedProduct.maxBargainingDiscount || 10;
+        const language = "hindi"; // Default to Hindi, can be made dynamic
+        setSession(initBargainingSession(mrp, maxDiscount, language));
       } catch (err: any) {
         toast.error("Failed to load product for bargaining.");
         navigate(-1);
