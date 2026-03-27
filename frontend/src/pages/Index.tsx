@@ -103,7 +103,7 @@ const Index = () => {
 
       <main className="flex-grow">
         {/* Dynamic Hero Carousel */}
-        <section className="relative w-full h-[350px] md:h-[500px] lg:h-[600px] overflow-hidden bg-foreground">
+        <section className="relative w-full h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] overflow-hidden bg-foreground">
           {heroSlides.map((slide, index) => (
             <div
               key={index}
