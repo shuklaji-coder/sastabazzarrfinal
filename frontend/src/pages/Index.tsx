@@ -19,13 +19,22 @@ const Index = () => {
 
   const heroSlides = [
     {
-      video: "https://redtape.com/cdn/shop/videos/c/vp/ed22fca6ba0c4139a5a1a97d946d8ac5/ed22fca6ba0c4139a5a1a97d946d8ac5.HD-1080p-7.2Mbps-64034642.mp4?v=0",
+      video: "/From Main Klickpin CF- Pinterest Video - 4rrCUzW8f.mp4",
       title: "Welcome to Sastaa Bazaar",
       subtitle: "AI-Powered Shopping with the Best Deals on Fashion, Gadgets & More",
       highlight: "Up to 60% OFF on Trending Products",
       cta: "Start Shopping",
       secondaryCta: "Explore Deals",
       link: "/products"
+    },
+    {
+      video: "/From Main Klickpin CF- Pinterest Video - 7ulbVYQmR.mp4",
+      title: "Trending Collections",
+      subtitle: "Discover the latest fashion and electronics",
+      highlight: "Hot Deals & New Arrivals",
+      cta: "Shop Now",
+      secondaryCta: "View Collection",
+      link: "/products?category=fashion"
     },
     {
       image: "https://redtape.com/cdn/shop/files/website_banner_copy_1700x.jpg?v=1764323802",
@@ -35,9 +44,9 @@ const Index = () => {
       link: "/products?category=fashion"
     },
     {
-      image: "https://redtape.com/cdn/shop/collections/banner_8d15954a-80ef-4621-93e8-284b5bac31ce.jpg?v=1764922003",
+      image: "https://i.pinimg.com/webp/1200x/a4/e8/7f/a4e87f77a37610077e81af5287f95163.webp",
 
-      cta: "Shop RedTape",
+      cta: "Enjoy shoppingggg 🛍️",
       link: "/products?category=fashion"
     },
 
