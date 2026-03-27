@@ -8,12 +8,14 @@ import { BargainingChat } from "@/components/bargaining/BargainingChat";
 import { HagglingMeter } from "@/components/bargaining/HagglingMeter";
 import { initBargainingSession, processUserOffer, BargainingSession } from "@/lib/bargaining-engine";
 import { productService } from "@/services/productService";
+import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
 
 export default function AiBhaavTaav() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addItem } = useCart();
   const [product, setProduct] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [session, setSession] = useState<BargainingSession | null>(null);
@@ -42,7 +44,25 @@ export default function AiBhaavTaav() {
     window.scrollTo(0, 0);
   }, [id, navigate]);
 
-  const handleGoToCart = () => {
+  const handleGoToCart = async () => {
+    if (!product || !session) {
+      navigate('/cart');
+      return;
+    }
+    try {
+      // Add product to cart at the negotiated/deal price
+      const productWithDealPrice = {
+        ...product,
+        sellingPrice: session.lastAiOffer,
+        discountedPrice: session.lastAiOffer,
+        price: session.lastAiOffer,
+      };
+      await addItem(productWithDealPrice, 1);
+      toast.success(`🎉 "${product.name}" cart mein add ho gaya at ₹${session.lastAiOffer}!`);
+    } catch (err) {
+      console.error('Failed to add bargained item to cart:', err);
+      toast.error('Cart mein add nahi hua, dobara try karein.');
+    }
     navigate('/cart');
   };
 
