@@ -102,14 +102,17 @@ const Index = () => {
       <Navbar />
 
       <main className="flex-grow">
-        {/* Dynamic Hero Carousel */}
-        <section className="relative w-full h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] overflow-hidden bg-foreground">
+        {/* ✨ Upgraded Premium Hero Carousel */}
+        <section className="relative w-full h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] overflow-hidden bg-black group">
           {heroSlides.map((slide, index) => (
             <div
               key={index}
               className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
             >
-              <div className="absolute inset-0 bg-black/40 z-10" /> {/* Dark Overlay */}
+              {/* Premium Gradient Overlays */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent z-10" /> 
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/20 z-10" />
+
               {slide.video ? (
                 <video
                   src={slide.video}
@@ -117,72 +120,107 @@ const Index = () => {
                   muted
                   loop={false}
                   playsInline
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transform scale-105"
                   onEnded={() => {
                     const nextSlide = (currentSlide + 1) % heroSlides.length;
                     setCurrentSlide(nextSlide);
                   }}
                 />
               ) : (
-                <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
+                <img 
+                  src={slide.image} 
+                  alt={slide.title || "Banner"} 
+                  className="w-full h-full object-cover transform scale-105" 
+                />
               )}
 
-              <div className="absolute inset-0 z-20 flex items-center justify-start container mx-auto px-6 md:px-12">
-                <motion.div
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="max-w-xl text-white space-y-4 md:space-y-6"
-                >
+              <div className="absolute inset-0 z-20 flex items-center justify-start container mx-auto px-6 md:px-12 lg:px-24">
+                <div className="max-w-3xl text-white space-y-6 md:space-y-8 lg:mt-12">
+                  {slide.highlight && (
+                    <motion.div
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 100 }}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold tracking-widest uppercase text-primary shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+                    >
+                      <Sparkles className="w-4 h-4" /> {slide.highlight}
+                    </motion.div>
+                  )}
+                  
                   <motion.h2
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="text-4xl md:text-7xl font-display font-black leading-tight drop-shadow-lg"
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
+                    transition={{ duration: 0.7, delay: 0.3, type: "spring", stiffness: 60 }}
+                    className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-black leading-[1.05] tracking-tighter drop-shadow-2xl"
                   >
-                    {slide.title}
+                    {slide.title || "Discover True Quality"}
                   </motion.h2>
+                  
                   <motion.p
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    className="text-lg md:text-2xl opacity-90 font-medium"
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
+                    transition={{ duration: 0.7, delay: 0.4, type: "spring", stiffness: 60 }}
+                    className="text-lg md:text-2xl lg:text-3xl text-white/80 font-medium max-w-2xl drop-shadow-lg"
                   >
-                    {slide.subtitle}
+                    {slide.subtitle || "Handpicked premium products for the modern lifestyle"}
                   </motion.p>
+                  
                   <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
+                    transition={{ duration: 0.7, delay: 0.5, type: "spring", stiffness: 60 }}
+                    className="flex flex-wrap items-center gap-4 pt-4"
                   >
-                    <Button asChild size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8 h-12 md:h-14 rounded-full shadow-lg hover:shadow-xl transition-all">
-                      <Link to={slide.link}>{slide.cta} <ArrowRight className="ml-2 w-5 h-5" /></Link>
+                    <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-6 md:py-7 rounded-full shadow-2xl shadow-primary/40 hover:shadow-primary/60 hover:scale-105 transition-all duration-300 ring-2 ring-primary/20 ring-offset-2 ring-offset-black">
+                      <Link to={slide.link || "/products"}>
+                        {slide.cta || "Shop Now"} <ArrowRight className="ml-2 w-5 h-5 animate-pulse" />
+                      </Link>
                     </Button>
+                    
+                    {slide.secondaryCta && (
+                      <Button asChild size="lg" variant="outline" className="bg-white/5 backdrop-blur-md border-white/20 text-white hover:bg-white/20 text-lg px-8 py-6 md:py-7 rounded-full transition-all duration-300 hover:scale-105">
+                        <Link to={slide.link || "/products"}>{slide.secondaryCta}</Link>
+                      </Button>
+                    )}
                   </motion.div>
-                </motion.div>
+                </div>
               </div>
             </div>
           ))}
 
-          {/* Carousel Controls */}
-          <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-white/20 hover:bg-white/40 text-white backdrop-blur-sm transition-all">
-            <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
-          </button>
-          <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-white/20 hover:bg-white/40 text-white backdrop-blur-sm transition-all">
-            <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
-          </button>
+          {/* Premium Carousel Controls */}
+          <div className="absolute inset-y-0 left-0 flex items-center px-4 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500 z-30">
+            <button onClick={prevSlide} className="p-4 rounded-full bg-black/20 hover:bg-white/10 backdrop-blur-xl border border-white/10 text-white shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 group/btn">
+              <ChevronLeft className="w-6 h-6 md:w-8 md:h-8 group-hover/btn:-translate-x-1 transition-transform" />
+            </button>
+          </div>
+          <div className="absolute inset-y-0 right-0 flex items-center px-4 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500 z-30">
+            <button onClick={nextSlide} className="p-4 rounded-full bg-black/20 hover:bg-white/10 backdrop-blur-xl border border-white/10 text-white shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 group/btn">
+              <ChevronRight className="w-6 h-6 md:w-8 md:h-8 group-hover/btn:translate-x-1 transition-transform" />
+            </button>
+          </div>
 
-          {/* Dots */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+          {/* Premium Pagination Indicators */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3 items-center bg-black/20 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
             {heroSlides.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
-                className={`w-3 h-3 rounded-full transition-all ${idx === currentSlide ? 'bg-primary w-8' : 'bg-white/50 hover:bg-white/80'}`}
+                className={`transition-all duration-500 rounded-full cursor-pointer ${idx === currentSlide ? 'bg-primary w-12 h-2.5 shadow-lg shadow-primary/50' : 'bg-white/40 hover:bg-white/80 w-2.5 h-2.5 hover:w-4'}`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}
           </div>
+
+          {/* Animated Scroll Indicator - Desktop Only */}
+          <motion.div 
+            className="absolute bottom-10 right-12 z-30 hidden xl:flex flex-col items-center gap-3 text-white/60 font-bold"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+          >
+            <span className="text-[10px] uppercase tracking-[0.3em] style-writing-vertical-rl" style={{ writingMode: 'vertical-rl' }}>Scroll</span>
+            <div className="w-px h-16 bg-gradient-to-b from-white/60 to-transparent" />
+          </motion.div>
         </section>
 
         {/* ✨ Premium Category Discovery Section - Extracted Component */}
