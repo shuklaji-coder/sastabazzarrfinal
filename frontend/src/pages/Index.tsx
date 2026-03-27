@@ -103,7 +103,7 @@ const Index = () => {
   // Group products for different sections
   const featured = products.filter(p => p.isFeatured || p.rating >= 4.5).slice(0, 4);
   const trending = products.length > 4 ? products.slice(4, 9) : products.slice(0, 4);
-  const newArrivals = products.reverse().slice(0, 4);
+  const newArrivals = [...products].reverse().slice(0, 4);
 
   return (
     <div className="min-h-screen bg-secondary/30 flex flex-col pt-16 md:pt-20">
@@ -365,6 +365,62 @@ const Index = () => {
           </div>
         ) : (
           <>
+            {/* ✨ Premium Latest Collection */}
+            {newArrivals.length > 0 && (
+              <section className="py-24 bg-gradient-to-b from-white to-gray-50/50 dark:from-background dark:to-muted/10 relative overflow-hidden border-b border-border/50">
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute bottom-0 left-[-20%] w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[120px] pointer-events-none" />
+                
+                <div className="container mx-auto px-4 relative z-10">
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                    <div className="space-y-4">
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-bold uppercase tracking-widest"
+                      >
+                        <Sparkles className="w-3.5 h-3.5" /> Just Dropped
+                      </motion.div>
+                      <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tighter">
+                        Latest <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary italic pr-2">Collection</span>
+                      </h2>
+                      <p className="text-muted-foreground text-lg max-w-xl font-medium">
+                        Stay ahead of the curve with our newest arrivals. Curated for the trendsetters.
+                      </p>
+                    </div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                    >
+                      <Button variant="outline" size="lg" className="rounded-full shadow-sm hover:shadow-md transition-all group border-primary/20 hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/10" asChild>
+                        <Link to="/products?sort=newest">
+                          Explore All New <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      </Button>
+                    </motion.div>
+                  </div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+                    {newArrivals.map((product, i) => (
+                      <motion.div
+                        key={product.id || i}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: i * 0.1 }}
+                        className="group"
+                      >
+                        <div className="transform transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl rounded-2xl">
+                          <ProductCard product={product} index={i} />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            )}
             {/* Recently Viewed Items */}
             {recentlyViewed.length > 0 && (
               <section className="container mx-auto px-4 py-12">
