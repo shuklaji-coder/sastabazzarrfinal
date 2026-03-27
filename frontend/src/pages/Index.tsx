@@ -19,6 +19,14 @@ const Index = () => {
 
   const heroSlides = [
     {
+      video: "https://redtape.com/cdn/shop/videos/c/vp/ed22fca6ba0c4139a5a1a97d946d8ac5/ed22fca6ba0c4139a5a1a97d946d8ac5.HD-1080p-7.2Mbps-64034642.mp4?v=0",
+      title: "Step Up Your Style",
+      subtitle: "Experience unmatched comfort and premium design",
+      highlight: "New Exclusive Collection",
+      cta: "Shop Now",
+      link: "/products"
+    },
+    {
       video: "/From Main Klickpin CF- Pinterest Video - 4rrCUzW8f.mp4",
       title: "Welcome to Sastaa Bazaar",
       subtitle: "AI-Powered Shopping with the Best Deals on Fashion, Gadgets & More",
@@ -102,17 +110,14 @@ const Index = () => {
       <Navbar />
 
       <main className="flex-grow">
-        {/* ✨ Upgraded Premium Hero Carousel */}
-        <section className="relative w-full h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] overflow-hidden bg-black group">
+        {/* Dynamic Hero Carousel */}
+        <section className="relative w-full h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] overflow-hidden bg-foreground">
           {heroSlides.map((slide, index) => (
             <div
               key={index}
               className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
             >
-              {/* Premium Gradient Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent z-10" /> 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/20 z-10" />
-
+              <div className="absolute inset-0 bg-black/40 z-10" /> {/* Dark Overlay */}
               {slide.video ? (
                 <video
                   src={slide.video}
@@ -120,107 +125,72 @@ const Index = () => {
                   muted
                   loop={false}
                   playsInline
-                  className="w-full h-full object-cover transform scale-105"
+                  className="w-full h-full object-cover"
                   onEnded={() => {
                     const nextSlide = (currentSlide + 1) % heroSlides.length;
                     setCurrentSlide(nextSlide);
                   }}
                 />
               ) : (
-                <img 
-                  src={slide.image} 
-                  alt={slide.title || "Banner"} 
-                  className="w-full h-full object-cover transform scale-105" 
-                />
+                <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
               )}
 
-              <div className="absolute inset-0 z-20 flex items-center justify-start container mx-auto px-6 md:px-12 lg:px-24">
-                <div className="max-w-3xl text-white space-y-6 md:space-y-8 lg:mt-12">
-                  {slide.highlight && (
-                    <motion.div
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-                      transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 100 }}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold tracking-widest uppercase text-primary shadow-[0_0_20px_rgba(255,255,255,0.05)]"
-                    >
-                      <Sparkles className="w-4 h-4" /> {slide.highlight}
-                    </motion.div>
-                  )}
-                  
+              <div className="absolute inset-0 z-20 flex items-center justify-start container mx-auto px-6 md:px-12">
+                <motion.div
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="max-w-xl text-white space-y-4 md:space-y-6"
+                >
                   <motion.h2
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
-                    transition={{ duration: 0.7, delay: 0.3, type: "spring", stiffness: 60 }}
-                    className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-black leading-[1.05] tracking-tighter drop-shadow-2xl"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="text-4xl md:text-7xl font-display font-black leading-tight drop-shadow-lg"
                   >
-                    {slide.title || "Discover True Quality"}
+                    {slide.title}
                   </motion.h2>
-                  
                   <motion.p
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
-                    transition={{ duration: 0.7, delay: 0.4, type: "spring", stiffness: 60 }}
-                    className="text-lg md:text-2xl lg:text-3xl text-white/80 font-medium max-w-2xl drop-shadow-lg"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    className="text-lg md:text-2xl opacity-90 font-medium"
                   >
-                    {slide.subtitle || "Handpicked premium products for the modern lifestyle"}
+                    {slide.subtitle}
                   </motion.p>
-                  
                   <motion.div
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
-                    transition={{ duration: 0.7, delay: 0.5, type: "spring", stiffness: 60 }}
-                    className="flex flex-wrap items-center gap-4 pt-4"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={index === currentSlide ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
                   >
-                    <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-6 md:py-7 rounded-full shadow-2xl shadow-primary/40 hover:shadow-primary/60 hover:scale-105 transition-all duration-300 ring-2 ring-primary/20 ring-offset-2 ring-offset-black">
-                      <Link to={slide.link || "/products"}>
-                        {slide.cta || "Shop Now"} <ArrowRight className="ml-2 w-5 h-5 animate-pulse" />
-                      </Link>
+                    <Button asChild size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8 h-12 md:h-14 rounded-full shadow-lg hover:shadow-xl transition-all">
+                      <Link to={slide.link}>{slide.cta} <ArrowRight className="ml-2 w-5 h-5" /></Link>
                     </Button>
-                    
-                    {slide.secondaryCta && (
-                      <Button asChild size="lg" variant="outline" className="bg-white/5 backdrop-blur-md border-white/20 text-white hover:bg-white/20 text-lg px-8 py-6 md:py-7 rounded-full transition-all duration-300 hover:scale-105">
-                        <Link to={slide.link || "/products"}>{slide.secondaryCta}</Link>
-                      </Button>
-                    )}
                   </motion.div>
-                </div>
+                </motion.div>
               </div>
             </div>
           ))}
 
-          {/* Premium Carousel Controls */}
-          <div className="absolute inset-y-0 left-0 flex items-center px-4 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500 z-30">
-            <button onClick={prevSlide} className="p-4 rounded-full bg-black/20 hover:bg-white/10 backdrop-blur-xl border border-white/10 text-white shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 group/btn">
-              <ChevronLeft className="w-6 h-6 md:w-8 md:h-8 group-hover/btn:-translate-x-1 transition-transform" />
-            </button>
-          </div>
-          <div className="absolute inset-y-0 right-0 flex items-center px-4 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500 z-30">
-            <button onClick={nextSlide} className="p-4 rounded-full bg-black/20 hover:bg-white/10 backdrop-blur-xl border border-white/10 text-white shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 group/btn">
-              <ChevronRight className="w-6 h-6 md:w-8 md:h-8 group-hover/btn:translate-x-1 transition-transform" />
-            </button>
-          </div>
+          {/* Carousel Controls */}
+          <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-white/20 hover:bg-white/40 text-white backdrop-blur-sm transition-all">
+            <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
+          </button>
+          <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-white/20 hover:bg-white/40 text-white backdrop-blur-sm transition-all">
+            <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
+          </button>
 
-          {/* Premium Pagination Indicators */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3 items-center bg-black/20 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
+          {/* Dots */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2">
             {heroSlides.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
-                className={`transition-all duration-500 rounded-full cursor-pointer ${idx === currentSlide ? 'bg-primary w-12 h-2.5 shadow-lg shadow-primary/50' : 'bg-white/40 hover:bg-white/80 w-2.5 h-2.5 hover:w-4'}`}
+                className={`w-3 h-3 rounded-full transition-all ${idx === currentSlide ? 'bg-primary w-8' : 'bg-white/50 hover:bg-white/80'}`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}
           </div>
-
-          {/* Animated Scroll Indicator - Desktop Only */}
-          <motion.div 
-            className="absolute bottom-10 right-12 z-30 hidden xl:flex flex-col items-center gap-3 text-white/60 font-bold"
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-          >
-            <span className="text-[10px] uppercase tracking-[0.3em] style-writing-vertical-rl" style={{ writingMode: 'vertical-rl' }}>Scroll</span>
-            <div className="w-px h-16 bg-gradient-to-b from-white/60 to-transparent" />
-          </motion.div>
         </section>
 
         {/* ✨ Premium Category Discovery Section - Extracted Component */}
@@ -280,7 +250,7 @@ const Index = () => {
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-                
+
                 {/* Spotlight Content */}
                 <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
                   <div className="max-w-md space-y-4 transform group-hover:-translate-y-2 transition-transform duration-500">
@@ -341,7 +311,7 @@ const Index = () => {
                       <img src={deal.img} alt={deal.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                       <div className={`absolute inset-0 bg-gradient-to-t ${deal.color} via-transparent to-transparent`} />
                       <div className="absolute inset-0 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity" />
-                      
+
                       <div className="absolute inset-0 p-8 flex flex-col justify-end">
                         <span className="text-primary text-xs font-black tracking-widest mb-1">{deal.discount}</span>
                         <h4 className="text-white text-2xl font-black">{deal.title}</h4>
@@ -370,7 +340,7 @@ const Index = () => {
                   <div className="group relative aspect-square rounded-[2rem] overflow-hidden cursor-pointer bg-muted shadow-lg hover:shadow-2xl transition-all duration-500">
                     <img src={cat.img} alt={cat.label} className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" />
                     <div className="absolute inset-0 bg-black/40 group-hover:bg-primary/20 transition-colors" />
-                    
+
                     <div className="absolute inset-0 p-6 flex flex-col justify-between">
                       <span className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-xl shadow-lg transform group-hover:rotate-12 transition-transform">
                         {cat.icon}
@@ -480,7 +450,7 @@ const Index = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                
+
                 {/* Left: Premium Founders Card */}
                 <motion.div
                   initial={{ opacity: 0, x: -50 }}
@@ -490,20 +460,20 @@ const Index = () => {
                   className="relative group"
                 >
                   <div className="aspect-[4/5] md:aspect-square relative rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white/50 dark:border-white/5">
-                    <img 
-                      src="/founder.jpg" 
-                      alt="Mr. Rohan Shukla" 
+                    <img
+                      src="/founder.jpg"
+                      alt="Mr. Rohan Shukla"
                       className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60" />
-                    
+
                     {/* Floating Name Badge */}
                     <div className="absolute bottom-8 left-8 right-8 p-6 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                       <h3 className="text-2xl font-black text-white tracking-tighter">Mr. Rohan Shukla</h3>
                       <p className="text-cyan-400 text-xs font-black uppercase tracking-[0.2em] mt-1">Founder & Lead Architect</p>
                     </div>
                   </div>
-                  
+
                   {/* Decorative Elements */}
                   <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl animate-pulse" />
                   <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-secondary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
@@ -518,7 +488,7 @@ const Index = () => {
                     className="space-y-4"
                   >
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-bold uppercase tracking-widest">
-                       <Sparkles className="w-3.5 h-3.5" /> THE VISIONARY
+                      <Sparkles className="w-3.5 h-3.5" /> THE VISIONARY
                     </div>
                     <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tighter leading-[1.1]">
                       Driven by <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary italic">Passion</span>, Built for You.
@@ -535,26 +505,26 @@ const Index = () => {
                     <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
                       "Sastaa Bazaar isn't just an e-commerce platform; it's a commitment to making a premium lifestyle accessible to everyone. We combine cutting-edge AI technology with a human-centric approach to deliver value that goes beyond the price tag."
                     </p>
-                    
+
                     <div className="flex flex-col gap-4">
-                       <div className="flex items-center gap-4 group cursor-pointer">
-                          <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                             <Shield className="w-6 h-6" />
-                          </div>
-                          <div>
-                             <h4 className="font-black text-sm dark:text-white">Uncompromising Quality</h4>
-                             <p className="text-xs text-gray-400">Hand-picked selections only.</p>
-                          </div>
-                       </div>
-                       <div className="flex items-center gap-4 group cursor-pointer">
-                          <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all duration-300">
-                             <TrendingUp className="w-6 h-6" />
-                          </div>
-                          <div>
-                             <h4 className="font-black text-sm dark:text-white">Fair Pricing Model</h4>
-                             <p className="text-xs text-gray-400">Value that speaks for itself.</p>
-                          </div>
-                       </div>
+                      <div className="flex items-center gap-4 group cursor-pointer">
+                        <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                          <Shield className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <h4 className="font-black text-sm dark:text-white">Uncompromising Quality</h4>
+                          <p className="text-xs text-gray-400">Hand-picked selections only.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4 group cursor-pointer">
+                        <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all duration-300">
+                          <TrendingUp className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <h4 className="font-black text-sm dark:text-white">Fair Pricing Model</h4>
+                          <p className="text-xs text-gray-400">Value that speaks for itself.</p>
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
 
@@ -564,19 +534,19 @@ const Index = () => {
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
                     className="pt-8 flex items-center gap-6"
-                   >
-                    <a 
-                      href="https://www.linkedin.com/in/rohan-shukla-0b8889321" 
-                      target="_blank" 
+                  >
+                    <a
+                      href="https://www.linkedin.com/in/rohan-shukla-0b8889321"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:shadow-2xl active:scale-95 transition-all group"
                     >
                       Connect on LinkedIn <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
-                    
+
                     <div className="hidden md:flex flex-col">
-                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Email Directly</span>
-                       <span className="text-sm font-bold dark:text-white">rohan@sastaabazaar.in</span>
+                      <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Email Directly</span>
+                      <span className="text-sm font-bold dark:text-white">rohan@sastaabazaar.in</span>
                     </div>
                   </motion.div>
                 </div>
