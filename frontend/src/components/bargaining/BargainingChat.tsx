@@ -146,6 +146,18 @@ export function BargainingChat({ session, onSendOffer, isAiTyping, onGoToCart }:
                     ₹{amt}
                   </button>
                 ))}
+                {/* Custom Price Button */}
+                <button 
+                  onClick={() => {
+                    const customPrice = prompt("Enter your custom price:");
+                    if (customPrice && !isNaN(parseInt(customPrice)) && parseInt(customPrice) > 0) {
+                      handleQuickOffer(parseInt(customPrice));
+                    }
+                  }}
+                  className="flex-none snap-start whitespace-nowrap px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-400 text-sm font-bold hover:bg-purple-500 hover:text-white transition-colors"
+                >
+                  💰 Custom Price
+                </button>
               </div>
 
               {/* Input Form */}

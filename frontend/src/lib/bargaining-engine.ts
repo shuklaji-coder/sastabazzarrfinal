@@ -32,9 +32,9 @@ export const initBargainingSession = (mrp: number, maxDiscountPercent: number = 
   const seasonal = getSeasonalBonus();
   const loyalty = getLoyaltyTier();
   
-  // Adjust minimum threshold based on loyalty and seasonal bonuses
-  const loyaltyBonus = getLoyaltyBonus(loyalty);
-  const adjustedMinThreshold = Math.floor(minThreshold - (mrp * (loyaltyBonus + seasonal) / 100));
+  // Admin-set maximum discount is the hard limit - no bonuses should override this
+  // Loyalty and seasonal bonuses are for messaging only, not for reducing price further
+  const finalMinThreshold = minThreshold;
   
   // Get initial message based on language
   const initialMessage = language === "english" 
@@ -43,7 +43,7 @@ export const initBargainingSession = (mrp: number, maxDiscountPercent: number = 
 
   return {
     mrp: mrp,
-    minThreshold: Math.max(adjustedMinThreshold, Math.floor(mrp * 0.85)), // Never go below 85% of MRP
+    minThreshold: finalMinThreshold, // Respect admin-set maximum discount limit
     currentRound: 1,
     maxRounds: 4,
     lastAiOffer: mrp,
