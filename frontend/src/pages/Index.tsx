@@ -526,7 +526,7 @@ const Index = () => {
                     {/* Floating Name Badge */}
                     <div className="absolute bottom-8 left-8 right-8 p-6 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                       <h3 className="text-2xl font-black text-white tracking-tighter">Mr. Rohan Shukla</h3>
-                      <p className="text-cyan-400 text-xs font-black uppercase tracking-[0.2em] mt-1">Founder & Lead Architect</p>
+                      <p className="text-cyan-400 text-xs font-black uppercase tracking-[0.2em] mt-1">Programmer & Lead Architect</p>
                     </div>
                   </div>
 
