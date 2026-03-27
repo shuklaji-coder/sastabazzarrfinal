@@ -245,7 +245,7 @@ const Index = () => {
                 className="lg:col-span-8 group relative rounded-[2.5rem] overflow-hidden bg-foreground aspect-[16/9] md:aspect-auto md:h-[500px] shadow-2xl cursor-pointer"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop"
+                  src="D:\sastaaa bazzaar\frontend\public\From Main Klickpin CF- Pinterest Video - 2UA0FftZI.mp4"
                   alt="Spotlight Deal"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70"
                 />
@@ -285,14 +285,14 @@ const Index = () => {
                   {
                     title: "Audio Pro Max",
                     discount: "UP TO 45% OFF",
-                    img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600&auto=format&fit=crop",
+                    img: "https://i.pinimg.com/webp/1200x/40/07/95/400795995ca552db4170dd3d4793c462.webp",
                     color: "from-purple-900/40",
                     link: "/products?category=electronics"
                   },
                   {
                     title: "Urban Style",
                     discount: "FLAT 30% OFF",
-                    img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop",
+                    img: "D:\sastaaa bazzaar\frontend\public\From Main Klickpin CF- Inst __smariii__ идея видео для брендов - 5IOzmqW5W.mp4",
                     color: "from-pink-900/40",
                     link: "/products?category=fashion"
                   }
@@ -325,8 +325,8 @@ const Index = () => {
             {/* Bottom Category Grid - Smaller Interactive Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {[
-                { label: "Watches", tag: "Premium", icon: "⌚", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400&fit=crop" },
-                { label: "Sneakers", tag: "Trending", icon: "👟", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=400&fit=crop" },
+                { label: "Watches", tag: "Premium", icon: "⌚", img: "https://i.pinimg.com/736x/15/ad/2f/15ad2f84dce8142befcaf813b2d6576d.jpg" },
+                { label: "Sneakers", tag: "Trending", icon: "👟", img: "https://images.pexels.com/photos/4914807/pexels-photo-4914807.jpeg" },
                 { label: "Bags", tag: "Minimal", icon: "🎒", img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=400&fit=crop" },
                 { label: "Beauty", tag: "Organic", icon: "✨", img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=400&fit=crop" }
               ].map((cat, i) => (
@@ -539,6 +539,7 @@ const Index = () => {
                 <div className="space-y-8">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
+
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     className="space-y-4"
