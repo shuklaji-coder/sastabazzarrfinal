@@ -370,7 +370,7 @@ const Index = () => {
               <section className="py-24 bg-gradient-to-b from-white to-gray-50/50 dark:from-background dark:to-muted/10 relative overflow-hidden border-b border-border/50">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
                 <div className="absolute bottom-0 left-[-20%] w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[120px] pointer-events-none" />
-                
+
                 <div className="container mx-auto px-4 relative z-10">
                   <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                     <div className="space-y-4">
@@ -602,7 +602,7 @@ const Index = () => {
 
                     <div className="hidden md:flex flex-col">
                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Email Directly</span>
-                      <span className="text-sm font-bold dark:text-white">rohan@sastaabazaar.in</span>
+                      <span className="text-sm font-bold dark:text-white">[shuklarohan388@gmail.com] </span>
                     </div>
                   </motion.div>
                 </div>
