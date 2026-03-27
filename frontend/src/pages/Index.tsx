@@ -35,7 +35,7 @@ const Index = () => {
       link: "/products?category=fashion"
     },
     {
-      image: "https://redtape.com/cdn/shop/files/3_copy_2_a67d3fba-1517-41fd-925e-937252e2f368_1700x.jpg?v=1770960216",
+      image: "https://redtape.com/cdn/shop/collections/banner_8d15954a-80ef-4621-93e8-284b5bac31ce.jpg?v=1764922003",
 
       cta: "Shop RedTape",
       link: "/products?category=fashion"
