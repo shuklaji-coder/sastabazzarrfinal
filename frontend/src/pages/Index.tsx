@@ -35,6 +35,15 @@ const Index = () => {
       secondaryCta: "Explore Deals",
       link: "/products"
     },
+ {
+  video: "/From%20Main%20Klickpin%20CF-%20Inst%20__smariii__%20идея%20видео%20для%20брендов%20-%205IOzmqW5W.mp4",
+  title: "Welcome to Sastaa Bazaar",
+  subtitle: "AI-Powered Shopping with the Best Deals on Fashion, Gadgets & More",
+  highlight: "Up to 60% OFF on Trending Products",
+  cta: "Start Shopping",
+  secondaryCta: "Explore Deals",
+  link: "/products"
+},
     {
       video: "/From Main Klickpin CF- Pinterest Video - 7ulbVYQmR.mp4",
       title: "Trending Collections",
