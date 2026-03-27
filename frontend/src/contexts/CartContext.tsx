@@ -50,27 +50,38 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Apply bargained deals from localStorage
       const existingDealsStr = localStorage.getItem('sastaa_bazaar_bargain_deals');
       if (existingDealsStr) {
-        const deals = JSON.parse(existingDealsStr);
-        cartItems = cartItems.map((item: any) => {
-          const dealPrice = deals[item.product.id];
-          if (dealPrice) {
-            return {
-              ...item,
-              product: {
-                ...item.product,
-                sellingPrice: dealPrice,
-                discountedPrice: dealPrice,
-                price: dealPrice,
-                isBargained: true
-              }
-            };
-          }
-          return item;
-        });
+        try {
+          const deals = JSON.parse(existingDealsStr);
+          console.log("Current persistent deals map:", deals);
+          
+          cartItems = cartItems.map((item: any) => {
+            if (!item.product || !item.product.id) return item;
+            
+            const productIdStr = String(item.product.id);
+            const dealPrice = deals[productIdStr];
+            
+            if (dealPrice) {
+              console.log(`Bingo! Applying deal price ${dealPrice} to product id ${productIdStr} (name: ${item.product.name})`);
+              return {
+                ...item,
+                product: {
+                  ...item.product,
+                  sellingPrice: dealPrice,
+                  discountedPrice: dealPrice,
+                  price: dealPrice,
+                  isBargained: true
+                }
+              };
+            }
+            return item;
+          });
+        } catch (e) {
+          console.error("Error parsing bargain deals from storage", e);
+        }
       }
 
       setItems(cartItems);
-      console.log("Cart items set:", cartItems);
+      console.log("Cart items successfully set and overridden:", cartItems);
     } catch (err: any) {
       console.error("Failed to fetch cart", err);
       // Handle specific error cases
@@ -96,23 +107,28 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Apply bargained deals to local guest cart too
           const existingDealsStr = localStorage.getItem('sastaa_bazaar_bargain_deals');
           if (existingDealsStr) {
-            const deals = JSON.parse(existingDealsStr);
-            parsedItems = parsedItems.map((item: any) => {
-              const dealPrice = deals[item.product.id];
-              if (dealPrice) {
-                return {
-                  ...item,
-                  product: {
-                    ...item.product,
-                    sellingPrice: dealPrice,
-                    discountedPrice: dealPrice,
-                    price: dealPrice,
-                    isBargained: true
-                  }
-                };
-              }
-              return item;
-            });
+            try {
+              const deals = JSON.parse(existingDealsStr);
+              parsedItems = parsedItems.map((item: any) => {
+                if (!item.product || !item.product.id) return item;
+                const dealPrice = deals[String(item.product.id)];
+                if (dealPrice) {
+                  return {
+                    ...item,
+                    product: {
+                      ...item.product,
+                      sellingPrice: dealPrice,
+                      discountedPrice: dealPrice,
+                      price: dealPrice,
+                      isBargained: true
+                    }
+                  };
+                }
+                return item;
+              });
+            } catch (e) {
+              console.error("Error parsing deals in guest check", e);
+            }
           }
           
           setItems(parsedItems);

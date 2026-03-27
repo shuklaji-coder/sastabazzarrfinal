@@ -53,8 +53,10 @@ export default function AiBhaavTaav() {
       // 1. Save deal price to localStorage so CartContext can pick it up across reloads
       const existingDealsStr = localStorage.getItem('sastaa_bazaar_bargain_deals');
       const deals = existingDealsStr ? JSON.parse(existingDealsStr) : {};
-      deals[product.id] = session.lastAiOffer;
+      const productIdStr = String(product.id);
+      deals[productIdStr] = session.lastAiOffer;
       localStorage.setItem('sastaa_bazaar_bargain_deals', JSON.stringify(deals));
+      console.log(`Saved deal for product ${productIdStr}: ₹${session.lastAiOffer}`);
 
       // 2. Add product to cart or update if already there to avoid quantity doubling
       const existingCartItem = items.find((i) => String(i.product.id) === String(product.id));
