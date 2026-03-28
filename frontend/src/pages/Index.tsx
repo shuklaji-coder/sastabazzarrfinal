@@ -134,7 +134,17 @@ const Index = () => {
                   muted
                   loop={false}
                   playsInline
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover scale-105"
+                  style={{ 
+                    filter: 'none',
+                    transform: 'scale(1.05)',
+                    WebkitFilter: 'none',
+                    WebkitTransform: 'scale(1.05)'
+                  }}
+                  onLoadedData={(e) => {
+                    const video = e.target as HTMLVideoElement;
+                    video.playbackRate = 1.0;
+                  }}
                   onEnded={() => {
                     const nextSlide = (currentSlide + 1) % heroSlides.length;
                     setCurrentSlide(nextSlide);
@@ -259,7 +269,11 @@ const Index = () => {
                   muted
                   loop
                   playsInline
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  style={{ 
+                    filter: 'none',
+                    WebkitFilter: 'none'
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
