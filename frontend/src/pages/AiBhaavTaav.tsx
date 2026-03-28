@@ -84,22 +84,25 @@ export default function AiBhaavTaav() {
     navigate('/cart');
   };
 
-  const handleSendOffer = (offer: number) => {
+  const handleSendOffer = async (offer: number) => {
     if (!session) return;
     
     // Optimistic UI updates - mark AI as typing
     setIsAiTyping(true);
     
-    // Simulate network delay for AI thinking (1.5s - 2.5s)
-    setTimeout(() => {
-      const newSession = processUserOffer(session, offer);
+    try {
+      const newSession = await processUserOffer(session, offer);
       setSession(newSession);
-      setIsAiTyping(false);
-
+      
       if (newSession.dealState === 'deal-success') {
         runConfetti();
       }
-    }, 1500 + Math.random() * 1000);
+    } catch (error) {
+      console.error("Error processing offer:", error);
+      toast.error("Network issue. Please try again.");
+    } finally {
+      setIsAiTyping(false);
+    }
   };
 
   const runConfetti = () => {

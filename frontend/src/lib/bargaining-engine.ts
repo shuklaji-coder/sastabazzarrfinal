@@ -1,5 +1,6 @@
-export type DealState = "negotiating" | "final-offer" | "deal-locked" | "deal-success" | "deal-failed";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
+export type DealState = "negotiating" | "final-offer" | "deal-locked" | "deal-success" | "deal-failed";
 export interface BargainingSession {
   mrp: number;
   minThreshold: number;
@@ -21,8 +22,12 @@ export interface BargainingSession {
   language: "hindi" | "english";
 }
 
-export const initBargainingSession = (mrp: number, maxDiscountPercent: number = 10, language: "hindi" | "english" = "hindi"): BargainingSession => {
-  // Set min threshold based on max discount percent (e.g., 10% discount means 90% of MRP is minimum)
+// Initialize Gemini Client (Ensure VITE_GEMINI_API_KEY is available)
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
+const genAI = new GoogleGenerativeAI(apiKey);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" }); // You can use gemini-1.5-flash for speed if desired
+
+export const initBargainingSession = (mrp: number, maxDiscountPercent: number = 10, language: "hindi" | "english" = "hindi"): BargainingSession => {  // Set min threshold based on max discount percent (e.g., 10% discount means 90% of MRP is minimum)
   const discountFactor = 1 - (maxDiscountPercent / 100);
   const minThreshold = Math.floor(mrp * discountFactor);
   
@@ -388,10 +393,56 @@ const getSmartResponse = (
   return strategyResponses[Math.floor(Math.random() * strategyResponses.length)];
 };
 
-export const processUserOffer = (
+const getGeminiResponse = async (
+  session: BargainingSession,
+  userOffer: number,
+  aiOffer: number,
+  userStrategy: string,
+  aiMood: string,
+  fallbackResponse: string,
+  dealStatus: "success" | "failed" | "negotiating" | "final-offer"
+): Promise<string> => {
+  if (!apiKey) {
+    console.warn("Gemini API key is missing. Using fallback response.");
+    return fallbackResponse;
+  }
+
+  const prompt = `You are an expert, slightly dramatic, and culturally aware Indian shopkeeper negotiating with a customer.
+Key details:
+- Product MRP: ₹${session.mrp}
+- User's Offer: ₹${userOffer}
+- Your (Shopkeeper's) Offer right now: ₹${aiOffer}
+- Customer's strategy seems to be: ${userStrategy}
+- Your current mood/attitude: ${aiMood}
+- Current Deal Status: ${dealStatus}
+- Scarcity: ${session.scarcityLevel}
+- Urgency: ${session.urgencyLevel}
+- Language: ${session.language === "hindi" ? "Hinglish (Hindi written in English alphabet) or conversational Hindi" : "English with Indian shopkeeper slang"}
+
+Instructions:
+1. Act completely in character. Do not say "I am an AI" or break character.
+2. Provide a SHORT, punchy response (1-3 sentences max). This is a chat interface.
+3. If the deal status is 'success', warmly accept and congratulate them.
+4. If 'failed', respectfully decline and say it's impossible.
+5. If 'final-offer', be firm that you won't go lower.
+6. If 'negotiating', react to their offer (e.g., if it's too low, act shocked or playfully offended) and present your offer of ₹${aiOffer}.
+7. Do NOT include pricing calculations, just the final natural statement including your offer price if still negotiating.
+8. Use emojis sparingly but effectively.`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text();
+    return responseText.trim() || fallbackResponse;
+  } catch (error) {
+    console.error("Gemini API error:", error);
+    return fallbackResponse;
+  }
+};
+
+export const processUserOffer = async (
   session: BargainingSession,
   userOffer: number
-): BargainingSession => {
+): Promise<BargainingSession> => {
   const newSession = { ...session, history: [...session.history] };
   
   // Analyze user strategy
@@ -430,10 +481,11 @@ export const processUserOffer = (
   if (session.dealState === "final-offer") {
     if (userOffer >= session.lastAiOffer) {
       newSession.dealState = "deal-success";
-      const response = getSmartResponse(userOffer, session.lastAiOffer, userStrategy, newSession.aiMood, session.currentRound, session.mrp, session);
-      const successMessage = session.language === "english" 
-        ? `🎉 ${response} Deal done at ₹${userOffer}!\n\n${session.loyaltyTier !== "none" ? `🏆 ${session.loyaltyTier} reward points added!` : ""}${session.bundleOfferAvailable ? "\n🎁 Bundle unlocked for next purchase!" : ""}`
-        : `🎉 ${response} Deal pakki ₹${userOffer} mein!\n\n${session.loyaltyTier !== "none" ? `🏆 ${session.loyaltyTier} rewards points add kiye gaye!` : ""}${session.bundleOfferAvailable ? "\n🎁 Next purchase ke liye bundle unlock ho gaya!" : ""}`;
+      const fallbackResponse = getSmartResponse(userOffer, session.lastAiOffer, userStrategy, newSession.aiMood, session.currentRound, session.mrp, session);
+      const geminiResponse = await getGeminiResponse(session, userOffer, session.lastAiOffer, userStrategy, newSession.aiMood, fallbackResponse, "success");
+      
+      const successMessage = `${geminiResponse}\n\n${session.loyaltyTier !== "none" ? `🏆 ${session.loyaltyTier} rewards ${session.language === "english" ? "added" : "add kiye gaye"}!` : ""}${session.bundleOfferAvailable ? `\n🎁 ${session.language === "english" ? "Bundle unlocked!" : "Bundle unlock ho gaya!"}` : ""}`;
+      
       newSession.history.push({
         sender: "ai",
         message: successMessage,
@@ -442,9 +494,11 @@ export const processUserOffer = (
       return newSession;
     } else {
       newSession.dealState = "deal-failed";
-      const failMessage = session.language === "english"
-        ? `😔 I told you, can't go lower than this. I'm already selling at loss. ${session.scarcityLevel === "high" ? "📦 Stock is running out!" : ""} Deal has to be cancelled. 🙏\n\n${session.flashSaleActive ? "⚡ Flash sale missed!" : ""}`
-        : `😔 Arre bhai bola na, isse kam nahi hoga. Main toh loss mein hi bech raha hun. ${session.scarcityLevel === "high" ? "📦 Stock khatam ho raha hai!" : ""} Deal cancel karni padegi. 🙏\n\n${session.flashSaleActive ? "⚡ Flash sale miss ho gaya!" : ""}`;
+      const fallbackResponse = getSmartResponse(userOffer, session.lastAiOffer, userStrategy, newSession.aiMood, session.currentRound, session.mrp, session); // Getting a generic one just in case, though usually manual
+      const geminiResponse = await getGeminiResponse(session, userOffer, session.lastAiOffer, userStrategy, newSession.aiMood, session.language === "english" ? "I told you, can't go lower. Deal cancelled." : "Bhai bola na, isse kam nahi hoga. Deal cancel.", "failed");
+
+      const failMessage = `${geminiResponse}\n\n${session.flashSaleActive ? `⚡ ${session.language === "english" ? "Flash sale missed!" : "Flash sale miss ho gaya!"}` : ""}`;
+      
       newSession.history.push({
         sender: "ai",
         message: failMessage,
@@ -458,10 +512,11 @@ export const processUserOffer = (
   if (userOffer >= session.lastAiOffer) {
     // User offering more than AI's last offer (generous or mistake)
     newSession.dealState = "deal-success";
-    const response = getSmartResponse(userOffer, session.lastAiOffer, userStrategy, newSession.aiMood, session.currentRound, session.mrp, session);
-    const dealMessage = session.language === "english"
-      ? `🎉 ${response} Deal done at ₹${userOffer}!\n\n${session.seasonalBonus > 0 ? `🎊 Festive season bonus applied!` : ""}${session.loyaltyTier !== "none" ? `\n🏆 ${session.loyaltyTier} exclusive benefits!` : ""}`
-      : `🎉 ${response} Deal ho gaya ₹${userOffer} mein!\n\n${session.seasonalBonus > 0 ? `🎊 Festive season bonus apply ho gaya!` : ""}${session.loyaltyTier !== "none" ? `\n🏆 ${session.loyaltyTier} exclusive benefits!` : ""}`;
+    const fallbackResponse = getSmartResponse(userOffer, session.lastAiOffer, userStrategy, newSession.aiMood, session.currentRound, session.mrp, session);
+    const geminiResponse = await getGeminiResponse(session, userOffer, session.lastAiOffer, userStrategy, newSession.aiMood, fallbackResponse, "success");
+    
+    const dealMessage = `${geminiResponse}\n\n${session.seasonalBonus > 0 ? `🎊 Festive season bonus!` : ""}${session.loyaltyTier !== "none" ? `\n🏆 ${session.loyaltyTier} exclusive benefits!` : ""}`;
+    
     newSession.history.push({
       sender: "ai",
       message: dealMessage,
@@ -472,13 +527,13 @@ export const processUserOffer = (
 
   if (userOffer >= session.minThreshold) {
     // User offer is acceptable immediately
-    // If it's the very first round, the AI might still counter slightly higher to haggle
     if (userOffer >= session.minThreshold * 1.05 || userStrategy === "generous") {
       newSession.dealState = "deal-success";
-      const response = getSmartResponse(userOffer, userOffer, userStrategy, newSession.aiMood, session.currentRound, session.mrp, session);
-      const finalMessage = session.language === "english"
-        ? `🤝 ${response} Deal final at ₹${userOffer}!\n\n${session.flashSaleActive ? "⚡ Extra discount in flash sale!" : ""}${session.bundleOfferAvailable ? "\n🎁 Bundle offer activated!" : ""}`
-        : `🤝 ${response} Deal final ₹${userOffer} mein!\n\n${session.flashSaleActive ? "⚡ Flash sale mein extra discount mila!" : ""}${session.bundleOfferAvailable ? "\n🎁 Bundle offer activate ho gaya!" : ""}`;
+      const fallbackResponse = getSmartResponse(userOffer, userOffer, userStrategy, newSession.aiMood, session.currentRound, session.mrp, session);
+      const geminiResponse = await getGeminiResponse(session, userOffer, userOffer, userStrategy, newSession.aiMood, fallbackResponse, "success");
+      
+      const finalMessage = `${geminiResponse}\n\n${session.flashSaleActive ? `⚡ ${session.language === "english" ? "Extra discount in flash sale!" : "Flash sale mein extra discount!"}` : ""}${session.bundleOfferAvailable ? `\n🎁 ${session.language === "english" ? "Bundle offer activated!" : "Bundle offer activate ho gaya!"}` : ""}`;
+      
       newSession.history.push({
         sender: "ai",
         message: finalMessage,
@@ -496,10 +551,12 @@ export const processUserOffer = (
     newSession.dealState = "final-offer";
     const finalOffer = Math.floor(session.minThreshold * 1.02); // Just above min threshold
     newSession.lastAiOffer = getPsychologicalPrice(finalOffer);
-    const response = getSmartResponse(userOffer, newSession.lastAiOffer, userStrategy, "firm", session.currentRound, session.mrp, session);
-    const finalOfferMessage = session.language === "english"
-      ? `🔥 ${response} This is my last price ₹${newSession.lastAiOffer}. Take it now or never! 😅\n\n${session.urgencyLevel === "flash" ? "⚡ Flash sale ending soon!" : ""}${session.scarcityLevel === "high" ? "\n📦 Last 2 pieces!" : ""}`
-      : `🔥 ${response} Yeh meri akhri price hai ₹${newSession.lastAiOffer}. Lena hai toh abhi, warna机会 nahi! 😅\n\n${session.urgencyLevel === "flash" ? "⚡ Flash sale khatam hone wala hai!" : ""}${session.scarcityLevel === "high" ? "\n📦 Last 2 pieces!" : ""}`;
+    
+    const fallbackResponse = getSmartResponse(userOffer, newSession.lastAiOffer, userStrategy, "firm", session.currentRound, session.mrp, session);
+    const geminiResponse = await getGeminiResponse(session, userOffer, newSession.lastAiOffer, userStrategy, "firm", fallbackResponse, "final-offer");
+
+    const finalOfferMessage = `${geminiResponse}\n\n${session.urgencyLevel === "flash" ? `⚡ ${session.language === "english" ? "Flash sale ending soon!" : "Flash sale khatam hone wala hai!"}` : ""}${session.scarcityLevel === "high" ? `\n📦 ${session.language === "english" ? "Last 2 pieces!" : "Last 2 pieces bache hain!"}` : ""}`;
+    
     newSession.history.push({
       sender: "ai",
       message: finalOfferMessage,
@@ -527,11 +584,12 @@ export const processUserOffer = (
 
   newSession.lastAiOffer = newAiOffer;
 
-  const response = getSmartResponse(userOffer, newAiOffer, userStrategy, newSession.aiMood, session.currentRound, session.mrp, session);
+  const fallbackResponse = getSmartResponse(userOffer, newAiOffer, userStrategy, newSession.aiMood, session.currentRound, session.mrp, session);
+  const geminiResponse = await getGeminiResponse(session, userOffer, newAiOffer, userStrategy, newSession.aiMood, fallbackResponse, "negotiating");
 
   newSession.history.push({
     sender: "ai",
-    message: response,
+    message: geminiResponse,
     price: newAiOffer,
   });
 
