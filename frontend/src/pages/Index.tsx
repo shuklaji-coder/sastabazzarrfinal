@@ -129,6 +129,7 @@ const Index = () => {
               <div className="absolute inset-0 bg-black/40 z-10" /> {/* Dark Overlay */}
               {slide.video ? (
                 <video
+                  key={slide.video}
                   src={slide.video}
                   autoPlay
                   muted
@@ -143,7 +144,11 @@ const Index = () => {
                   }}
                   onLoadedData={(e) => {
                     const video = e.target as HTMLVideoElement;
+                    console.log('Video loaded:', slide.video);
                     video.playbackRate = 1.0;
+                  }}
+                  onError={(e) => {
+                    console.error('Video error:', slide.video, e);
                   }}
                   onEnded={() => {
                     const nextSlide = (currentSlide + 1) % heroSlides.length;
