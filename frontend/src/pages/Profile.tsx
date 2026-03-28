@@ -18,10 +18,22 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  const [isAddingAddress, setIsAddingAddress] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
+    mobile: ''
+  });
+
+  const [newAddress, setNewAddress] = useState({
+    name: '',
+    phone: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    locality: '',
     mobile: ''
   });
 
@@ -42,12 +54,7 @@ const Profile = () => {
           mobile: profileRes.mobile || ''
         });
 
-        try {
-            const addrRes = await userService.getUserAddresses();
-            setAddresses(addrRes || []);
-        } catch (e) {
-            console.warn("Addresses not found");
-        }
+        await fetchAddresses();
 
       } catch (err) {
         console.error("Failed to fetch profile data", err);
@@ -57,6 +64,15 @@ const Profile = () => {
     };
     fetchData();
   }, []);
+
+  const fetchAddresses = async () => {
+    try {
+        const addrRes = await userService.getUserAddresses();
+        setAddresses(addrRes || []);
+    } catch (e) {
+        console.warn("Addresses not found");
+    }
+  };
 
   const stats = {
     totalOrders: orders.length,
@@ -69,6 +85,34 @@ const Profile = () => {
     e.preventDefault();
     setIsEditing(false);
     toast.success("Profile details updated!");
+  };
+
+  const handleSaveAddress = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const addressToSave = {
+        name: newAddress.name,
+        locality: newAddress.locality || newAddress.street,
+        address: newAddress.street,
+        city: newAddress.city,
+        state: newAddress.state,
+        pincode: newAddress.zip,
+        mobile: newAddress.phone || newAddress.mobile
+      };
+
+      await userService.addAddress(addressToSave);
+      toast.success("Address added successfully");
+      setIsAddingAddress(false);
+      fetchAddresses();
+      
+      // Clear form
+      setNewAddress({
+        name: '', phone: '', street: '', city: '', state: '', zip: '', locality: '', mobile: ''
+      });
+    } catch (err) {
+      console.error("Failed to add address", err);
+      toast.error("Failed to add address");
+    }
   };
 
   if (loading) {
@@ -311,8 +355,95 @@ const Profile = () => {
                 >
                   <div className="flex items-center justify-between mb-4">
                      <h2 className="text-2xl font-display font-bold">Saved Addresses</h2>
-                     <Button className="font-bold gap-2"><Plus className="w-4 h-4" /> Add New</Button>
+                     <Button 
+                        onClick={() => setIsAddingAddress(!isAddingAddress)}
+                        className="font-bold gap-2"
+                        variant={isAddingAddress ? "outline" : "default"}
+                     >
+                        {isAddingAddress ? 'Cancel' : <><Plus className="w-4 h-4" /> Add New</>}
+                     </Button>
                   </div>
+
+                  {isAddingAddress && (
+                    <motion.form 
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      onSubmit={handleSaveAddress} 
+                      className="mb-8 p-6 bg-card glass border border-white/20 rounded-2xl shadow-xl space-y-6"
+                    >
+                      <h3 className="text-lg font-bold mb-4">Add New Delivery Address</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Receiver Name</label>
+                          <input 
+                            required
+                            className="w-full px-5 py-3 rounded-2xl border bg-background border-border hover:border-primary focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-semibold"
+                            placeholder="e.g. Rahul Sharma"
+                            value={newAddress.name}
+                            onChange={(e) => setNewAddress({...newAddress, name: e.target.value})}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Mobile Number</label>
+                          <input 
+                            required
+                            className="w-full px-5 py-3 rounded-2xl border bg-background border-border hover:border-primary focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-semibold"
+                            placeholder="9876543210"
+                            value={newAddress.phone}
+                            onChange={(e) => setNewAddress({...newAddress, phone: e.target.value})}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Street Address</label>
+                        <input 
+                          required
+                          className="w-full px-5 py-3 rounded-2xl border bg-background border-border hover:border-primary focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-semibold"
+                          placeholder="Flat, House no., Building, Company, Apartment"
+                          value={newAddress.street}
+                          onChange={(e) => setNewAddress({...newAddress, street: e.target.value, locality: e.target.value})}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Pincode</label>
+                          <input 
+                            required
+                            className="w-full px-5 py-3 rounded-2xl border bg-background border-border hover:border-primary focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-semibold font-mono"
+                            placeholder="400001"
+                            value={newAddress.zip}
+                            onChange={(e) => setNewAddress({...newAddress, zip: e.target.value})}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">City</label>
+                          <input 
+                            required
+                            className="w-full px-5 py-3 rounded-2xl border bg-background border-border hover:border-primary focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-semibold"
+                            placeholder="Mumbai"
+                            value={newAddress.city}
+                            onChange={(e) => setNewAddress({...newAddress, city: e.target.value})}
+                          />
+                        </div>
+                        <div className="col-span-2 md:col-span-1 space-y-2">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">State</label>
+                          <input 
+                            required
+                            className="w-full px-5 py-3 rounded-2xl border bg-background border-border hover:border-primary focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-semibold"
+                            placeholder="Maharashtra"
+                            value={newAddress.state}
+                            onChange={(e) => setNewAddress({...newAddress, state: e.target.value})}
+                          />
+                        </div>
+                      </div>
+
+                      <Button type="submit" className="w-full py-6 rounded-2xl font-bold shadow-lg shadow-primary/20">
+                        Save Address
+                      </Button>
+                    </motion.form>
+                  )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {addresses.length === 0 ? (
                       <div className="col-span-full py-20 bg-card glass rounded-2xl border border-white/20 text-center">

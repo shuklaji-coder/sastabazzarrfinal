@@ -16,6 +16,10 @@ const SellerProducts = () => {
         const data = res.content || res;
         if (Array.isArray(data)) {
           setProducts(data);
+          console.log('=== SELLER PRODUCTS PAGE ===');
+          data.forEach((product, index) => {
+            console.log(`${index + 1}. ${product.title || product.name} - ₹${product.sellingPrice || product.price} (Stock: ${product.quantity || product.stock || 0})`);
+          });
         }
       } catch (err) {
         console.error("Failed to load seller products", err);
@@ -47,6 +51,29 @@ const SellerProducts = () => {
           />
         </div>
 
+        {/* Product Summary */}
+        <div className="bg-card rounded-lg border border-border p-4">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-semibold text-foreground">Product Summary</h3>
+            <span className="text-sm text-muted-foreground">{products.length} Total Products</span>
+          </div>
+          {products.length > 0 && (
+            <div className="space-y-1">
+              {products.slice(0, 3).map((product, index) => (
+                <div key={product.id} className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">{index + 1}. {product.title || product.name}</span>
+                  <span className="font-medium text-foreground">₹{product.sellingPrice || product.price || 0}</span>
+                </div>
+              ))}
+              {products.length > 3 && (
+                <div className="text-xs text-muted-foreground pt-1">
+                  ... and {products.length - 3} more products
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
         <div className="bg-card rounded-lg border border-border overflow-hidden">
           {isLoading ? (
             <div className="flex justify-center py-10">
@@ -73,7 +100,10 @@ const SellerProducts = () => {
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-3">
                           <img src={product.images?.[0] || 'https://via.placeholder.com/150'} alt="" className="w-10 h-10 rounded-lg object-cover" />
-                          <span className="font-medium text-foreground line-clamp-1">{product.title || product.name}</span>
+                          <div>
+                            <span className="font-medium text-foreground line-clamp-1">{product.title || product.name}</span>
+                            <span className="text-xs text-muted-foreground">ID: {product.id}</span>
+                          </div>
                         </div>
                       </td>
                       <td className="py-3 px-4 text-muted-foreground">
@@ -81,7 +111,14 @@ const SellerProducts = () => {
                           ? (product.category?.name || 'Uncategorized') 
                           : (product.category || 'Uncategorized')}
                       </td>
-                      <td className="py-3 px-4 font-display font-semibold text-foreground">₹{(product.sellingPrice || product.discountedPrice || product.price || 0).toFixed(2)}</td>
+                      <td className="py-3 px-4">
+                        <div className="space-y-1">
+                          <span className="font-display font-semibold text-foreground">₹{(product.sellingPrice || product.discountedPrice || product.price || 0).toFixed(2)}</span>
+                          {product.mrpPrice && product.mrpPrice > (product.sellingPrice || product.price) && (
+                            <span className="text-xs text-muted-foreground line-through block">₹{product.mrpPrice.toFixed(2)}</span>
+                          )}
+                        </div>
+                      </td>
                       <td className="py-3 px-4">
                         <span className={`text-sm font-medium ${(product.quantity || product.stock || 0) < 20 ? 'text-destructive' : 'text-success'}`}>
                           {product.quantity || product.stock || 0}

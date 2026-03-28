@@ -26,15 +26,24 @@ const SellerDashboard = () => {
       try {
         const [ordersRes, productsRes, profileRes] = await Promise.all([
           orderService.getSellerOrders(),
-          productService.getAllProducts(), // In a real app, this should be filtered by seller
+          productService.getAllProducts(), // TODO: Add seller-specific filter API endpoint
           userService.getUserProfile()
         ]);
 
         const sellerOrders = Array.isArray(ordersRes) ? ordersRes : (ordersRes.content || []);
-        const sellerProducts = Array.isArray(productsRes) ? productsRes : (productsRes.content || []);
+        const allProducts = Array.isArray(productsRes) ? productsRes : (productsRes.content || []);
+        
+        // TODO: Filter products by seller ID when backend supports it
+        // For now, showing all products (in production, this would be seller-specific)
+        const sellerProducts = allProducts;
         
         // Calculate Revenue
         const totalRevenue = sellerOrders.reduce((sum: number, order: any) => sum + (order.total || 0), 0);
+        
+        // Get product names for display
+        const productNames = sellerProducts.slice(0, 5).map(p => p.title || p.name).join(', ');
+        
+        console.log('Seller Products:', sellerProducts.map(p => ({ id: p.id, name: p.title || p.name, price: p.sellingPrice })));
         
         setStats([
           { label: 'Total Revenue', value: `₹${totalRevenue.toLocaleString()}`, change: '+12.5%', icon: DollarSign, color: 'text-success' },
@@ -44,7 +53,14 @@ const SellerDashboard = () => {
         ]);
 
         setRecentOrders(sellerOrders.slice(0, 5));
-        setSellerName(profileRes.firstName || profileRes.username || 'TechVault');
+        setSellerName(profileRes.firstName || profileRes.username || 'Seller');
+        
+        // Log product details for debugging
+        console.log('=== SELLER DASHBOARD PRODUCT LIST ===');
+        sellerProducts.forEach((product, index) => {
+          console.log(`${index + 1}. ${product.title || product.name} - ₹${product.sellingPrice || product.price} (ID: ${product.id})`);
+        });
+        
       } catch (err) {
         console.error("Dashboard data fetch failed", err);
       } finally {
