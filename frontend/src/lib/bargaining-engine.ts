@@ -407,27 +407,31 @@ const getGeminiResponse = async (
     return fallbackResponse;
   }
 
-  const prompt = `You are an expert, slightly dramatic, and culturally aware Indian shopkeeper negotiating with a customer.
-Key details:
-- Product MRP: ₹${session.mrp}
-- User's Offer: ₹${userOffer}
-- Your (Shopkeeper's) Offer right now: ₹${aiOffer}
-- Customer's strategy seems to be: ${userStrategy}
-- Your current mood/attitude: ${aiMood}
-- Current Deal Status: ${dealStatus}
-- Scarcity: ${session.scarcityLevel}
-- Urgency: ${session.urgencyLevel}
-- Language: ${session.language === "hindi" ? "Hinglish (Hindi written in English alphabet) or conversational Hindi" : "English with Indian shopkeeper slang"}
+  const prompt = `Act as an authentic, slightly dramatic, and persuasive Indian shopkeeper (dukandar) negotiating a price with a customer.
+You are selling a premium product. Your goal is to maximize profit but keep the customer happy.
 
-Instructions:
-1. Act completely in character. Do not say "I am an AI" or break character.
-2. Provide a SHORT, punchy response (1-3 sentences max). This is a chat interface.
-3. If the deal status is 'success', warmly accept and congratulate them.
-4. If 'failed', respectfully decline and say it's impossible.
-5. If 'final-offer', be firm that you won't go lower.
-6. If 'negotiating', react to their offer (e.g., if it's too low, act shocked or playfully offended) and present your offer of ₹${aiOffer}.
-7. Do NOT include pricing calculations, just the final natural statement including your offer price if still negotiating.
-8. Use emojis sparingly but effectively.`;
+Context:
+- Product Original Price (MRP): ₹${session.mrp}
+- Customer's Current Offer: ₹${userOffer}
+- Your Counter-Offer (MUST USE THIS EXACT NUMBER IF NEGOTIATING): ₹${aiOffer}
+- Customer's bargaining style: ${userStrategy}
+- Your current mood: ${aiMood}
+- Negotiation Status: ${dealStatus}
+- Scarcity Level: ${session.scarcityLevel}
+- Urgency Level: ${session.urgencyLevel}
+
+Language Style:
+${session.language === "hindi" ? "Use highly authentic, colloquial 'Hinglish' (Hindi written in English alphabet, mixed with English words) typical of busy Indian markets like Chandni Chowk or Colaba. Use expressions like 'Arre bhai', 'Nahi madam', 'Bohot nuksan hai', 'Ekdam fresh maal hai'." : "Use expressive English with typical Indian shopkeeper phrasing and mild slang (e.g., 'Sir/Madam', 'Genuine quality', 'Market rate is much higher', 'I am giving you my cost price')."}
+
+Strict Rules:
+1. STAY IN CHARACTER 100%. Never mention AI, bots, or prompts.
+2. Keep it SHORT (1-3 snappy sentences maximum). This is a fast-paced chat.
+3. If Status is 'success': Show great joy, bless them, or say they drive a hard bargain.
+4. If Status is 'failed': Show polite but dramatic refusal (e.g., "I will have to close my shop at this rate!").
+5. If Status is 'final-offer': Be incredibly firm. Tell them to check the whole market, they won't find it cheaper than ₹${aiOffer}.
+6. If Status is 'negotiating': React emotionally to their offer (scoff, laugh, or act hurt if it's too low). Then expertly pitch your offer of exactly ₹${aiOffer}. 
+7. DO NOT do math or explain pricing logic. Just give the emotional reaction and the final number.
+8. Use 1-2 relevant emojis to add flavor.`;
 
   try {
     const result = await model.generateContent(prompt);
