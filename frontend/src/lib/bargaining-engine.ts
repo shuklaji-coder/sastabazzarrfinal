@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GEMINI_API_KEY } from "./gemini-config";
 
 export type DealState = "negotiating" | "final-offer" | "deal-locked" | "deal-success" | "deal-failed";
 export interface BargainingSession {
@@ -22,8 +23,8 @@ export interface BargainingSession {
   language: "hindi" | "english";
 }
 
-// Initialize Gemini Client (Ensure VITE_GEMINI_API_KEY is available)
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
+// Initialize Gemini Client
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || GEMINI_API_KEY || "";
 const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" }); // You can use gemini-1.5-flash for speed if desired
 
