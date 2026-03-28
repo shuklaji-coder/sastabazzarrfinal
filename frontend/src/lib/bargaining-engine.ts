@@ -25,8 +25,11 @@ export interface BargainingSession {
 
 // Initialize Gemini Client
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY || GEMINI_API_KEY || "";
+if (apiKey) {
+  console.log(`Gemini initialized with key (ending in ...${apiKey.slice(-4)})`);
+}
 const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" }); // You can use gemini-1.5-flash for speed if desired
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); 
 
 export const initBargainingSession = (mrp: number, maxDiscountPercent: number = 10, language: "hindi" | "english" = "hindi"): BargainingSession => {  // Set min threshold based on max discount percent (e.g., 10% discount means 90% of MRP is minimum)
   const discountFactor = 1 - (maxDiscountPercent / 100);
