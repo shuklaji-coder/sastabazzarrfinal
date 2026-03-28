@@ -403,8 +403,8 @@ const getGeminiResponse = async (
   fallbackResponse: string,
   dealStatus: "success" | "failed" | "negotiating" | "final-offer"
 ): Promise<string> => {
-  if (!apiKey) {
-    console.warn("Gemini API key is missing. Using fallback response.");
+  if (!apiKey || apiKey.length < 10) {
+    console.log("Gemini API key not configured. Using intelligent fallback responses.");
     return fallbackResponse;
   }
 
@@ -437,9 +437,22 @@ Strict Rules:
   try {
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();
-    return responseText.trim() || fallbackResponse;
-  } catch (error) {
-    console.error("Gemini API error:", error);
+    const cleanedResponse = responseText.trim();
+    
+    if (cleanedResponse.length < 10) {
+      console.warn("Gemini response too short, using fallback");
+      return fallbackResponse;
+    }
+    
+    return cleanedResponse;
+  } catch (error: any) {
+    console.error("Gemini API error:", error?.message || error);
+    
+    // Check for specific API key errors
+    if (error?.message?.includes("API_KEY_INVALID") || error?.message?.includes("API key not valid")) {
+      console.warn("Invalid Gemini API key. Please check VITE_GEMINI_API_KEY environment variable.");
+    }
+    
     return fallbackResponse;
   }
 };
