@@ -115,6 +115,46 @@ const getLoyaltyTier = (): "bronze" | "silver" | "gold" | "platinum" | "none" =>
   return "none";
 };
 
+// Real-time purchase notification system
+const getRecentPurchaseNotification = (language: "hindi" | "english" = "hindi"): string => {
+  const buyerNames = [
+    "Riya", "Priya", "Anjali", "Kavya", "Sneha", "Neha", "Pooja", "Divya",
+    "Amit", "Rahul", "Vikram", "Arjun", "Karan", "Rohit", "Aman", "Suresh",
+    "Sakshi", "Meera", "Tanya", "Ishita", "Swati", "Rashmi", "Kirti", "Anita"
+  ];
+  
+  const locations = [
+    "Mumbai", "Delhi", "Bangalore", "Pune", "Hyderabad", "Chennai", 
+    "Kolkata", "Jaipur", "Lucknow", "Indore", "Ahmedabad", "Surat"
+  ];
+  
+  const times = ["just now", "2 mins ago", "5 mins ago", "10 mins ago"];
+  
+  const buyer = buyerNames[Math.floor(Math.random() * buyerNames.length)];
+  const location = locations[Math.floor(Math.random() * locations.length)];
+  const time = times[Math.floor(Math.random() * times.length)];
+  
+  if (language === "english") {
+    const messages = [
+      `🔥 ${buyer} from ${location} just bought this! ${time}`,
+      `⚡ ${buyer} purchased this ${time}! Don't miss out!`,
+      `🎯 ${buyer} from ${location} grabbed this deal! ${time}`,
+      `💫 ${buyer} just ordered! Only 3 left in stock!`,
+      `🚨 ${buyer} from ${location} bought this! Selling fast!`
+    ];
+    return messages[Math.floor(Math.random() * messages.length)];
+  } else {
+    const messages = [
+      `🔥 ${location} ki ${buyer} ne abhi kharida! ${time}`,
+      `⚡ ${buyer} ne kharida ${time}! Chance mat miss karo!`,
+      `🎯 ${location} ki ${buyer} ne le liya deal! ${time}`,
+      `💫 ${buyer} ne order kiya! Sirf 3 stock mein bacha!`,
+      `🚨 ${location} ki ${buyer} ne kharida! Tezi se bik raha hai!`
+    ];
+    return messages[Math.floor(Math.random() * messages.length)];
+  }
+};
+
 const getUrgencyMessage = (urgency: string, scarcity: string, timeLeft: number, language: "hindi" | "english" = "hindi"): string => {
   const urgencyMessages = {
     english: {

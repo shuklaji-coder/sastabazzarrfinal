@@ -6,6 +6,7 @@ import { ArrowLeft, Loader2, Sparkles } from "lucide-react";
 import { BargainingProductCard } from "@/components/bargaining/BargainingProductCard";
 import { BargainingChat } from "@/components/bargaining/BargainingChat";
 import { HagglingMeter } from "@/components/bargaining/HagglingMeter";
+import { LivePurchaseAlert } from "@/components/bargaining/LivePurchaseAlert";
 import { initBargainingSession, processUserOffer, BargainingSession } from "@/lib/bargaining-engine";
 import { productService } from "@/services/productService";
 import { useCart } from "@/contexts/CartContext";
@@ -168,6 +169,9 @@ export default function AiBhaavTaav() {
         
         <div className="w-8" /> {/* Spacer */}
       </header>
+
+      {/* Live Purchase Alerts */}
+      <LivePurchaseAlert language={session?.language || "hindi"} isVisible={session?.dealState === "negotiating"} />
 
       {/* Main Content Area */}
       <main className="relative z-10 container mx-auto px-4 py-6 md:py-8 lg:py-12 flex flex-col lg:flex-row gap-6 lg:gap-8 h-[calc(100vh-80px)] max-h-[1000px]">
