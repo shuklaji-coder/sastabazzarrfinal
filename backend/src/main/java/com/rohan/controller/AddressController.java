@@ -33,4 +33,14 @@ public class AddressController {
         User user = userService.findUserByJwtToken(jwt);
         return ResponseEntity.ok(user.getAddresses());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<User> deleteAddress(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String jwt) throws Exception {
+
+        User user = userService.findUserByJwtToken(jwt);
+        User updatedUser = userService.deleteAddress(user, id);
+        return ResponseEntity.ok(updatedUser);
+    }
 }

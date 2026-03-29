@@ -114,6 +114,17 @@ const Profile = () => {
       toast.error("Failed to add address");
     }
   };
+  
+  const handleDeleteAddress = async (addressId: number) => {
+    try {
+      await userService.deleteAddress(addressId);
+      toast.success("Address removed successfully");
+      fetchAddresses();
+    } catch (err) {
+      console.error("Failed to delete address", err);
+      toast.error("Failed to delete address");
+    }
+  };
 
   if (loading) {
     return (
@@ -456,15 +467,20 @@ const Profile = () => {
                            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                              <MapPin className="w-5 h-5" />
                            </div>
-                           <h3 className="font-bold text-lg">{addr.fullName || 'Home'}</h3>
+                           <h3 className="font-bold text-lg">{addr.name || 'Home'}</h3>
                         </div>
                         <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                          {addr.streetAddress}<br/>
-                          {addr.city}, {addr.state} - {addr.zipCode}
+                          {addr.address}<br/>
+                          {addr.city}, {addr.state} - {addr.pincode}
                         </p>
                         <div className="flex items-center gap-4 border-t border-border/50 pt-4">
                            <button className="text-xs font-bold text-primary hover:underline">Edit</button>
-                           <button className="text-xs font-bold text-destructive hover:underline">Remove</button>
+                           <button 
+                             onClick={() => handleDeleteAddress(addr.id)}
+                             className="text-xs font-bold text-destructive hover:underline"
+                           >
+                             Remove
+                           </button>
                         </div>
                       </div>
                     ))}

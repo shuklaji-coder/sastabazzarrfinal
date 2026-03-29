@@ -35,4 +35,9 @@ public class UserServiceimpl implements UserService {
         user.getAddresses().add(address);
         return userRepository.save(user);
     }
+    @Override
+    public User deleteAddress(User user, Long addressId) throws Exception {
+        user.getAddresses().removeIf(address -> address.getId().equals(addressId));
+        return userRepository.save(user);
+    }
 }
