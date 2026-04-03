@@ -16,8 +16,8 @@ public class NegotiationService {
     private final WebClient webClient;
     private static final Logger logger = LoggerFactory.getLogger(NegotiationService.class);
 
-    public NegotiationService(WebClient.Builder webClientBuilder, @Value("${ml.service.url}") String mlServiceUrl) {
-        this.webClient = webClientBuilder.baseUrl(mlServiceUrl).build();
+    public NegotiationService(@Value("${ml.service.url}") String mlServiceUrl) {
+        this.webClient = WebClient.builder().baseUrl(mlServiceUrl).build();
     }
 
     public Mono<NegotiationResponseDTO> negotiate(NegotiationRequestDTO request) {
