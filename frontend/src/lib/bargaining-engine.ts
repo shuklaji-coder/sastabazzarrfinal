@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GEMINI_API_KEY } from "./gemini-config";
+import axios from "./axios";
 
 export type DealState = "negotiating" | "final-offer" | "deal-locked" | "deal-success" | "deal-failed";
 export interface BargainingSession {
@@ -480,13 +481,7 @@ export const processUserOffer = async (
   const discountRate = parseFloat((1 - (session.minThreshold / session.mrp)).toFixed(2));
 
   try {
-    const response = await fetch("http://localhost:8080/api/negotiate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(jwt ? { "Authorization": `Bearer ${jwt}` } : {})
-      },
-      body: JSON.stringify({
+    const response = await axios.post("/api/negotiate", {
          original_price: session.mrp,
          discount_rate: discountRate,
          user_offer: userOffer,
@@ -494,12 +489,9 @@ export const processUserOffer = async (
          category: session.category || "Electronics",
          prev_user_offer: prevUserOffer,
          market_condition: "normal"
-      })
     });
 
-    if (!response.ok) throw new Error("ML API error");
-    
-    const data = await response.json();
+    const data = response.data;
     
     let newState: DealState = "negotiating";
     if (data.deal_status === "accept") newState = "deal-success";
