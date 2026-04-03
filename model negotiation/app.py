@@ -8,8 +8,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-# Enable CORS for Spring Boot on port 8080
-CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
+# Enable CORS for all origins in production
+CORS(app)
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -218,4 +218,6 @@ def negotiate():
         }), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=False)
+    # Use PORT environment variable provided by Railway
+    port = int(os.environ.get("PORT", 5001))
+    app.run(host='0.0.0.0', port=port, debug=False)
