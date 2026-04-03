@@ -45,6 +45,7 @@ public class AppConfig {
                         .requestMatchers("/debug/**").permitAll()
                         .requestMatchers("/health").permitAll()
                         .requestMatchers("/test-order").permitAll()
+                        .requestMatchers("/api/negotiate/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
