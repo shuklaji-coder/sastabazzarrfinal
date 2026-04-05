@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MessageSquare, X, Send, Bot, User, Loader2, ShoppingBag, 
   Package, Star, ExternalLink, Sparkles, Mic, MicOff, 
-  ShoppingCart, Zap, Headphones, CheckCircle2, Search
+  ShoppingCart, Zap, Headphones, CheckCircle2, Search, Volume2, VolumeX
 } from 'lucide-react';
 import { chatService, ChatProductDTO, OrderStatusDTO } from '../services/chatService';
 import { useNavigate } from 'react-router-dom';
@@ -234,9 +234,30 @@ export const ChatBot = () => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
+  // ─── Text-to-Speech Utility ──────────────────────────────────────
+  const speak = (text: string) => {
+    if (isMuted || !('speechSynthesis' in window)) return;
+
+    // Cancel existing speech
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    // Find Hindi Voice (Preferably Male/Natural)
+    const voices = window.speechSynthesis.getVoices();
+    const hiVoice = voices.find(v => v.lang.includes('hi')) || voices.find(v => v.lang.includes('en-IN'));
+    
+    if (hiVoice) utterance.voice = hiVoice;
+    utterance.rate = 0.95; // Slightly slower for clarity
+    utterance.pitch = 0.9; // Slightly deeper for "Uncle" vibe
+    
+    window.speechSynthesis.speak(utterance);
+  };
 
   // Voice Recognition Setup
   const recognitionRef = useRef<any>(null);
@@ -333,6 +354,7 @@ export const ChatBot = () => {
         orderStatus: response.orderStatus,
       };
       setMessages(prev => [...prev, newBotMessage]);
+      speak(response.response);
     } catch (error) {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -342,6 +364,7 @@ export const ChatBot = () => {
         quickActions: ['🔄 Try Again', '❓ Help']
       };
       setMessages(prev => [...prev, errorMessage]);
+      speak("Pata nahi kya hua, ek baar phir koshish kijiye.");
     } finally {
       setIsLoading(false);
       inputRef.current?.focus();
@@ -426,6 +449,13 @@ export const ChatBot = () => {
                   </div>
                 </div>
                 <div className="flex gap-2">
+                    <button 
+                      onClick={() => setIsMuted(!isMuted)}
+                      className={`p-2.5 rounded-2xl transition-all ${isMuted ? 'bg-red-500/10 text-red-400' : 'bg-orange-500/10 text-orange-400 hover:bg-orange-500/20'}`}
+                      title={isMuted ? "Unmute Sharma Ji" : "Mute Sharma Ji"}
+                    >
+                        {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                    </button>
                     <button className="p-2.5 rounded-2xl bg-white/5 text-white/40 hover:text-white hover:bg-white/10 transition-all">
                         <Headphones className="w-5 h-5" />
                     </button>

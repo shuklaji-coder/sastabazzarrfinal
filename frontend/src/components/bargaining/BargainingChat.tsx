@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, Handshake, Gift } from "lucide-react";
+import { Send, Handshake, Gift, Volume2, VolumeX } from "lucide-react";
 import { BargainingSession } from "@/lib/bargaining-engine";
 import { Button } from "@/components/ui/button";
 
@@ -14,7 +14,29 @@ interface BargainingChatProps {
 
 export function BargainingChat({ session, onSendOffer, isAiTyping, onGoToCart }: BargainingChatProps) {
   const [inputValue, setInputValue] = useState("");
+  const [isMuted, setIsMuted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // ─── Text-to-Speech Utility ──────────────────────────────────────
+  const speak = (text: string) => {
+    if (isMuted || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    const hiVoice = voices.find(v => v.lang.includes('hi')) || voices.find(v => v.lang.includes('en-IN'));
+    if (hiVoice) utterance.voice = hiVoice;
+    utterance.rate = 0.95;
+    utterance.pitch = 0.9;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // Speak when last message is from bot
+  useEffect(() => {
+    const lastMsg = session.history[session.history.length - 1];
+    if (lastMsg && lastMsg.sender === "ai") {
+      speak(lastMsg.message);
+    }
+  }, [session.history, isMuted]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -65,6 +87,15 @@ export function BargainingChat({ session, onSendOffer, isAiTyping, onGoToCart }:
             <span className="w-2.5 h-2.5 rounded-full bg-success shadow-[0_0_10px_rgba(34,197,94,0.5)] animate-pulse" /> Traditional Shopkeeper Agent
           </p>
         </div>
+
+        {/* Voice Toggle */}
+        <button 
+          onClick={() => setIsMuted(!isMuted)}
+          className={`ml-auto p-3 rounded-2xl transition-all shadow-xl border ${isMuted ? 'bg-red-500/10 text-red-500 border-red-500/20' : 'bg-orange-500/10 text-orange-400 border-orange-500/20 hover:bg-orange-500/20'}`}
+          title={isMuted ? "Unmute Sharma Ji" : "Mute Sharma Ji"}
+        >
+          {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
+        </button>
       </div>
 
       {/* Messages Area */}
