@@ -45,8 +45,16 @@ export function BargainingChat({ session, onSendOffer, isAiTyping, onGoToCart }:
       
       {/* Header */}
       <div className="flex-none flex items-center gap-4 p-5 border-b border-white/5 bg-gradient-to-r from-primary/10 to-transparent">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-orange-400 to-amber-300 flex items-center justify-center shadow-[0_0_15px_rgba(251,146,60,0.4)] border-2 border-white/20">
-          <span className="text-2xl">👳‍♂️</span>
+        <div className="relative group">
+          <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-[0_0_20px_rgba(251,146,60,0.3)] border border-white/20 relative z-10">
+            <img 
+              src="/ai-avatar.png" 
+              alt="Sharma Ji" 
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+            />
+          </div>
+          {/* Pulsing Glow Effect */}
+          <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl animate-pulse -z-10" />
         </div>
         <div>
           <h3 className="font-display font-bold text-white text-lg">Sharma Ji</h3>

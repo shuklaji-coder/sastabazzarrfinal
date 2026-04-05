@@ -403,10 +403,10 @@ export const ChatBot = () => {
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-4">
                   <div className="relative group">
-                    <div className="w-14 h-14 rounded-[1.25rem] bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.3)] transform group-hover:rotate-[360deg] transition-transform duration-1000">
-                      <Bot className="w-8 h-8 text-white" />
+                    <div className="w-14 h-14 rounded-2xl overflow-hidden bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.3)] border border-white/20 transform group-hover:rotate-6 transition-transform duration-500">
+                      <img src="/ai-avatar.png" alt="BazaarBot" className="w-full h-full object-cover" />
                     </div>
-                    <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-4 border-[#050618] shadow-lg" />
+                    <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-4 border-[#050618] shadow-lg animate-pulse" />
                   </div>
                   <div>
                     <h3 className="font-black text-white text-lg flex items-center gap-2 tracking-tighter uppercase">
@@ -461,7 +461,7 @@ export const ChatBot = () => {
                     >
                       {message.sender === 'user'
                         ? <User className="w-5 h-5 text-white" />
-                        : <Bot className="w-5 h-5 text-white" />
+                        : <img src="/ai-avatar.png" alt="AI" className="w-full h-full object-cover rounded-2xl" />
                       }
                     </motion.div>
 
@@ -582,7 +582,11 @@ export const ChatBot = () => {
             className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-600 rounded-[1.75rem] flex items-center justify-center shadow-[0_10px_40px_rgba(6,182,212,0.5),0_0_0_4px_rgba(255,255,255,0.05)] z-[100] group overflow-hidden"
           >
             <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
-            <Bot className="w-9 h-9 text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] transition-all duration-500" />
+            <img 
+              src="/ai-avatar.png" 
+              alt="Bot" 
+              className="w-10 h-10 rounded-xl object-cover group-hover:scale-110 transition-all duration-500 shadow-lg" 
+            />
 
             {/* Notification Glow */}
             <span className="absolute inset-0 rounded-[1.75rem] border-2 border-cyan-400/30 animate-pulse" />
