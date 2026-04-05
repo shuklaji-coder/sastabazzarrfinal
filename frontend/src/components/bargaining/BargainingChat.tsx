@@ -21,8 +21,10 @@ export function BargainingChat({ session, onSendOffer, isAiTyping, onGoToCart }:
   const speak = (text: string) => {
     if (isMuted || !('speechSynthesis' in window)) return;
 
-    // Filter out emojis and symbols
-    const cleanText = text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD00-\uDFFF])/g, '');
+    // Aggressive regex to remove ALL emojis, symbols, and pictographs
+    const cleanText = text
+      .replace(/[\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD00-\uDFFF]/g, '')
+      .replace(/[^\w\s\u0900-\u097F.,?!₹%]/g, '');
 
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(cleanText);
@@ -30,12 +32,17 @@ export function BargainingChat({ session, onSendOffer, isAiTyping, onGoToCart }:
 
     const setVoice = () => {
       const voices = window.speechSynthesis.getVoices();
-      const hiVoice = voices.find(v => v.lang === 'hi-IN' || v.lang.startsWith('hi')) || 
-                      voices.find(v => v.lang.includes('en-IN'));
       
-      if (hiVoice) utterance.voice = hiVoice;
-      utterance.rate = 0.9;
-      utterance.pitch = 1.0;
+      // Try to find a male Hindi voice first
+      const maleHiVoice = voices.find(v => (v.lang.startsWith('hi')) && (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('rishi') || v.name.toLowerCase().includes('hemant')));
+      const anyHiVoice = maleHiVoice || voices.find(v => v.lang.startsWith('hi')) || voices.find(v => v.lang.includes('en-IN'));
+      
+      if (anyHiVoice) utterance.voice = anyHiVoice;
+      
+      // Pitch/Rate adjustment for "Uncle" vibe
+      utterance.rate = 0.85; 
+      utterance.pitch = 0.8; // Lower pitch = more masculine/uncle-like
+      
       window.speechSynthesis.speak(utterance);
     };
 
