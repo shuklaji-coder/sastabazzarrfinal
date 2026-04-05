@@ -35,10 +35,10 @@ const OrderTimeline = ({ orderStatus }: { orderStatus: OrderStatusDTO }) => {
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Package className="w-5 h-5 text-cyan-400" />
+          <Package className="w-5 h-5 text-orange-400" />
           <span className="text-sm font-bold text-white">Order Status</span>
         </div>
-        <span className="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-500/20">
+        <span className="text-[10px] font-mono bg-orange-500/10 text-orange-400 px-2 py-0.5 rounded-full border border-orange-500/20">
           #{orderStatus.orderId}
         </span>
       </div>
@@ -58,15 +58,15 @@ const OrderTimeline = ({ orderStatus }: { orderStatus: OrderStatusDTO }) => {
                   initial={false}
                   animate={{
                     scale: i <= currentIndex ? 1.1 : 1,
-                    backgroundColor: i <= currentIndex ? '#06b6d4' : 'rgba(255,255,255,0.05)',
+                    backgroundColor: i <= currentIndex ? '#f97316' : 'rgba(255,255,255,0.05)',
                   }}
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black border-2 transition-all duration-500 ${
-                    i <= currentIndex ? 'border-cyan-400 text-black' : 'border-white/10 text-white/30'
+                    i <= currentIndex ? 'border-orange-400 text-black' : 'border-white/10 text-white/30'
                   }`}
                 >
                   {i <= currentIndex ? <CheckCircle2 className="w-3.5 h-3.5" /> : i + 1}
                 </motion.div>
-                <span className={`text-[8px] mt-2 font-bold uppercase tracking-tighter ${i <= currentIndex ? 'text-cyan-400' : 'text-white/20'}`}>
+                <span className={`text-[8px] mt-2 font-bold uppercase tracking-tighter ${i <= currentIndex ? 'text-orange-400' : 'text-white/20'}`}>
                   {step}
                 </span>
               </div>
@@ -75,7 +75,7 @@ const OrderTimeline = ({ orderStatus }: { orderStatus: OrderStatusDTO }) => {
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: i < currentIndex ? '100%' : '0%' }}
-                    className="h-full bg-cyan-500"
+                    className="h-full bg-orange-500"
                   />
                 </div>
               )}
@@ -93,7 +93,7 @@ const OrderTimeline = ({ orderStatus }: { orderStatus: OrderStatusDTO }) => {
         ].map((item, idx) => (
           <div key={idx} className="bg-white/[0.02] border border-white/[0.05] rounded-xl p-2.5">
             <span className="text-[9px] uppercase tracking-widest text-white/30 block mb-0.5">{item.label}</span>
-            <p className={`text-xs font-bold ${item.primary ? 'text-cyan-400' : 'text-white/80'}`}>{item.value}</p>
+            <p className={`text-xs font-bold ${item.primary ? 'text-orange-400' : 'text-white/80'}`}>{item.value}</p>
           </div>
         ))}
       </div>
@@ -114,8 +114,8 @@ const ProductCard = ({ product, onView }: { product: ChatProductDTO; onView: (id
       addItem(product as any);
       setIsAdding(false);
       toast.success(`${product.title} added to cart!`, {
-        icon: <ShoppingCart className="w-4 h-4 text-primary" />,
-        className: "bg-[#050618] border-cyan-500/20 text-white"
+        icon: <ShoppingCart className="w-4 h-4 text-orange-400" />,
+        className: "bg-[#0a0a0a] border-orange-500/20 text-white"
       });
     }, 600);
   };
@@ -125,7 +125,7 @@ const ProductCard = ({ product, onView }: { product: ChatProductDTO; onView: (id
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       whileHover={{ y: -4 }}
-      className="group relative flex flex-col gap-3 p-3 rounded-[1.5rem] bg-white/[0.03] border border-white/[0.08] hover:border-cyan-500/40 hover:bg-white/[0.05] transition-all duration-500 cursor-pointer overflow-hidden shadow-2xl"
+      className="group relative flex flex-col gap-3 p-3 rounded-[1.5rem] bg-white/[0.03] border border-white/[0.08] hover:border-orange-500/40 hover:bg-white/[0.05] transition-all duration-500 cursor-pointer overflow-hidden shadow-2xl"
       onClick={() => onView(product.id)}
     >
       <div className="flex gap-4">
@@ -144,9 +144,9 @@ const ProductCard = ({ product, onView }: { product: ChatProductDTO; onView: (id
         
         <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
           <div>
-            <h4 className="text-sm font-bold text-white truncate group-hover:text-cyan-400 transition-colors">{product.title}</h4>
+            <h4 className="text-sm font-bold text-white truncate group-hover:text-orange-400 transition-colors">{product.title}</h4>
             <div className="flex items-center gap-1.5 mt-1">
-              <span className="text-lg font-black text-cyan-400">₹{product.sellingPrice?.toLocaleString()}</span>
+              <span className="text-lg font-black text-orange-400">₹{product.sellingPrice?.toLocaleString()}</span>
               {product.mrpPrice > product.sellingPrice && (
                 <span className="text-[10px] text-white/30 line-through">₹{product.mrpPrice?.toLocaleString()}</span>
               )}
@@ -174,7 +174,7 @@ const ProductCard = ({ product, onView }: { product: ChatProductDTO; onView: (id
           ADD TO CART
         </button>
         <button
-          className="w-10 h-9 flex items-center justify-center rounded-xl bg-cyan-500 text-black hover:bg-cyan-400 transition-all active:scale-90"
+          className="w-10 h-9 flex items-center justify-center rounded-xl bg-orange-500 text-black hover:bg-orange-400 transition-all active:scale-90"
         >
           <Zap className="w-4 h-4 fill-current" />
         </button>
@@ -192,10 +192,10 @@ const QuickActions = ({ actions, onAction }: { actions: string[]; onAction: (act
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: i * 0.05 }}
-        whileHover={{ scale: 1.05, backgroundColor: 'rgba(6,182,212,0.15)' }}
+        whileHover={{ scale: 1.05, backgroundColor: 'rgba(249,115,22,0.15)' }}
         whileTap={{ scale: 0.95 }}
         onClick={() => onAction(action)}
-        className="px-4 py-2 rounded-2xl text-[11px] font-bold bg-white/[0.03] text-white/70 border border-white/[0.08] hover:text-cyan-400 hover:border-cyan-500/30 transition-all shadow-lg"
+        className="px-4 py-2 rounded-2xl text-[11px] font-bold bg-white/[0.03] text-white/70 border border-white/[0.08] hover:text-orange-400 hover:border-orange-500/30 transition-all shadow-lg"
       >
         {action}
       </motion.button>
@@ -210,7 +210,7 @@ const RenderText = ({ text }: { text: string }) => {
     <span>
       {parts.map((part, i) => {
         if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={i} className="text-cyan-300 font-bold">{part.slice(2, -2)}</strong>;
+          return <strong key={i} className="text-orange-300 font-bold">{part.slice(2, -2)}</strong>;
         }
         return <span key={i}>{part}</span>;
       })}
@@ -395,18 +395,18 @@ export const ChatBot = () => {
             animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 0.95, y: 20, filter: 'blur(10px)' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed bottom-24 right-6 w-[380px] sm:w-[440px] h-[640px] max-h-[85vh] bg-[#050618]/95 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_80px_rgba(6,182,212,0.1)] flex flex-col overflow-hidden z-[100]"
+            className="fixed bottom-24 right-6 w-[380px] sm:w-[440px] h-[640px] max-h-[85vh] bg-[#0a0a0a]/95 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_80px_rgba(255,255,255,0.05)] flex flex-col overflow-hidden z-[100]"
           >
             {/* ─── Premium Header ─────────────────────────────────────── */}
-            <div className="p-6 border-b border-white/5 relative bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-transparent animate-pulse opacity-20" />
+            <div className="p-6 border-b border-white/5 relative bg-white/[0.02]">
+              <div className="absolute inset-0 bg-white/5 animate-pulse opacity-10" />
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-4">
                   <div className="relative group">
-                    <div className="w-20 h-20 rounded-[2rem] overflow-hidden bg-white/5 flex items-center justify-center shadow-[0_10px_40px_rgba(6,182,212,0.3)] border-2 border-white/20 transform group-hover:scale-105 transition-all duration-500">
+                    <div className="w-20 h-20 rounded-[2rem] overflow-hidden bg-white/5 flex items-center justify-center shadow-[0_10px_40px_rgba(249,115,22,0.2)] border-2 border-white/20 transform group-hover:scale-105 transition-all duration-500">
                       <img src="/ai-avatar.png" alt="BazaarBot" className="w-full h-full object-cover" />
                     </div>
-                    <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-green-500 border-4 border-[#050618] shadow-lg animate-pulse" />
+                    <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-green-500 border-4 border-[#0a0a0a] shadow-lg animate-pulse" />
                   </div>
                   <div>
                     <h3 className="font-black text-white text-lg flex items-center gap-2 tracking-tighter uppercase">
@@ -469,7 +469,7 @@ export const ChatBot = () => {
                     <div
                       className={`relative p-4 rounded-[1.75rem] shadow-xl ${
                         message.sender === 'user'
-                          ? 'bg-gradient-to-br from-cyan-500 to-cyan-600 text-black font-medium rounded-tr-none'
+                          ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-black font-medium rounded-tr-none'
                           : 'bg-white/[0.04] text-white/90 border border-white/[0.08] rounded-tl-none backdrop-blur-xl'
                       }`}
                     >
@@ -496,7 +496,7 @@ export const ChatBot = () => {
                 >
                   <div className="flex gap-3 max-w-[90%]">
                     <div className="w-9 h-9 rounded-2xl bg-white/5 flex-shrink-0 flex items-center justify-center border border-white/10">
-                        <Loader2 className="w-5 h-5 text-cyan-500 animate-spin" />
+                        <Loader2 className="w-5 h-5 text-orange-500 animate-spin" />
                     </div>
                     <div className="p-4 rounded-[1.75rem] bg-white/[0.02] border border-white/[0.05] rounded-tl-none flex items-center gap-3">
                          <div className="flex gap-1.5">
@@ -505,11 +505,11 @@ export const ChatBot = () => {
                                     key={i}
                                     animate={{ height: [4, 12, 4], opacity: [0.3, 1, 0.3] }}
                                     transition={{ repeat: Infinity, duration: 1, delay: i * 0.2 }}
-                                    className="w-1 bg-cyan-400 rounded-full"
+                                    className="w-1 bg-orange-400 rounded-full"
                                 />
                             ))}
                          </div>
-                         <span className="text-[11px] font-black text-cyan-400 tracking-widest uppercase italic">Synthesizing Response...</span>
+                         <span className="text-[11px] font-black text-orange-400 tracking-widest uppercase italic">Synthesizing Response...</span>
                     </div>
                   </div>
                 </motion.div>
@@ -520,7 +520,7 @@ export const ChatBot = () => {
 
             {/* ─── Pro Input Area ─────────────────────────────────── */}
             <div className="p-6 border-t border-white/5 bg-black/40 relative group">
-              <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-focus-within:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-orange-500/5 opacity-0 group-focus-within:opacity-100 transition-opacity" />
               
               <form onSubmit={handleSendMessage} className="relative flex flex-col gap-3">
                 <div className="relative">
@@ -530,9 +530,9 @@ export const ChatBot = () => {
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
                         placeholder="Type a message or use voice command..."
-                        className="w-full bg-white/[0.04] border border-white/10 rounded-[1.5rem] py-4 pl-12 pr-28 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-cyan-500/50 focus:bg-white/[0.07] transition-all duration-500 shadow-inner"
+                        className="w-full bg-white/[0.04] border border-white/10 rounded-[1.5rem] py-4 pl-12 pr-28 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-orange-500/50 focus:bg-white/[0.07] transition-all duration-500 shadow-inner"
                     />
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-cyan-400 transition-colors" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-orange-400 transition-colors" />
                     
                     <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
                         <motion.button
@@ -540,7 +540,7 @@ export const ChatBot = () => {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={toggleListening}
-                            className={`p-2.5 rounded-xl transition-all ${isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-white/5 text-white/40 hover:text-cyan-400'}`}
+                            className={`p-2.5 rounded-xl transition-all ${isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-white/5 text-white/40 hover:text-orange-400'}`}
                         >
                             {isListening ? <Mic className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
                         </motion.button>
@@ -550,7 +550,7 @@ export const ChatBot = () => {
                             disabled={!inputMessage.trim() || isLoading}
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            className="p-2.5 bg-gradient-to-r from-cyan-500 to-cyan-400 text-black rounded-xl hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all duration-300 disabled:opacity-30"
+                            className="p-2.5 bg-gradient-to-r from-orange-500 to-orange-400 text-black rounded-xl hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] transition-all duration-300 disabled:opacity-30"
                         >
                             <Send className="w-4 h-4" />
                         </motion.button>
@@ -576,10 +576,10 @@ export const ChatBot = () => {
             initial={{ scale: 0, rotate: -45 }}
             animate={{ scale: 1, rotate: 0 }}
             exit={{ scale: 0, rotate: 45 }}
-            whileHover={{ scale: 1.1, rotate: 5 }}
+            whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-600 rounded-[1.75rem] flex items-center justify-center shadow-[0_10px_40px_rgba(6,182,212,0.5),0_0_0_4px_rgba(255,255,255,0.05)] z-[100] group overflow-hidden"
+            className="fixed bottom-6 right-6 w-16 h-16 bg-[#111111] rounded-[1.75rem] flex items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.5),0_0_0_4px_rgba(255,255,255,0.05)] z-[100] group overflow-hidden border border-white/20"
           >
             <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity" />
             <img 
@@ -589,10 +589,10 @@ export const ChatBot = () => {
             />
 
             {/* Notification Glow */}
-            <span className="absolute inset-0 rounded-[1.75rem] border-2 border-cyan-400/30 animate-pulse" />
+            <span className="absolute inset-0 rounded-[1.75rem] border-2 border-white/20 animate-pulse" />
 
             {/* AI Chip Badge */}
-            <div className="absolute -top-1 -right-1 bg-red-500 flex items-center justify-center h-6 w-6 rounded-xl border-2 border-[#050618] shadow-lg">
+            <div className="absolute -top-1 -right-1 bg-red-500 flex items-center justify-center h-6 w-6 rounded-xl border-2 border-[#0a0a0a] shadow-lg">
                <span className="text-[10px] font-black text-white italic">AI</span>
             </div>
             

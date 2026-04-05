@@ -42,7 +42,7 @@ export function HagglingMeter({ currentRound, maxRounds, dealState }: HagglingMe
     <div className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-premium">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Zap className={`w-5 h-5 ${dealState === "deal-success" ? "text-success animate-pulse" : "text-primary"}`} />
+          <Zap className={`w-5 h-5 ${dealState === "deal-success" ? "text-success animate-pulse" : "text-orange-400"}`} />
           <span className="font-display font-bold text-sm text-white">Deal Closeness</span>
         </div>
         <div className="flex items-center gap-1.5 bg-black/50 px-2.5 py-1 rounded-full border border-white/5">
