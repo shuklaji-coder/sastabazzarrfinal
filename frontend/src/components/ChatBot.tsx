@@ -243,20 +243,30 @@ export const ChatBot = () => {
   const speak = (text: string) => {
     if (isMuted || !('speechSynthesis' in window)) return;
 
-    // Cancel existing speech
-    window.speechSynthesis.cancel();
+    // Remove emojis and special symbols so it doesn't read "smiling face..."
+    const cleanText = text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD00-\uDFFF])/g, '');
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = 'hi-IN';
     
-    // Find Hindi Voice (Preferably Male/Natural)
-    const voices = window.speechSynthesis.getVoices();
-    const hiVoice = voices.find(v => v.lang.includes('hi')) || voices.find(v => v.lang.includes('en-IN'));
-    
-    if (hiVoice) utterance.voice = hiVoice;
-    utterance.rate = 0.95; // Slightly slower for clarity
-    utterance.pitch = 0.9; // Slightly deeper for "Uncle" vibe
-    
-    window.speechSynthesis.speak(utterance);
+    const setVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      // Look for a native Hindi voice (Google/Microsoft/Apple)
+      const hiVoice = voices.find(v => v.lang === 'hi-IN' || v.lang.startsWith('hi')) || 
+                      voices.find(v => v.lang.includes('en-IN'));
+      
+      if (hiVoice) utterance.voice = hiVoice;
+      utterance.rate = 0.9;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    };
+
+    if (window.speechSynthesis.getVoices().length > 0) {
+      setVoice();
+    } else {
+      window.speechSynthesis.onvoiceschanged = setVoice;
+    }
   };
 
   // Voice Recognition Setup

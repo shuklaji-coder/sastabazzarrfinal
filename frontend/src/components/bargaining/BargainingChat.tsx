@@ -20,14 +20,30 @@ export function BargainingChat({ session, onSendOffer, isAiTyping, onGoToCart }:
   // ─── Text-to-Speech Utility ──────────────────────────────────────
   const speak = (text: string) => {
     if (isMuted || !('speechSynthesis' in window)) return;
+
+    // Filter out emojis and symbols
+    const cleanText = text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD00-\uDFFF])/g, '');
+
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    const hiVoice = voices.find(v => v.lang.includes('hi')) || voices.find(v => v.lang.includes('en-IN'));
-    if (hiVoice) utterance.voice = hiVoice;
-    utterance.rate = 0.95;
-    utterance.pitch = 0.9;
-    window.speechSynthesis.speak(utterance);
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = 'hi-IN';
+
+    const setVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      const hiVoice = voices.find(v => v.lang === 'hi-IN' || v.lang.startsWith('hi')) || 
+                      voices.find(v => v.lang.includes('en-IN'));
+      
+      if (hiVoice) utterance.voice = hiVoice;
+      utterance.rate = 0.9;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    };
+
+    if (window.speechSynthesis.getVoices().length > 0) {
+      setVoice();
+    } else {
+      window.speechSynthesis.onvoiceschanged = setVoice;
+    }
   };
 
   // Speak when last message is from bot
