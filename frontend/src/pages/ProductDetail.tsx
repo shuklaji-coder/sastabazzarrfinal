@@ -100,6 +100,10 @@ const ProductDetail = () => {
         // Fetch related products by category
         if (fetchedProduct?.category) {
             addToRecentlyViewed(fetchedProduct);
+
+            // Proactively warm up ML API to wake up Railway server
+            import('@/lib/axios').then(m => m.default.get('/api/negotiate/warmup')).catch(() => {});
+
             try {
                 const response = await productService.getAllProducts({ category: fetchedProduct.category });
                 const data = response.content || response;

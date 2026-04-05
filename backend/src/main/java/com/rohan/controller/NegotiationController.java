@@ -29,6 +29,7 @@ public class NegotiationController {
     @Autowired
     private OrderService orderService;
 
+    // Delegate to non-blocking ML call
     @PostMapping
     public Mono<ResponseEntity<NegotiationResponseDTO>> negotiate(
             @RequestHeader(value = "Authorization", required = false) String jwt,
@@ -52,7 +53,7 @@ public class NegotiationController {
                     
                     request.setIsRegular(totalOrders > 0 ? 1 : 0);
                     request.setTotalOrders(totalOrders);
-                    // The SastaaBazzaar User entity does not track signup dates easily here,
+                    // The SastaaBazaar User entity does not track signup dates easily here,
                     // so we compute a placeholder tenure based on order count.
                     request.setTenureDays(totalOrders > 0 ? 365 : 10);
                 } else {
@@ -66,9 +67,14 @@ public class NegotiationController {
             setGuestDefaults(request);
         }
 
-        // Delegate to non-blocking ML call
         return negotiationService.negotiate(request)
                 .map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/warmup")
+    public ResponseEntity<String> warmup() {
+        negotiationService.warmup();
+        return ResponseEntity.ok("Warm-up triggered");
     }
 
     private void setGuestDefaults(NegotiationRequestDTO request) {

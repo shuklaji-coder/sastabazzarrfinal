@@ -51,22 +51,50 @@ CATEGORY_MAP = metadata.get("category_map", {
 
 MARKET_MAP = {"low": 0, "normal": 1, "high": 2}
 
-def get_hinglish_message(deal_status, round_number, user_offer, ai_offer):
+def get_hinglish_message(deal_status, round_number, user_offer, ai_offer, aggression_score, deal_prob):
+    """Generates a contextual Hinglish message based on deal status, round, and sentiment."""
+    
+    # 1. Accept Messages
     if deal_status == "accept":
-        return "Bhai kya baat hai, chalo done karte hain! Khush raho."
-    elif deal_status == "reject":
-        return "Arre sir, is daam me toh dukaan band karni padegi. Maaf karo, nahi ho payega."
-    else:
-        if round_number == 1:
-            return f"Arre Bhai, itna kam mat bolo. Theek theek laga lete hain, {ai_offer} me done karte hain."
-        elif round_number == 2:
-            return f"Dekho apka na mera, thoda aap badho thoda main kam karta hoon. {ai_offer} aakhri bhav hai mera."
-        elif round_number == 3:
-            return f"Bhaiya last umeed hai, itne me kahin nahi milega. {ai_offer} dedo aur le jao."
-        elif round_number == 4:
-            return f"Bas karo sir, jaan loge kya meri? Final {ai_offer} rupaiye, socho mat!"
+        if deal_prob > 0.9:
+            return "Bhai kya baat hai, chalo done karte hain! Khush raho."
+        elif deal_prob > 0.7:
+            return "Theek hai sir, aapki khushi ke liye maan gaya. Done!"
         else:
-            return f"Dekh lo sir, isse niche possible hi nahi hai. {ai_offer} last price hai apna."
+            # Sweetener acceptance
+            return "Arre yaar, itne mein toh nuksan hai, par chalo ek relation banane ke liye 'YES' bol raha hoon. Done!"
+
+    # 2. Reject Messages
+    if deal_status == "reject":
+        if aggression_score > 0.85:
+            return "Bhai, mazaak mat karo. Itne kam dam mein toh dukan band karni padegi. Rehn do."
+        return "Arre sir, is daam me possible nahi hai. Maaf karo, nahi ho payega."
+
+    # 3. Counter Messages (Negotiation in progress)
+    # Aggressive User (High Score)
+    if aggression_score > 0.7:
+        if round_number == 1:
+            return f"Bhai itna kam? Thoda toh realistic bano. {ai_offer} se niche baat nahi banegi."
+        elif round_number <= 3:
+            return f"Dekho sir, itna low-ball mat karo. Meri bhi majboori samjho. {ai_offer} final touch hai."
+        else:
+            return f"Bas karo sir, jaan loge kya? {ai_offer} last hai mera, isse ₹1 kam nahi ho payega."
+
+    # Moderate/Fair User
+    if round_number == 1:
+        return f"Arre Bhai, starting mein hi itna kam? {ai_offer} mein done karte hain, mast deal hai."
+    elif round_number == 2:
+        return f"Dekho apka na mera, mid-way milte hain. {ai_offer} aakhri bhav hai mera."
+    elif round_number == 3:
+        if deal_prob > 0.5:
+            return f"Aajao sir, aapke liye thoda aur kam kiya. {ai_offer} done karein?"
+        return f"Bhaiya last umeed hai, itne me kahin nahi milega. {ai_offer} le jao chup-chap."
+    elif round_number == 4:
+        return f"Final touch sir, iske baad system allow nahi karega. {ai_offer} rupaiye, socho mat!"
+    elif round_number == 5:
+        return f"Bhai last call hai, {ai_offer} mein chahiye toh bolo varna rehne do."
+    else:
+        return f"Dekh lo sir, market ghoom lo. {ai_offer} se kam mein nahi milega."
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -188,16 +216,30 @@ def negotiate():
         # Round to nearest 10
         ai_counter = round(ai_counter / 10) * 10
 
-        # 5. Deal Status
+        # 5. Deal Logic (Determining Status)
+        
+        # 5a. Standard Acceptance
         if user_offer >= min_threshold:
             deal_status = "accept"
-        elif round_number > 5 and user_offer < min_threshold * 0.80:
+        
+        # 5b. Sweetener Logic: If door-step of target price (within 2% of min_threshold)
+        elif (min_threshold - user_offer) / original_price <= 0.02:
+            deal_status = "accept"
+            ai_counter = user_offer # Honor user's offer
+            
+        # 5c. Rejection Logic
+        elif round_number >= 6:
             deal_status = "reject"
+        elif round_number >= 3 and aggression_score > 0.9:
+            # Low-baller rejected early if no movement
+            deal_status = "reject"
+            
+        # 5d. Counter Offer
         else:
             deal_status = "counter"
 
         # 6. Generate Hinglish message
-        message = get_hinglish_message(deal_status, round_number, user_offer, ai_counter)
+        message = get_hinglish_message(deal_status, round_number, user_offer, ai_counter, aggression_score, deal_prob)
 
         return jsonify({
             "ai_counter_offer": ai_counter,

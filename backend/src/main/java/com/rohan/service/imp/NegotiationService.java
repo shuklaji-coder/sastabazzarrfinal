@@ -28,7 +28,7 @@ public class NegotiationService {
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(NegotiationResponseDTO.class)
-                .timeout(Duration.ofSeconds(5))
+                .timeout(Duration.ofSeconds(15))
                 .doOnSuccess(response -> logger.info("Received ML API response: {}", response))
                 .onErrorResume(e -> {
                     logger.error("ML API failed or timed out: {}. Using fallback rules.", e.getMessage());
@@ -36,25 +36,44 @@ public class NegotiationService {
                 });
     }
 
+    public void warmup() {
+        logger.info("Proactively warming up ML API (Health Check)...");
+        this.webClient.get()
+                .uri("/health")
+                .retrieve()
+                .bodyToMono(String.class)
+                .timeout(Duration.ofSeconds(10))
+                .subscribe(
+                    res -> logger.info("ML API Warm-up successful: {}", res),
+                    err -> logger.warn("ML API Warm-up failed: {}", err.getMessage())
+                );
+    }
+
     private NegotiationResponseDTO getFallbackResponse(NegotiationRequestDTO req) {
-        double minThreshold = req.getOriginalPrice() * (1 - req.getDiscountRate());
+        double minThreshold = Math.round(req.getOriginalPrice() * (1 - req.getDiscountRate()) / 10.0) * 10.0;
         NegotiationResponseDTO response = new NegotiationResponseDTO();
         
-        if (req.getUserOffer() >= minThreshold) {
+        if (req.getUserOffer() >= minThreshold || (minThreshold - req.getUserOffer()) / req.getOriginalPrice() <= 0.02) {
             response.setDealStatus("accept");
             response.setAiCounterOffer((int) Math.round(req.getUserOffer()));
-            response.setMessage("Bhai kya baat hai, chalo done karte hain! (Fallback)");
-        } else if (req.getRoundNumber() > 5 && req.getUserOffer() < minThreshold * 0.80) {
+            response.setMessage("Chalo sir, aapki khushi ke liye maan gaye! (Fallback)");
+        } else if (req.getRoundNumber() >= 6) {
             response.setDealStatus("reject");
             response.setAiCounterOffer((int) Math.round(req.getOriginalPrice()));
             response.setMessage("Arre sir, is daam me possible nahi hai. Maaf karo. (Fallback)");
         } else {
             response.setDealStatus("counter");
-            double counter = req.getOriginalPrice() * 0.85 - (req.getRoundNumber() * req.getOriginalPrice() * 0.03);
+            // Rule-based counter: start at 90% and drop by 2-3% each round, but stay above minThreshold
+            double counter = req.getOriginalPrice() * 0.90 - (req.getRoundNumber() * req.getOriginalPrice() * 0.02);
             counter = Math.max(counter, minThreshold); 
             int finalCounter = (int) (Math.round(counter / 10.0) * 10); 
             response.setAiCounterOffer(finalCounter);
-            response.setMessage("System slow hai, " + finalCounter + " me lelo. (Fallback)");
+            
+            if (req.getRoundNumber() == 1) {
+                response.setMessage("Bhai starting mein hi itna kam? " + finalCounter + " mein done karte hain. (Fallback)");
+            } else {
+                response.setMessage("System thoda slow hai, par " + finalCounter + " last bhav hai mera. (Fallback)");
+            }
         }
         return response;
     }
