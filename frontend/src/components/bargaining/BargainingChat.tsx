@@ -44,22 +44,25 @@ export function BargainingChat({ session, onSendOffer, isAiTyping, onGoToCart }:
     <div className="flex flex-col h-full bg-black/60 backdrop-blur-2xl rounded-[24px] border border-white/10 overflow-hidden relative">
       
       {/* Header */}
-      <div className="flex-none flex items-center gap-4 p-5 border-b border-white/5 bg-gradient-to-r from-primary/10 to-transparent">
-        <div className="relative group">
-          <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-[0_0_20px_rgba(251,146,60,0.3)] border border-white/20 relative z-10">
+      <div className="flex-none flex items-center gap-4 p-5 border-b border-white/10 bg-gradient-to-r from-orange-500/10 via-transparent to-transparent">
+        <div className="relative">
+          <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 relative z-10 transition-transform hover:scale-105 duration-300">
             <img 
               src="/ai-avatar.png" 
               alt="Sharma Ji" 
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+              className="w-full h-full object-cover" 
             />
           </div>
-          {/* Pulsing Glow Effect */}
-          <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl animate-pulse -z-10" />
+          {/* Soft Glow */}
+          <div className="absolute inset-x-0 -bottom-2 h-4 bg-orange-500/30 blur-xl -z-10" />
         </div>
         <div>
-          <h3 className="font-display font-bold text-white text-lg">Sharma Ji</h3>
-          <p className="text-xs text-success font-medium flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-success animate-pulse" /> AI Shopkeeper
+          <div className="flex items-center gap-2">
+            <h3 className="font-display font-bold text-white text-xl">Sharma Ji</h3>
+            <span className="bg-success/20 text-success text-[10px] px-2 py-0.5 rounded-full font-black border border-success/30 uppercase tracking-tighter">Verified</span>
+          </div>
+          <p className="text-xs text-white/50 font-medium flex items-center gap-1.5 mt-0.5">
+            <span className="w-2 h-2 rounded-full bg-success animate-pulse" /> Traditional Shopkeeper Agent
           </p>
         </div>
       </div>
