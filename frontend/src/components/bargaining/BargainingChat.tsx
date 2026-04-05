@@ -44,25 +44,25 @@ export function BargainingChat({ session, onSendOffer, isAiTyping, onGoToCart }:
     <div className="flex flex-col h-full bg-black/60 backdrop-blur-2xl rounded-[24px] border border-white/10 overflow-hidden relative">
       
       {/* Header */}
-      <div className="flex-none flex items-center gap-4 p-5 border-b border-white/10 bg-gradient-to-r from-orange-500/10 via-transparent to-transparent">
+      <div className="flex-none flex items-center gap-6 p-6 border-b border-white/10 bg-gradient-to-r from-orange-500/10 via-transparent to-transparent">
         <div className="relative">
-          <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 relative z-10 transition-transform hover:scale-105 duration-300">
+          <div className="w-24 h-24 rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(249,115,22,0.2)] border-2 border-white/20 relative z-10 transition-transform hover:scale-105 duration-500">
             <img 
               src="/ai-avatar.png" 
               alt="Sharma Ji" 
               className="w-full h-full object-cover" 
             />
           </div>
-          {/* Soft Glow */}
-          <div className="absolute inset-x-0 -bottom-2 h-4 bg-orange-500/30 blur-xl -z-10" />
+          {/* Enhanced Glow */}
+          <div className="absolute -inset-2 bg-orange-500/20 rounded-[2rem] blur-2xl -z-10 animate-pulse" />
         </div>
         <div>
-          <div className="flex items-center gap-2">
-            <h3 className="font-display font-bold text-white text-xl">Sharma Ji</h3>
-            <span className="bg-success/20 text-success text-[10px] px-2 py-0.5 rounded-full font-black border border-success/30 uppercase tracking-tighter">Verified</span>
+          <div className="flex items-center gap-3">
+            <h3 className="font-display font-black text-white text-2xl tracking-tight">Sharma Ji</h3>
+            <span className="bg-success/20 text-success text-[10px] px-2.5 py-1 rounded-lg font-black border border-success/30 uppercase tracking-widest shadow-lg shadow-success/20">Verified</span>
           </div>
-          <p className="text-xs text-white/50 font-medium flex items-center gap-1.5 mt-0.5">
-            <span className="w-2 h-2 rounded-full bg-success animate-pulse" /> Traditional Shopkeeper Agent
+          <p className="text-sm text-white/60 font-bold flex items-center gap-2 mt-1.5 opacity-80 uppercase tracking-tighter">
+            <span className="w-2.5 h-2.5 rounded-full bg-success shadow-[0_0_10px_rgba(34,197,94,0.5)] animate-pulse" /> Traditional Shopkeeper Agent
           </p>
         </div>
       </div>

@@ -403,10 +403,10 @@ export const ChatBot = () => {
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-4">
                   <div className="relative group">
-                    <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white/5 flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.2)] border border-white/20 transform group-hover:scale-105 transition-all duration-500">
+                    <div className="w-20 h-20 rounded-[2rem] overflow-hidden bg-white/5 flex items-center justify-center shadow-[0_10px_40px_rgba(6,182,212,0.3)] border-2 border-white/20 transform group-hover:scale-105 transition-all duration-500">
                       <img src="/ai-avatar.png" alt="BazaarBot" className="w-full h-full object-cover" />
                     </div>
-                    <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-4 border-[#050618] shadow-lg animate-pulse" />
+                    <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-green-500 border-4 border-[#050618] shadow-lg animate-pulse" />
                   </div>
                   <div>
                     <h3 className="font-black text-white text-lg flex items-center gap-2 tracking-tighter uppercase">
@@ -453,15 +453,15 @@ export const ChatBot = () => {
                     {/* Avatar */}
                     <motion.div 
                        whileHover={{ scale: 1.1 }}
-                       className={`w-9 h-9 rounded-2xl flex-shrink-0 flex items-center justify-center shadow-lg ${
-                        message.sender === 'user'
-                            ? 'bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400'
-                            : 'bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600'
-                        }`}
+                       className={`w-12 h-12 rounded-2xl flex-shrink-0 flex items-center justify-center shadow-xl overflow-hidden ${
+                         message.sender === 'user'
+                             ? 'bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400'
+                             : 'border border-white/10'
+                         }`}
                     >
                       {message.sender === 'user'
-                        ? <User className="w-5 h-5 text-white" />
-                        : <img src="/ai-avatar.png" alt="AI" className="w-full h-full object-cover rounded-2xl" />
+                        ? <User className="w-6 h-6 text-white" />
+                        : <img src="/ai-avatar.png" alt="AI" className="w-full h-full object-cover" />
                       }
                     </motion.div>
 
