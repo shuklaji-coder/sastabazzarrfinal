@@ -209,8 +209,11 @@ const ProductDetail = () => {
                 </button>
 
                 {is3DView ? (
-                  <div className="w-full h-full cursor-grab active:cursor-grabbing animate-fade-in relative bg-secondary/5 rounded-lg overflow-hidden">
-                    <Spline scene="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode" />
+                  <div className="w-full h-full cursor-grab active:cursor-grabbing animate-fade-in relative bg-secondary/5 rounded-lg overflow-hidden flex items-center justify-center">
+                    <Spline scene="https://prod.spline.design/iW4g4E46QjN2uBhh/scene.splinecode" />
+                    <div className="absolute top-4 left-4 text-xs font-bold text-muted-foreground">
+                      Placeholder Model (Update scene url in future)
+                    </div>
                     <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
                       <span className="bg-background/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium border border-border shadow-sm">
                         Drag to rotate • Scroll to zoom
