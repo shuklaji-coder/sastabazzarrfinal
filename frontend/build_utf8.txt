@@ -1,0 +1,60 @@
+﻿
+> vite_react_shadcn_ts@0.0.0 build
+> vite build
+
+npm : [31mfailed to load 
+config from D:\sastaa 
+bazzaar final\sastabazzarr
+final-main\frontend\vite.c
+onfig.ts[39m
+At line:1 char:1
++ npm run build > 
+build_output.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (  
+  [31mfailed to ....con   
+ fig.ts[39m:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+[31merror during build:
+Error 
+[ERR_MODULE_NOT_FOUND]: 
+Cannot find package 
+'vite' imported from 
+D:\sastaa bazzaar final\sa
+stabazzarrfinal-main\front
+end\vite.config.ts.timesta
+mp-1776504195109-7510a823c
+326e.mjs
+    at packageResolve (nod
+e:internal/modules/esm/res
+olve:873:9)
+    at moduleResolve (node
+:internal/modules/esm/reso
+lve:946:18)
+    at defaultResolve (nod
+e:internal/modules/esm/res
+olve:1188:11)
+    at ModuleLoader.defaul
+tResolve (node:internal/mo
+dules/esm/loader:708:12)
+    at 
+#cachedDefaultResolve (nod
+e:internal/modules/esm/loa
+der:657:25)
+    at 
+ModuleLoader.resolve (node
+:internal/modules/esm/load
+er:640:38)
+    at ModuleLoader.getMod
+uleJobForImport (node:inte
+rnal/modules/esm/loader:26
+4:38)
+    at ModuleJob._link (no
+de:internal/modules/esm/mo
+dule_job:168:49)[39m

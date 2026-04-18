@@ -1,0 +1,125 @@
+/* Mobile Optimizations for SastaaBazaar */
+
+/* General Mobile Improvements */
+@media (max-width: 768px) {
+  /* Better touch targets */
+  button, a, input, textarea, select {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improved text readability */
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* Better spacing on mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Hide desktop elements on mobile */
+  .desktop-only {
+    display: none !important;
+  }
+  
+  /* Show mobile elements */
+  .mobile-only {
+    display: block !important;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  /* Compact layout for small screens */
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  /* Smaller text on very small screens */
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+  
+  /* Better button spacing */
+  .button-group {
+    gap: 0.5rem;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  .hover-effect {
+    transition: none;
+  }
+  
+  /* Better touch feedback */
+  button:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Landscape mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Adjust for landscape mode */
+  .hero-section {
+    min-height: 60vh;
+  }
+  
+  /* Compact forms in landscape */
+  .form-container {
+    padding: 1rem;
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Safe area insets for iPhone X+ */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Android specific fixes */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  /* Better scrolling on Android */
+  .scroll-container {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+  /* Reduce animations on mobile for better performance */
+  .mobile-performance {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Disable heavy effects on mobile */
+  .heavy-effect {
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+}
