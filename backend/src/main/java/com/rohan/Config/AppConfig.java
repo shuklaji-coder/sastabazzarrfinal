@@ -1,6 +1,5 @@
 package com.rohan.Config;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,7 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class AppConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.disable()) // Handled by CorsFilter bean below
                 .sessionManagement(management ->
                         management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -61,40 +61,33 @@ public class AppConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
-    // ✅ CORS Config
+    // ✅ Standalone CorsFilter — runs BEFORE Spring Security, guarantees CORS headers on preflight
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        return new CorsConfigurationSource() {
-            @Override
-            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(Arrays.asList(
+                "https://subtle-gumdrop-648ce7.netlify.app",
+                "https://sastaabazaar.shop",
+                "http://sastaabazaar.shop",
+                "http://localhost:3000",
+                "http://localhost:5173",
+                "http://localhost:8080",
+                "http://127.0.0.1:5173",
+                "http://127.0.0.1:8080"
+        ));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setMaxAge(3600L);
 
-                CorsConfiguration corsConfiguration = new CorsConfiguration();
-                corsConfiguration.setAllowedOrigins(Arrays.asList(
-                        "https://subtle-gumdrop-648ce7.netlify.app",
-                        "https://sastaabazaar.shop",
-                        "http://sastaabazaar.shop",
-                        "http://localhost:3000", 
-                        "http://localhost:5173", 
-                        "http://localhost:8080", 
-                        "http://127.0.0.1:5173", 
-                        "http://127.0.0.1:8080"
-                ));
-                corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
-                corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
-                corsConfiguration.setAllowCredentials(true);
-                corsConfiguration.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
 
-
-
-
-                return corsConfiguration;
-            }
-        };
+        return new CorsFilter(source);
     }
 }
