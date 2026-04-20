@@ -2,7 +2,7 @@ import { SellerLayout } from '@/components/SellerLayout';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productService } from '@/services/productService';
-import { ArrowLeft, Loader2, Save, Image as ImageIcon, Tag, DollarSign, ListOrdered, Sparkles, UploadCloud } from 'lucide-react';
+import { ArrowLeft, Loader2, Save, Image as ImageIcon, Tag, DollarSign, ListOrdered, Sparkles, Plus, Trash2, GripVertical } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -16,7 +16,7 @@ const SellerAddProduct = () => {
     mrpPrice: '',
     sellingPrice: '',
     color: '',
-    images: '',
+    images: [''],
     category: '',
     category2: '',
     category3: '',
@@ -29,18 +29,44 @@ const SellerAddProduct = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleImageChange = (index: number, value: string) => {
+    setFormData(prev => {
+      const updated = [...prev.images];
+      updated[index] = value;
+      return { ...prev, images: updated };
+    });
+  };
+
+  const addImageRow = () => {
+    setFormData(prev => ({ ...prev, images: [...prev.images, ''] }));
+  };
+
+  const removeImageRow = (index: number) => {
+    setFormData(prev => {
+      const updated = prev.images.filter((_, i) => i !== index);
+      return { ...prev, images: updated.length === 0 ? [''] : updated };
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
+      const validImages = formData.images.map(u => u.trim()).filter(Boolean);
+      if (validImages.length === 0) {
+        toast.error('Please add at least one image URL.');
+        setIsSubmitting(false);
+        return;
+      }
+
       const payload = {
         title: formData.title,
         description: formData.description,
         mrpPrice: parseInt(formData.mrpPrice),
         sellingPrice: parseInt(formData.sellingPrice),
         color: formData.color,
-        images: formData.images.split(',').map(url => url.trim()),
+        images: validImages,
         brand: formData.brand,
         sizes: formData.sizes || '',
         category: { name: formData.category, categoryId: formData.category.toLowerCase().replace(/\s+/g, '_') },
@@ -110,31 +136,92 @@ const SellerAddProduct = () => {
               </div>
             </div>
 
+            {/* ─── Product Media ─── */}
             <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
-               <div className="p-6 border-b border-border bg-muted/10">
+              <div className="p-6 border-b border-border bg-muted/10">
                 <div className="flex items-center gap-2">
                   <ImageIcon className="w-5 h-5 text-primary" />
-                  <h3 className="font-display font-bold text-lg text-foreground">Product Media</h3>
+                  <h3 className="font-display font-bold text-lg text-foreground">Product Images</h3>
                 </div>
+                <p className="text-xs text-muted-foreground mt-1">Add up to 8 high-quality image URLs. The first image will be the cover photo.</p>
               </div>
-              <div className="p-6 space-y-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-foreground">Image URLs <span className="text-destructive">*</span></label>
-                  <div className="border border-border bg-muted/30 rounded-xl p-4 flex flex-col items-center justify-center gap-3 border-dashed h-40">
-                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary"><UploadCloud className="w-6 h-6" /></div>
-                     <p className="text-sm font-medium text-foreground text-center">Paste image URLs below, separated by commas</p>
-                  </div>
-                  <input required name="images" value={formData.images} onChange={handleChange} className="w-full px-4 py-3 mt-4 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-foreground" placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg" />
-                  {formData.images && (
-                    <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
-                       {formData.images.split(',').filter(url => url.trim() !== '').map((url, i) => (
-                         <div key={i} className="w-16 h-16 rounded-lg border border-border bg-white overflow-hidden shrink-0">
-                           <img src={url.trim()} alt="" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
-                         </div>
-                       ))}
+
+              <div className="p-6 space-y-4">
+                {formData.images.map((url, idx) => (
+                  <div key={idx} className="group">
+                    <div className="flex gap-3 items-center">
+                      <div className="text-muted-foreground cursor-grab shrink-0">
+                        <GripVertical className="w-4 h-4" />
+                      </div>
+                      {/* Preview thumbnail */}
+                      <div className="w-14 h-14 shrink-0 rounded-xl border-2 border-dashed border-border bg-muted/30 overflow-hidden flex items-center justify-center transition-all">
+                        {url.trim() ? (
+                          <img
+                            src={url.trim()}
+                            alt=""
+                            className="w-full h-full object-cover rounded-xl"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              e.currentTarget.parentElement!.innerHTML = `<span class="text-xs text-destructive font-medium text-center px-1">Bad URL</span>`;
+                            }}
+                          />
+                        ) : (
+                          <span className="text-xs text-muted-foreground font-medium">{idx + 1}</span>
+                        )}
+                      </div>
+                      <input
+                        type="url"
+                        value={url}
+                        onChange={(e) => handleImageChange(idx, e.target.value)}
+                        className="flex-1 px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-foreground text-sm"
+                        placeholder={idx === 0 ? "https://example.com/main-image.jpg (cover photo)" : `https://example.com/image-${idx + 1}.jpg`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImageRow(idx)}
+                        className="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all"
+                        title="Remove image"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
-                  )}
-                </div>
+                    {/* Label for first image */}
+                    {idx === 0 && (
+                      <p className="text-xs text-primary font-semibold mt-1.5 ml-[60px]">Cover Photo (shown first)</p>
+                    )}
+                  </div>
+                ))}
+
+                {/* Add row button */}
+                {formData.images.length < 8 && (
+                  <button
+                    type="button"
+                    onClick={addImageRow}
+                    className="w-full mt-2 py-3 rounded-xl border-2 border-dashed border-primary/40 text-primary hover:border-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2 font-semibold text-sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add Another Image ({formData.images.length}/8)
+                  </button>
+                )}
+
+                {/* Gallery preview strip */}
+                {formData.images.filter(u => u.trim()).length > 1 && (
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">Gallery Preview</p>
+                    <div className="flex gap-3 overflow-x-auto pb-2">
+                      {formData.images.filter(u => u.trim()).map((url, i) => (
+                        <div key={i} className="relative shrink-0 group/thumb">
+                          <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-border bg-white shadow-sm transition-all group-hover/thumb:border-primary group-hover/thumb:shadow-md">
+                            <img src={url.trim()} alt="" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                          </div>
+                          {i === 0 && (
+                            <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[9px] font-bold px-1.5 py-0.5 rounded-full">COVER</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -181,7 +268,6 @@ const SellerAddProduct = () => {
                   <label className="text-sm font-semibold text-foreground">Brand <span className="text-destructive">*</span></label>
                   <input required name="brand" value={formData.brand} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-foreground" placeholder="e.g. Nike" />
                 </div>
-
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
-import { Star, ShoppingCart, ArrowLeft, Truck, Shield, RotateCcw, Loader2, ChevronRight, Check, Share2, Copy, Box } from 'lucide-react';
+import { Star, ShoppingCart, ArrowLeft, Truck, Shield, RotateCcw, Loader2, ChevronRight, ChevronLeft, Check, Share2, Copy, Box, ZoomIn, X } from 'lucide-react';
 import Spline from '@splinetool/react-spline';
 import { useState, useEffect } from 'react';
 import { ProductCard } from '@/components/ProductCard';
@@ -23,6 +23,7 @@ const ProductDetail = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [is3DView, setIs3DView] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const addToRecentlyViewed = (product: any) => {
     if (!product) return;
@@ -57,6 +58,17 @@ const ProductDetail = () => {
     if (!sizes || sizes.trim() === '') return [];
     return sizes.split(',').map(s => s.trim()).filter(Boolean);
   };
+
+  // Close lightbox on ESC
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightboxOpen(false);
+      if (e.key === 'ArrowRight') setActiveImage(i => Math.min(i + 1, (product?.images?.length || 1) - 1));
+      if (e.key === 'ArrowLeft') setActiveImage(i => Math.max(i - 1, 0));
+    };
+    if (lightboxOpen) window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [lightboxOpen, product]);
 
   const handleAddToCart = async () => {
     if (!product) return;
@@ -180,75 +192,191 @@ const ProductDetail = () => {
         <div className="bg-card rounded-2xl shadow-sm border border-border p-4 md:p-8 mb-12">
           <div className="flex flex-col lg:flex-row gap-10">
             
-            {/* Left: Image Gallery */}
+            {/* Left: Premium Image Gallery */}
             <div className="w-full lg:w-5/12 xl:w-1/2 flex gap-4">
-              {/* Thumbnails (Desktop) */}
-              <div className="hidden md:flex flex-col gap-3 w-20 shrink-0">
+              
+              {/* Vertical Thumbnail Strip (Desktop) */}
+              <div className="hidden md:flex flex-col gap-2.5 w-[76px] shrink-0 max-h-[540px] overflow-y-auto pr-1 hide-scrollbar">
                 {images.map((img: string, idx: number) => (
                   <button 
                     key={idx}
                     onMouseEnter={() => setActiveImage(idx)}
                     onClick={() => setActiveImage(idx)}
-                    className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-primary ring-2 ring-primary/20' : 'border-transparent hover:border-border'}`}
+                    className={`relative w-[72px] h-[72px] rounded-xl overflow-hidden border-2 transition-all duration-200 shrink-0 ${
+                      activeImage === idx 
+                        ? 'border-primary ring-2 ring-primary/25 shadow-md shadow-primary/20' 
+                        : 'border-transparent hover:border-border hover:shadow-sm'
+                    }`}
                   >
-                    <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                    <img src={img} alt={`View ${idx + 1}`} className="w-full h-full object-cover" />
+                    {activeImage === idx && (
+                      <div className="absolute inset-0 bg-primary/10" />
+                    )}
                   </button>
                 ))}
               </div>
               
-              {/* Main Image or 3D Viewer */}
-              <div className="flex-1 relative aspect-square md:aspect-[4/5] bg-white rounded-xl overflow-hidden border border-border flex items-center justify-center p-4 group">
-                
-                {/* 3D Toggle Button */}
-                <button 
-                  onClick={() => setIs3DView(!is3DView)}
-                  className="absolute top-4 right-4 z-10 bg-background/80 backdrop-blur-md border border-border text-foreground px-4 py-2 rounded-full font-bold text-sm shadow-lg hover:bg-primary hover:text-primary-foreground transition-all flex items-center gap-2 transform hover:scale-105"
+              {/* Main Image */}
+              <div className="flex-1 flex flex-col gap-3">
+                <div 
+                  className="relative aspect-square md:aspect-[4/5] bg-white rounded-2xl overflow-hidden border border-border flex items-center justify-center group cursor-zoom-in shadow-sm"
+                  onClick={() => !is3DView && setLightboxOpen(true)}
                 >
-                  <Box className="w-4 h-4" />
-                  {is3DView ? "2D Gallery" : "View Premium 3D"}
-                </button>
-
-                {is3DView ? (
-                  <div className="w-full h-full cursor-grab active:cursor-grabbing animate-fade-in relative bg-secondary/5 rounded-lg overflow-hidden flex items-center justify-center">
-                    <Spline scene="https://prod.spline.design/iW4g4E46QjN2uBhh/scene.splinecode" />
-                    <div className="absolute top-4 left-4 text-xs font-bold text-muted-foreground">
-                      Placeholder Model (Update scene url in future)
-                    </div>
-                    <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
-                      <span className="bg-background/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium border border-border shadow-sm">
-                        Drag to rotate • Scroll to zoom
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <img 
-                      src={images[activeImage]} 
-                      alt={product.name} 
-                      className="w-full h-full object-contain animate-fade-in" 
-                    />
-                    {discount > 0 && (
-                      <span className="absolute top-4 left-4 bg-destructive text-destructive-foreground font-bold px-3 py-1 rounded-md text-sm shadow-md animate-fade-in">
-                        -{discount}% OFF
-                      </span>
-                    )}
-                  </>
-                )}
-              </div>
-
-              {/* Thumbnails (Mobile) */}
-              <div className="flex md:hidden gap-3 mt-4 overflow-x-auto pb-4 w-full hide-scrollbar">
-                 {images.map((img: string, idx: number) => (
+                  {/* 3D Toggle */}
                   <button 
-                    key={idx}
-                    onClick={() => setActiveImage(idx)}
-                    className={`w-16 h-16 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-primary ring-2 ring-primary/20' : 'border-border bg-white p-1'}`}
+                    onClick={(e) => { e.stopPropagation(); setIs3DView(!is3DView); }}
+                    className="absolute top-3 right-3 z-10 bg-background/80 backdrop-blur-md border border-border text-foreground px-3 py-1.5 rounded-full font-bold text-xs shadow-lg hover:bg-primary hover:text-primary-foreground transition-all flex items-center gap-1.5"
                   >
-                    <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-contain" />
+                    <Box className="w-3.5 h-3.5" />
+                    {is3DView ? '2D' : '3D View'}
                   </button>
-                ))}
+
+                  {/* Image counter badge */}
+                  {!is3DView && images.length > 1 && (
+                    <div className="absolute top-3 left-3 z-10 bg-background/80 backdrop-blur-md border border-border text-foreground px-2.5 py-1 rounded-full text-xs font-bold shadow">
+                      {activeImage + 1} / {images.length}
+                    </div>
+                  )}
+
+                  {/* Zoom hint */}
+                  {!is3DView && (
+                    <div className="absolute bottom-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="bg-background/80 backdrop-blur-md border border-border px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1 text-muted-foreground shadow">
+                        <ZoomIn className="w-3 h-3" /> Click to zoom
+                      </div>
+                    </div>
+                  )}
+
+                  {is3DView ? (
+                    <div className="w-full h-full cursor-grab active:cursor-grabbing">
+                      <Spline scene="https://prod.spline.design/iW4g4E46QjN2uBhh/scene.splinecode" />
+                      <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
+                        <span className="bg-background/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium border border-border shadow-sm">
+                          Drag to rotate • Scroll to zoom
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <img 
+                        src={images[activeImage]} 
+                        alt={product.name} 
+                        className="w-full h-full object-contain transition-all duration-300 group-hover:scale-105" 
+                        key={activeImage}
+                      />
+                      {discount > 0 && (
+                        <span className="absolute top-3 left-3 bg-destructive text-destructive-foreground font-bold px-2.5 py-1 rounded-md text-xs shadow-md">
+                          -{discount}% OFF
+                        </span>
+                      )}
+                    </>
+                  )}
+
+                  {/* Left/Right nav arrows (only when multiple images) */}
+                  {images.length > 1 && !is3DView && (
+                    <>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setActiveImage(i => Math.max(0, i - 1)); }}
+                        className={`absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/80 backdrop-blur-md border border-border flex items-center justify-center shadow-md transition-all hover:bg-background hover:scale-110 ${
+                          activeImage === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-0 group-hover:opacity-100'
+                        }`}
+                        disabled={activeImage === 0}
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setActiveImage(i => Math.min(images.length - 1, i + 1)); }}
+                        className={`absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/80 backdrop-blur-md border border-border flex items-center justify-center shadow-md transition-all hover:bg-background hover:scale-110 ${
+                          activeImage === images.length - 1 ? 'opacity-30 cursor-not-allowed' : 'opacity-0 group-hover:opacity-100'
+                        }`}
+                        disabled={activeImage === images.length - 1}
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {/* Mobile thumbnail strip */}
+                <div className="flex md:hidden gap-2 overflow-x-auto pb-1 hide-scrollbar">
+                  {images.map((img: string, idx: number) => (
+                    <button 
+                      key={idx}
+                      onClick={() => setActiveImage(idx)}
+                      className={`w-14 h-14 shrink-0 rounded-xl overflow-hidden border-2 transition-all ${
+                        activeImage === idx 
+                          ? 'border-primary ring-2 ring-primary/20 shadow-md' 
+                          : 'border-transparent bg-white'
+                      }`}
+                    >
+                      <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
+
+            {/* Fullscreen Lightbox */}
+            {lightboxOpen && (
+              <div 
+                className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center"
+                onClick={() => setLightboxOpen(false)}
+              >
+                {/* Close */}
+                <button className="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-10">
+                  <X className="w-5 h-5" />
+                </button>
+
+                {/* Counter */}
+                <div className="absolute top-5 left-1/2 -translate-x-1/2 bg-white/10 border border-white/20 px-4 py-1.5 rounded-full text-white text-sm font-bold backdrop-blur-sm">
+                  {activeImage + 1} / {images.length}
+                </div>
+
+                {/* Prev */}
+                {activeImage > 0 && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setActiveImage(i => i - 1); }}
+                    className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/25 transition-all"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                )}
+
+                {/* Main lightbox image */}
+                <img
+                  src={images[activeImage]}
+                  alt={product.name}
+                  className="max-w-[85vw] max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                  key={activeImage}
+                />
+
+                {/* Next */}
+                {activeImage < images.length - 1 && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setActiveImage(i => i + 1); }}
+                    className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/25 transition-all"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                )}
+
+                {/* Thumbnail strip at bottom */}
+                <div className="absolute bottom-5 left-0 right-0 flex justify-center gap-2 px-6 overflow-x-auto hide-scrollbar">
+                  {images.map((img: string, idx: number) => (
+                    <button
+                      key={idx}
+                      onClick={(e) => { e.stopPropagation(); setActiveImage(idx); }}
+                      className={`w-14 h-14 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${
+                        activeImage === idx ? 'border-white scale-110 shadow-lg' : 'border-white/30 opacity-60 hover:opacity-100'
+                      }`}
+                    >
+                      <img src={img} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Right: Product Info & Buy Box */}
             <div className="w-full lg:w-7/12 xl:w-1/2 flex flex-col">
