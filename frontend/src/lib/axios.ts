@@ -1,7 +1,7 @@
 // This acts as a drop-in replacement for axios to bypass node package dependencies
 // since npm / bun builds were failing in environment.
 
-const BASE_URL = 'https://sastabazzarr-production.up.railway.app';
+const BASE_URL = 'https://your-backend-name.onrender.com';
 
 type AxiosRequestConfig = {
   method?: string;

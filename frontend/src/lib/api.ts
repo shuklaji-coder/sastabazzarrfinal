@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://sastabazzarr-production.up.railway.app";
+const API_BASE_URL = "https://your-backend-name.onrender.com";
 
 export const getApiUrl = (endpoint: string) => {
   return `${API_BASE_URL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
