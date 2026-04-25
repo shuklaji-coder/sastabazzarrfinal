@@ -12,7 +12,7 @@ type AxiosRequestConfig = {
 
 const createAxiosInstance = () => {
   const request = async (url: string, config: AxiosRequestConfig = {}) => {
-    // Interceptor: Automatically attach token
+    // Interceptor: Automatically attach token (except for auth endpoints)
     const token = localStorage.getItem('jwt_token') || localStorage.getItem('token');
     
     const headers: Record<string, string> = {
@@ -20,7 +20,11 @@ const createAxiosInstance = () => {
       ...config.headers,
     };
 
-    if (token) {
+    // Don't add token to auth endpoints (login, signup, etc.)
+    const isAuthEndpoint = url.startsWith('/auth/') && 
+                          (url.includes('/signing') || url.includes('/signup') || url.includes('/sent'));
+
+    if (token && !isAuthEndpoint) {
       headers['Authorization'] = `Bearer ${token}`; // Spring boot typical bearer
       // Fallback if backend doesn't expect Bearer
       // headers['Authorization'] = token;
