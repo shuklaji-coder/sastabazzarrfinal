@@ -50,6 +50,11 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> testEndpoint() {
+        return ResponseEntity.ok("Auth controller is working!");
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signupHandler(
             @RequestBody SignupRequest req) throws Exception {
